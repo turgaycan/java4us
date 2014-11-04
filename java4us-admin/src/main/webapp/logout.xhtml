@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>LogOut Page</title>
+</h:head>
+<h:body>
+	<h2>LogOut Page</h2>
+	<h:form id="logOutForm">
+		<p:notificationBar position="top" effect="slide" styleClass="top"
+			widgetVar="bar">
+			<h:outputText value="Başarılı bir şekilde çıkış yaptınız!" style="font-size:36px;" />
+		</p:notificationBar>		
+		<p:commandButton value="LogOut" onclick="PF('bar').show()"  icon="ui-icon-power" action="#{logOutView.submit}" />
+	</h:form>
+</h:body>
+</html>

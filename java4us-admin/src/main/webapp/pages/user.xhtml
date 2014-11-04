@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:commonComp="http://java.sun.com/jsf/composite/commonComp"
+	xmlns:commons="http://www.java4us.net/commons">
+
+<ui:composition template="../templates/default/main.xhtml">
+	<ui:define name="content">
+		<h:form id="userForm">
+			<div style="z-index: inherit;">
+				<p:growl id="msgs" showDetail="true" />
+			</div>
+			<p:panel id="searchPanel">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Email" />
+					<p:inputText value="#{userView.filter.email}" />
+					<p:outputLabel value="Statü" />
+					<p:selectOneMenu value="#{userView.filter.status}"
+						style="width:100%">
+						<f:selectItem itemValue="" itemLabel="Seçiniz" />
+						<f:selectItems value="#{userView.statusList}" />
+					</p:selectOneMenu>
+					<p:commandButton value="Temizle"
+						actionListener="#{userView.reset()}"
+						process=":userForm:searchPanel" update=":userForm:searchPanel" />
+					<p:commandButton value="Ara" actionListener="#{userView.search()}"
+						process=":userForm:searchPanel" update=":userForm:usersTable" />
+				</h:panelGrid>
+			</p:panel>
+			<p:dataTable id="usersTable" var="user"
+				value="#{userView.feederList}" rows="20" paginator="true"
+				lazy="true" editable="true"
+				styleClass="table table-striped table-bordered" cellspacing="0"
+				width="100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="20, 50">
+
+				<p:ajax event="rowEdit" listener="#{userView.onRowEdit}"
+					update=":userForm:msgs" />
+				<p:ajax event="rowEditCancel" listener="#{userView.onRowCancel}"
+					update=":userForm:msgs" />
+
+				<p:column headerText="Id" style="width : 70px;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{user.id}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{user.id}" disabled="true"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Email">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{user.email}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{user.email}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Status" style="width : 100px;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{user.status}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{user.status}" style="width:100%">
+								<f:selectItems value="#{userView.statusList}" var="statu"
+									itemLabel="#{statu}" itemValue="#{statu}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Kayıt Zamanı" style="width : 100px;">
+					<h:outputText value="#{user.createDate}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

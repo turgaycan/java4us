@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../templates/default/main.xhtml">
+	<ui:define name="content">
+		<h:form id="feedMessageForm">
+			<div style="z-index: inherit;">
+				<p:growl id="msgs" showDetail="true" />
+			</div>
+			<p:panel id="searchPanel">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Url" />
+					<p:inputText value="#{feedMessageView.filter.link}" />
+					<p:outputLabel value="Feed Link" />
+					<p:inputText value="#{feedMessageView.filter.feedLink}" />
+					<p:outputLabel value="Kategori" />
+					<p:selectOneMenu value="#{feedMessageView.filter.category}"
+						style="width:100%">
+						<f:selectItem itemValue="" itemLabel="Seçiniz" />
+						<f:selectItems value="#{feedMessageView.categories}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Statü" />
+					<p:selectOneMenu value="#{feedMessageView.filter.status}"
+						style="width:100%">
+						<f:selectItem itemValue="" itemLabel="Seçiniz" />
+						<f:selectItems value="#{feedMessageView.statusList}" />
+					</p:selectOneMenu>
+					<h:outputText value="Yayında" />
+					<p:selectBooleanCheckbox value="#{feedMessageView.filter.proceed}" />
+					<p:commandButton value="Temizle"
+						actionListener="#{feedMessageView.reset()}"
+						process=":feedMessageForm:searchPanel"
+						update=":feedMessageForm:searchPanel :feedMessageForm:feedMessagesTable" />
+					<p:commandButton value="Ara"
+						actionListener="#{feedMessageView.search()}"
+						process=":feedMessageForm:searchPanel"
+						update=":feedMessageForm:feedMessagesTable" />
+				</h:panelGrid>
+			</p:panel>
+			<p:dataTable id="feedMessagesTable" var="feedMessage"
+				value="#{feedMessageView.feedMessageList}" rows="20"
+				paginator="true" lazy="true" editable="true" cellspacing="0"
+				width="100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="20, 50, 100">
+
+				<p:ajax event="rowEdit" listener="#{feedMessageView.onRowEdit}"
+					update=":feedMessageForm:msgs" />
+				<p:ajax event="rowEditCancel"
+					listener="#{feedMessageView.onRowCancel}"
+					update=":feedMessageForm:msgs" />
+
+				<p:column headerText="Id" style="width : 70px;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feedMessage.id}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{feedMessage.id}"
+								disabled="true" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Feed Link" style="width : 170px;">
+					<h:outputText
+						value="#{feedMessage.feed != null ? feedMessage.feed.link : 'Yok'}" />
+				</p:column>
+				
+				<p:column headerText="Yazar">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feedMessage.author}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{feedMessage.author}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Başlık">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feedMessage.title}" escape="true" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{feedMessage.title}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Link">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feedMessage.link}" escape="true" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{feedMessage.link}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Kategori">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feedMessage.category}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{feedMessage.category}"
+								style="width:100%">
+								<f:selectItems value="#{feedMessageView.categories}"
+									var="category" itemLabel="category" itemValue="category" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Statü">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feedMessage.status}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{feedMessage.status}" style="width:100%">
+								<f:selectItems value="#{feedMessageView.statusList}" var="statu"
+									itemLabel="#{statu}" itemValue="#{statu}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Kayıt Zamanı" style="width : 100px;">
+					<h:outputText value="#{feedMessage.createDate}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Güncelleme Zamanı" style="width : 100px;">
+					<h:outputText value="#{feedMessage.pubdate}">
+<!-- 						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" /> -->
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <factory>
+        <exception-handler-factory>com.java4us.jsf.exceptions.CustomExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+
+    <lifecycle>
+        <phase-listener>com.java4us.jsf.listeners.MultiPageMessagesSupport</phase-listener>
+        <phase-listener>org.omnifaces.eventlistener.ResetInputAjaxActionListener</phase-listener>
+        <phase-listener>com.java4us.jsf.listeners.SecurityPhaseListener</phase-listener>
+    </lifecycle>
+
+    <application>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+
+        <locale-config>
+            <default-locale>tr</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+<!--        <resource-bundle>
+            <base-name>i18n.typeLabel</base-name>
+            <var>typeLabel</var>
+        </resource-bundle>-->
+        <resource-bundle>
+            <base-name>i18n.labels</base-name>
+            <var>lbl</var>
+        </resource-bundle>
+        <message-bundle>i18n.labels</message-bundle>
+        <resource-bundle>
+            <base-name>i18n.messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        <message-bundle>i18n.messages</message-bundle>
+        <resource-bundle>
+            <base-name>i18n.commons</base-name>
+            <var>commons</var>
+        </resource-bundle>
+        <message-bundle>i18n.commons</message-bundle>
+    </application>
+</faces-config>

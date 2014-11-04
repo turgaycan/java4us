@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+       "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+       "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<sql-query name="statistics">
+		<query-param name="category" type="java.lang.String"/>
+		<return-scalar column="feedersCount" type="java.lang.Long"/>
+		<return-scalar column="feedsCount" type="java.lang.Long" />
+		<return-scalar column="feedMessagesCount" type="java.lang.Long" />
+		<return-scalar column="subscribersCount" type="java.lang.Long" />
+	<![CDATA[
+		SELECT 
+			(SELECT COUNT(id) FROM JAVA4US.FEEDER WHERE DELETED = false AND STATUS = 'ACCEPTED' AND ID IN 
+			((SELECT FEEDER_ID FROM JAVA4US.FEED WHERE DELETED = false AND CATEGORY = :category)) ) as feedersCount,
+			(SELECT COUNT(id) FROM JAVA4US.FEED WHERE DELETED = false AND STATUS = 'Active' AND CATEGORY = :category) as feedsCount,			
+			(SELECT COUNT(id) FROM JAVA4US.FEEDMESSAGE WHERE DELETED = false AND STATUS = 'Active' AND CATEGORY = :category AND PROCEED = TRUE) as feedMessagesCount,
+			(SELECT COUNT(id) FROM JAVA4US.SUBSCRIBER WHERE DELETED = false) as subscribersCount
+	]]>
+	</sql-query>
+
+</hibernate-mapping>

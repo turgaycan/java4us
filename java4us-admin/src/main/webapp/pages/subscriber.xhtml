@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:commonComp="http://java.sun.com/jsf/composite/commonComp"
+	xmlns:commons="http://www.java4us.net/commons">
+
+<ui:composition template="../templates/default/main.xhtml">
+	<ui:define name="content">
+		<h:form id="subscriberForm">
+			<div style="z-index: inherit;">
+				<p:growl id="msgs" showDetail="true" />
+			</div>
+			<p:panel id="searchPanel">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Ad" />
+					<p:inputText value="#{subscriberView.filter.name}" />
+					<p:outputLabel value="Soyad" />
+					<p:inputText value="#{subscriberView.filter.surname}" />
+					<p:outputLabel value="Email" />
+					<p:inputText value="#{subscriberView.filter.email}" />
+					<p:commandButton value="Temizle"
+						actionListener="#{subscriberView.reset()}"
+						process=":subscriberForm:searchPanel"
+						update=":subscriberForm:searchPanel :subscriberForm:subscribersTable" />
+					<p:commandButton value="Ara"
+						actionListener="#{subscriberView.search()}"
+						process=":subscriberForm:searchPanel"
+						update=":subscriberForm:subscribersTable" />
+				</h:panelGrid>
+			</p:panel>
+			<p:dataTable id="subscribersTable" var="subscriber"
+				value="#{subscriberView.subscriberList}" rows="20" paginator="true"
+				lazy="true" editable="true"
+				styleClass="table table-striped table-bordered" cellspacing="0"
+				width="100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="20, 50">
+
+				<p:ajax event="rowEdit" listener="#{subscriberView.onRowEdit}"
+					update=":subscriberForm:msgs" />
+				<p:ajax event="rowEditCancel"
+					listener="#{subscriberView.onRowCancel}"
+					update=":subscriberForm:msgs" />
+
+				<p:column headerText="Id" style="width : 70px;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{subscriber.id}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{subscriber.id}"
+								disabled="true" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Ad">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{subscriber.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{subscriber.name}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Soyad">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{subscriber.surname}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{subscriber.surname}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Email">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{subscriber.email}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{subscriber.email}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Kayıt Zamanı" style="width : 100px;">
+					<h:outputText value="#{subscriber.createDate}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

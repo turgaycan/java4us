@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../templates/default/main.xhtml">
+	<ui:define name="content">
+		<h1 class="page-header ">
+			<i class="fa fa-tachometer"></i>
+			<h:outputLabel value="Admin.." />
+		</h1>
+		<div>
+			<p:panelGrid columns="2">
+				<p:outputLabel value="Subject Remembered" />
+				<p:outputLabel value="#{adminView.subject.remembered}" />
+				<p:outputLabel value="Principal" />
+				<p:outputLabel value="#{adminView.subject.principal}" />
+				<p:outputLabel value="Session" />
+				<p:outputLabel value="#{adminView.subject.session.startTimestamp}" />
+				<p:outputLabel value="Role"
+					rendered="#{adminView.hasRole('ROLE_USER')}" />
+				<p:outputLabel rendered="#{adminView.hasRole('ROLE_USER')}"
+					value="USER" />
+				<p:outputLabel value="Role"
+					rendered="#{adminView.hasRole('ROLE_ADMIN')}" />
+				<p:outputLabel rendered="#{adminView.hasRole('ROLE_ADMIN')}"
+					value="ADMIN" />
+			</p:panelGrid>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

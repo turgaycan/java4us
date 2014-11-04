@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
+          http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		p:location="classpath:java4us_test.properties" />
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.java4us">
+		<context:exclude-filter type="regex"
+			expression="com.java4us.web.controller" />
+		<context:exclude-filter type="regex"
+			expression="com.java4us.domain.sql" />
+	</context:component-scan>
+
+	<aop:config proxy-target-class="true" />
+
+	<security:http auto-config="false" use-expressions="true"
+		access-denied-page="/403" entry-point-ref="authenticationEntryPoint">
+
+		<security:intercept-url pattern="/feeders/**"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url requires-channel="http"
+			pattern="/login*" access="permitAll()" />
+
+		<security:logout invalidate-session="true"
+			logout-success-url="/login?logout" />
+
+		<security:custom-filter ref="blacklistFilter"
+			before="FILTER_SECURITY_INTERCEPTOR" />
+		<security:custom-filter ref="authenticationFilter"
+			position="FORM_LOGIN_FILTER" />
+
+		<security:csrf />
+
+		<security:session-management>
+			<security:concurrency-control
+				max-sessions="1" />
+		</security:session-management>
+	</security:http>
+
+	<bean id="authenticationFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"
+		p:authenticationManager-ref="customAuthenticationManager"
+		p:authenticationFailureHandler-ref="customAuthenticationFailureHandler"
+		p:authenticationSuccessHandler-ref="customAuthenticationSuccessHandler" />
+
+	<bean id="customAuthenticationFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"
+		p:defaultFailureUrl="/login?error=true" />
+
+	<bean id="customAuthenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler"
+		p:defaultTargetUrl="/feeders/account" />
+
+	<bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint"
+		p:loginFormUrl="/login" />
+
+	<security:authentication-manager />
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.db.driverClassName}" />
+		<property name="url" value="${jdbc.db.url}" />
+		<property name="username" value="${jdbc.db.username}" />
+		<property name="password" value="${jdbc.db.password}" />
+		<property name="maxWait" value="30000" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:/db/NAMEDQUERIES.hbm.xml</value>
+			</list>
+		</property>
+		<property name="packagesToScan" value="com.java4us.domain" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+				<bean class="com.java4us.commons.cache.MemcachedCache">
+					<constructor-arg name="name" value="default" />
+					<constructor-arg name="cacheService" ref="cacheService" />
+					<constructor-arg name="expiry" value="3600" />
+				</bean>
+				<bean class="com.java4us.commons.cache.MemcachedCache">
+					<constructor-arg name="name" value="sixhourcache" />
+					<constructor-arg name="cacheService" ref="cacheService" />
+					<constructor-arg name="expiry" value="21600" />
+				</bean>
+				<bean class="com.java4us.commons.cache.MemcachedCache">
+					<constructor-arg name="name" value="onedaycache" />
+					<constructor-arg name="cacheService" ref="cacheService" />
+					<constructor-arg name="expiry" value="86400" />
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="couchBaseUri" class="java.net.URI">
+		<constructor-arg value="${couchbase.pools}" />
+	</bean>
+
+	<util:list id="couchBaseBucketList">
+		<ref bean="couchBaseUri" />
+	</util:list>
+
+	<bean id="couchbaseConnectionFactoryBuilder" class="com.couchbase.client.CouchbaseConnectionFactoryBuilder">
+		<property name="opTimeout" value="${couchbase.optimeout}" />
+		<property name="opQueueMaxBlockTime" value="${couchbase.opqueuemaxblocktime}" />
+	</bean>
+
+	<bean id="couchbaseClient" class="com.couchbase.client.CouchbaseClient">
+		<constructor-arg name="cf">
+			<bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
+				<constructor-arg name="baseList" ref="couchBaseBucketList" />
+				<constructor-arg name="bucketName" value="${couchbase.defaultbucket}" />
+				<constructor-arg name="pwd" value="" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="java4UsCouchbaseClient" class="com.couchbase.client.CouchbaseClient">
+		<constructor-arg name="cf">
+			<bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
+				<constructor-arg name="baseList" ref="couchBaseBucketList" />
+				<constructor-arg name="bucketName" value="${couchbase.java4usbucket}" />
+				<constructor-arg name="pwd" value="${couchbase.java4us.pass}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="cacheService" class="com.java4us.commons.cache.CacheService">
+		<property name="couchbaseClient" ref="couchbaseClient" />
+	</bean>
+
+	<bean id="java4UsCacheService" class="com.java4us.commons.cache.CacheService">
+		<property name="couchbaseClient" ref="java4UsCouchbaseClient" />
+	</bean>
+
+	<bean
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"
+		id="passwordEncoder" />
+
+	<bean id="saltSource"
+		class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="id" />
+	</bean>
+
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<!-- <bean id="cacheRegistry" class="com.java4us.commons.cache.CacheRegistry" -->
+	<!-- scope="request"> -->
+	<!-- <aop:scoped-proxy /> -->
+	<!-- </bean> -->
+
+</beans>

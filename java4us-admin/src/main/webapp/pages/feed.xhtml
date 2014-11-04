@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:commonComp="http://java.sun.com/jsf/composite/commonComp"
+	xmlns:commons="http://www.java4us.net/commons">
+
+<ui:composition template="../templates/default/main.xhtml">
+	<ui:define name="content">
+		<h:form id="feedForm">
+			<div style="z-index: inherit;">
+				<p:growl id="msgs" showDetail="true" />
+			</div>
+			<p:panel id="searchPanel">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Url" />
+					<p:inputText value="#{feedView.filter.link}" />
+					<p:outputLabel value="Feeder Email" />
+					<p:inputText value="#{feedView.filter.feederEmail}" />
+					<p:outputLabel value="Kategori" />
+					<p:selectOneMenu value="#{feedView.filter.category}"
+						style="width:100%">
+						<f:selectItem itemValue="" itemLabel="Seçiniz" />
+						<f:selectItems value="#{feedView.categories}" />
+					</p:selectOneMenu>
+					<p:outputLabel value="Statü" />
+					<p:selectOneMenu value="#{feedView.filter.status}"
+						style="width:100%">
+						<f:selectItem itemValue="" itemLabel="Seçiniz" />
+						<f:selectItems value="#{feedView.statusList}" />
+					</p:selectOneMenu>
+					<p:commandButton value="Temizle"
+						actionListener="#{feedView.reset()}"
+						process=":feedForm:searchPanel" update=":feedForm:searchPanel :feedForm:feedsTable" />
+					<p:commandButton value="Ara" actionListener="#{feedView.search()}"
+						process=":feedForm:searchPanel" update=":feedForm:feedsTable" />
+				</h:panelGrid>
+			</p:panel>
+			<p:dataTable id="feedsTable" var="feed" value="#{feedView.feedList}"
+				rows="20" paginator="true" lazy="true" editable="true"
+				styleClass="table table-striped table-bordered" cellspacing="0"
+				width="100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="20, 50">
+
+				<p:ajax event="rowEdit" listener="#{feedView.onRowEdit}"
+					update=":feedForm:msgs" />
+				<p:ajax event="rowEditCancel" listener="#{feedView.onRowCancel}"
+					update=":feedForm:msgs" />
+
+				<p:column headerText="Id" style="width : 70px;">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feed.id}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{feed.id}" disabled="true"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Email" style="width : 170px;">
+						<h:outputText value="#{feed.feeder != null ? feed.feeder.email : 'Yok'}" />
+				</p:column>
+						
+				<p:column headerText="Url">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feed.link}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{feed.link}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Dil">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feed.lang}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{feed.lang}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Kategori">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feed.category}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{feed.category}" style="width:100%">
+								<f:selectItems value="#{feedView.categories}" var="category"
+									itemLabel="category" itemValue="category" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Statü">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{feed.status}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu value="#{feed.status}" style="width:100%">
+								<f:selectItems value="#{feedView.statusList}" var="statu"
+									itemLabel="#{statu}" itemValue="#{statu}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Kayıt Zamanı" style="width : 100px;">
+					<h:outputText value="#{feed.createDate}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Güncelleme Zamanı" style="width : 100px;">
+					<h:outputText value="#{feed.pubDate}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>
