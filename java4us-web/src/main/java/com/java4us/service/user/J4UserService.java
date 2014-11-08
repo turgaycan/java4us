@@ -10,8 +10,10 @@ import com.java4us.commons.cache.CacheService;
 import com.java4us.commons.dao.UserDao;
 import com.java4us.component.utils.PasswordUtils;
 import com.java4us.domain.User;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

@@ -36,6 +36,11 @@ public class FeedMessageService {
 	}
 
 	@Transactional(readOnly = true)
+	public FeedMessage findById(Long id) {
+		return feedMessageDao.findBy(id);
+	}
+
+	@Transactional(readOnly = true)
 	public FeedMessage findByLink(String feedMessageLink) {
 		return feedMessageDao.findByUnique("link", feedMessageLink);
 	}

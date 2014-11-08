@@ -32,6 +32,12 @@ public class FeederDao extends BaseDao<Feeder> {
 		super(Feeder.class);
 	}
 
+	public Feeder findByEmail(String email) {
+		return (Feeder) getCriteria().createAlias("feeds", "_feeds", JoinType.LEFT_OUTER_JOIN)
+				.add(Restrictions.eq("email", email).ignoreCase())
+				.uniqueResult();
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Feeder> findAcceptedFeedersFeeds() {
 		Criteria criteria = getCriteria().add(
@@ -110,7 +116,7 @@ public class FeederDao extends BaseDao<Feeder> {
 		if (criteria == null) {
 			criteria = getCriteria();
 			filter.pushCount(criteria);
-		} 
+		}
 		criteria = prepareFeederCriteria(getCriteria(), filter);
 		return getRowCount(criteria);
 	}

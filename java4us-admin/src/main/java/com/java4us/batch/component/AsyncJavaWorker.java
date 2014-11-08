@@ -12,6 +12,7 @@ import com.java4us.amqp.Java4UsMQFeedMessageProducer;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.commons.service.feed.FeederService;
 import com.java4us.commons.service.feed.Java4usRSSFeedParser;
+import com.java4us.commons.service.security.XSSSecurityService;
 import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Feeder;
@@ -40,6 +41,9 @@ public class AsyncJavaWorker implements Worker {
 
 	@Autowired
 	private Java4UsMQFeedMessageProducer feedMessageProducer;
+	
+	@Autowired
+	private XSSSecurityService xSSSecurityService;
 
 	public void work() {
 		String threadName = Thread.currentThread().getName();
@@ -50,7 +54,7 @@ public class AsyncJavaWorker implements Worker {
 				Feed currentFeed = null;
 				try {
 					currentFeed = java4usRSSFeedParser
-							.readFeed(feed.getLink());
+							.readFeed(feed.getLink());					
 				} catch (IllegalArgumentException | IOException | FeedException
 						| ParseException e) {
 					LOGGER.info("Java4us Parser error {}" + e.getMessage());
@@ -60,6 +64,7 @@ public class AsyncJavaWorker implements Worker {
 						LOGGER.info(feedMessage.getTitle());
 						feedMessage.setCategory(Category.JAVA);
 						feedMessage.setFeed(feed);
+						xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
 						feedMessageProducer.execute(feedMessage);
 					}
 				}

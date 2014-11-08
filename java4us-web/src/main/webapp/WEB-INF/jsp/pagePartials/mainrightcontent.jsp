@@ -27,9 +27,9 @@
 									value="${feedJavaMessage.pubdate}" type="both" pattern="yyyy" /></span>
 						</div>
 						<div class="news-item-detail">
-							<a href="${feedJavaMessage.link}" class="news-item-title"
+							<a href="${java4usRoot}/rssdetail-r${feedJavaMessage.id}" class="news-item-title"
 								target="_blank">${feedJavaMessage.title}</a>
-							<p class="news-item-preview">${feedJavaMessage.description}</p>
+<%-- 							<p class="news-item-preview">${feedJavaMessage.description}</p> --%>
 						</div>
 					</li>
 				</c:forEach>

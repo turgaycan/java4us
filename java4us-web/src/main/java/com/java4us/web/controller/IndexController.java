@@ -5,10 +5,12 @@
  */
 package com.java4us.web.controller;
 
+import com.java4us.commons.utils.DateUtils;
 import com.java4us.domain.FeedMessage;
 import com.java4us.service.feedmessage.FeedMessageJ4Service;
 import com.java4us.service.statistics.StatisticsService;
 import com.java4us.web.model.StatisticModel;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController {
 
 	private static final int CURRENT_PAGE = 1;
-	private static final int PAGE_SIZE = 10;
+	private static final int PAGE_SIZE = 30;
 
 	@Autowired
 	private FeedMessageJ4Service feedMessageJ4Service;
@@ -44,7 +46,7 @@ public class IndexController {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView init(HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView("index");
-		mav.addObject("currentYear", 2014);
+		mav.addObject("currentYear", DateUtils.getCurrentYear());
 		mav.addObject("javaStatistics", getJavaStatisticModel());
 		mav.addObject("androidStatistics", getAndroidStatisticModel());
 		mav.addObject("feedJavaMessageList", getJavaFeedMessages());

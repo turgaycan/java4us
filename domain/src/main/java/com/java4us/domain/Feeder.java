@@ -38,9 +38,9 @@ import org.hibernate.annotations.BatchSize;
 public class Feeder extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = -604482708575029600L;
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "feeder_id_seq")	
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "feeder_id_seq")
 	@Column(name = "id", nullable = false)
 	private Long id;
 	@Column(name = "domain", nullable = false, unique = true)
@@ -49,7 +49,7 @@ public class Feeder extends BaseEntity implements Serializable {
 	private String name;
 	@Column(name = "surname")
 	private String surname;
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false)
@@ -142,6 +142,10 @@ public class Feeder extends BaseEntity implements Serializable {
 
 	public void setFeeds(List<Feed> feeds) {
 		this.feeds = feeds;
+	}
+	
+	public String getFullname(){
+		return name + " " + surname;
 	}
 
 	@Override

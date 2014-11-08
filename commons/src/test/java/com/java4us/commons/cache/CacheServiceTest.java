@@ -6,15 +6,19 @@
 package com.java4us.commons.cache;
 
 import com.couchbase.client.CouchbaseClient;
+
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**

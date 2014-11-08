@@ -21,7 +21,7 @@
                 <li style="padding-left: 10px;padding-right: 10px;">
                     <div class="controls">
                         <label class="control-label">Add Rss To Java4Us</label>
-                        <a href="/java4us-web/kayit" role="button" class="btn btn-warning">Add Rss for Feeder</a>
+                        <a href="/java4us-web/register" role="button" class="btn btn-warning">Add Rss for Feeder</a>
                     </div>
                 </li>
                 <li style="padding-left: 10px;">

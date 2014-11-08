@@ -18,6 +18,7 @@ import com.java4us.web.model.FeedMessagesModel;
 public class FeedMessageJ4Service {
 
 	private static final String FEEDMESSAGESMODEL = "feedMessagesModel_";
+	private static final String FEEDMESSAGE = "feedMessage_";
 
 	@Autowired
 	private FeedMessageService feedMessageService;
@@ -73,6 +74,27 @@ public class FeedMessageJ4Service {
 
 	private String getCacheKey(int currentPage) {
 		return FEEDMESSAGESMODEL + currentPage;
+	}
+
+	public FeedMessage findFeedMessageById(Long feedMessageId) throws Exception {
+		FeedMessage cacheFeedMessage = cacheService
+				.get(getFeedMessageCacheKey(feedMessageId));
+		if (cacheFeedMessage != null) {
+			return cacheFeedMessage;
+		}
+		FeedMessage feedMessage = feedMessageService.findById(feedMessageId);
+		putFeedMessageInCache(feedMessageId, feedMessage);
+		return feedMessage;
+	}
+
+	private String getFeedMessageCacheKey(Long feedMessageId) {
+		return FEEDMESSAGE + feedMessageId;
+	}
+
+	private void putFeedMessageInCache(Long feedMessageId,
+			FeedMessage feedMessage) {
+		cacheService.put(getFeedMessageCacheKey(feedMessageId), feedMessage,
+				CacheService.ONE_DAY);
 	}
 
 }

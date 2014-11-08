@@ -80,7 +80,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 		} else {
 			LOGGER.debug("User details are good and ready to go");
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-					auth.getName(), auth.getCredentials(), buildUserAuthorities);
+					user, auth.getName(), buildUserAuthorities);
 
 			LOGGER.debug("Logging in with [{}]", auth.getPrincipal());
 			SecurityContextHolder.getContext().setAuthentication(token);

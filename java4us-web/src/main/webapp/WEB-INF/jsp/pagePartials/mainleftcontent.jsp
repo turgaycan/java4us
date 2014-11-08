@@ -23,7 +23,7 @@
 								<div class="message_wrap">
 									<span class="arrow"></span>
 									<div class="info">
-										<a href="${feedAndroidMessage.link}" target="_blank" class="name">${feedAndroidMessage.title}</a> <span class="time">1
+										<a href="${java4usRoot}/rssdetail-r${feedAndroidMessage.id}" target="_blank" class="name">${feedAndroidMessage.title}</a> <span class="time">1
 											hour ago</span>
 										<div class="options_arrow">
 											<div class="dropdown pull-right">
@@ -43,7 +43,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="text">${feedAndroidMessage.description}</div>
+<%-- 									<div class="text">${feedAndroidMessage.description}</div> --%>
 								</div></li>
 						</c:when>
 						<c:otherwise>
@@ -52,7 +52,7 @@
 								<div class="message_wrap">
 									<span class="arrow"></span>
 									<div class="info">
-										<a href="${feedAndroidMessage.link}" target="_blank" class="name">${feedAndroidMessage.title} </a> <span class="time">4
+										<a href="${java4usRoot}/rssdetail-r${feedAndroidMessage.id}" target="_blank" class="name">${feedAndroidMessage.title} </a> <span class="time">4
 											hours ago</span>
 										<div class="options_arrow">
 											<div class="dropdown pull-right">
@@ -72,7 +72,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="text">${feedAndroidMessage.description}</div>
+<%-- 									<div class="text">${feedAndroidMessage.description}</div> --%>
 								</div></li>
 						</c:otherwise>
 					</c:choose>

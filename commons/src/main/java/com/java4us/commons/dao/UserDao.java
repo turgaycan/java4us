@@ -37,7 +37,7 @@ public class UserDao extends BaseDao<User> {
 
 	public User findByUserName(String username) {
 		return (User) getStatusActiveCriteria().add(
-				Restrictions.eq("email", username)).uniqueResult();
+				Restrictions.eq("email", username).ignoreCase()).uniqueResult();
 	}
 
 	public User findDeniedUser(String username) {

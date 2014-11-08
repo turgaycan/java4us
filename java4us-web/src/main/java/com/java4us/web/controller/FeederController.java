@@ -63,7 +63,7 @@ public class FeederController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView init(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("kayit");
+		ModelAndView mav = new ModelAndView("register");
 		mav.addObject("currentYear", 2014);
 		return mav;
 	}

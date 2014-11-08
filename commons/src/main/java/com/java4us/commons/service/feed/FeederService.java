@@ -44,7 +44,7 @@ public class FeederService {
 	public void save(Feeder feeder) {
 		feederDao.persist(feeder);
 	}
-	
+
 	@Transactional
 	public Feeder update(Feeder feeder) {
 		return feederDao.merge(feeder);
@@ -65,6 +65,11 @@ public class FeederService {
 	@Transactional(readOnly = true)
 	public int getRowCount(FeederSearchCriteria filter) {
 		return feederDao.getRowCountFeederList(filter);
+	}
+
+	@Transactional(readOnly = true)
+	public Feeder findByEmail(String email) {
+		return feederDao.findByEmail(email);
 	}
 
 }

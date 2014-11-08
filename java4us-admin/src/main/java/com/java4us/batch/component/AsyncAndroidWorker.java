@@ -12,6 +12,7 @@ import com.java4us.amqp.Java4UsMQFeedMessageProducer;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.commons.service.feed.FeederService;
 import com.java4us.commons.service.feed.Java4usRSSFeedParser;
+import com.java4us.commons.service.security.XSSSecurityService;
 import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Feeder;
@@ -41,6 +42,9 @@ public class AsyncAndroidWorker implements Worker {
 	@Autowired
 	private Java4UsMQFeedMessageProducer feedMessageProducer;
 
+	@Autowired
+	private XSSSecurityService xSSSecurityService;
+	
 	public void work() {
 		String threadName = Thread.currentThread().getName();
 		LOGGER.info("   " + threadName + " has began working.");
@@ -60,6 +64,7 @@ public class AsyncAndroidWorker implements Worker {
 						LOGGER.info(feedMessage.getTitle());
 						feedMessage.setCategory(Category.ANDROID);
 						feedMessage.setFeed(feed);
+						xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
 						feedMessageProducer.execute(feedMessage);
 					}
 				}
