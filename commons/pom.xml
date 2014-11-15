@@ -10,10 +10,9 @@
 	<artifactId>commons</artifactId>
 	<packaging>jar</packaging>
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring.version>4.1.0.RELEASE</spring.version>
 		<hibernate.version>4.2.8.Final</hibernate.version>
+        <jdk.version>1.8</jdk.version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -246,4 +245,27 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+    <build>
+        <finalName>commons</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

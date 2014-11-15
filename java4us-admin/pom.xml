@@ -12,8 +12,6 @@
 	<name>java4us-admin</name>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring.version>4.1.0.RELEASE</spring.version>
 		<spring-batch.version>2.2.4.RELEASE</spring-batch.version>
 		<hibernate.version>4.2.8.Final</hibernate.version>
@@ -22,6 +20,8 @@
 		<jsf.version>2.2.6</jsf.version>
 		<shiro.version>1.2.3</shiro.version>
 		<slf4j.version>1.7.2</slf4j.version>
+        <spring-amqp.version>1.3.4.RELEASE</spring-amqp.version>
+        <jdk.version>1.8</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -249,7 +249,7 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-amqp</artifactId>
-			<version>1.3.4.RELEASE</version>
+			<version>${spring-amqp.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.sun.jmx</groupId>
@@ -260,7 +260,7 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
-			<version>1.3.4.RELEASE</version>
+			<version>${spring-amqp.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
@@ -317,19 +317,27 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<build>
-		<finalName>java4us-admin</finalName>
-<!-- 		<plugins> -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-war-plugin</artifactId> -->
-<!-- 				<version>2.4</version> -->
-<!-- 				<configuration> -->
-<!-- 					<webXml>WebContent\WEB-INF\web.xml</webXml> -->
-<!-- 					<urlRewriteXml>WebContent\WEB-INF\urlrewrite.xml</urlRewriteXml> -->
-<!-- 					<faceConfigXml>WebContent\WEB-INF\faces-config.xml</faceConfigXml> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-<!-- 		</plugins> -->
-	</build>
+    <build>
+        <finalName>java4us-admin</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
