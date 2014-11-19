@@ -10,8 +10,9 @@ import com.java4us.domain.FeedMessage;
 import com.java4us.domain.builder.utils.TestDateUtils;
 import com.java4us.domain.common.enums.BaseStatus;
 import com.java4us.domain.common.enums.Category;
-import java.util.Date;
 import org.apache.commons.lang.RandomStringUtils;
+
+import java.util.Date;
 
 /**
  *

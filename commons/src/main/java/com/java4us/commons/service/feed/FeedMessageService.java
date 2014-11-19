@@ -8,12 +8,11 @@ package com.java4us.commons.service.feed;
 import com.java4us.commons.dao.feed.FeedMessageDao;
 import com.java4us.commons.utils.criteria.FeedMessageSearchCriteria;
 import com.java4us.domain.FeedMessage;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  *

@@ -5,28 +5,24 @@
  */
 package com.java4us.commons.dao.feed;
 
-import com.java4us.domain.builder.FeederBuilder;
-import com.java4us.commons.utils.criteria.FeederSearchCriteria;
 import com.java4us.commons.dao.core.AbstractDataAccessTest;
-import com.java4us.commons.dao.feed.FeederDao;
 import com.java4us.commons.utils.Clock;
+import com.java4us.commons.utils.criteria.FeederSearchCriteria;
 import com.java4us.domain.Feed;
 import com.java4us.domain.Feeder;
 import com.java4us.domain.builder.FeedBuilder;
-import com.java4us.domain.common.enums.FeederStatus;
+import com.java4us.domain.builder.FeederBuilder;
 import com.java4us.domain.builder.utils.TestDateUtils;
+import com.java4us.domain.common.enums.FeederStatus;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.*;
 
 /**
  *

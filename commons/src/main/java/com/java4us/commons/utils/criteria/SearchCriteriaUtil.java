@@ -9,20 +9,24 @@ package com.java4us.commons.utils.criteria;
  *
  * @author turgay
  */
+
 import com.java4us.commons.enums.DateBefore;
-import com.java4us.domain.core.BaseEntity;
 import com.java4us.commons.utils.DateRange;
 import com.java4us.commons.utils.DateUtils;
 import com.java4us.commons.utils.criteria.restriction.Java4UsRestrictions;
+import com.java4us.domain.core.BaseEntity;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.*;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.internal.CriteriaImpl;
 
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
 public final class SearchCriteriaUtil {
 

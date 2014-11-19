@@ -6,10 +6,6 @@
 package com.java4us.batch.service;
 
 import com.java4us.batch.component.AsyncAndroidWorker;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -17,6 +13,9 @@ import org.quartz.StatefulJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *

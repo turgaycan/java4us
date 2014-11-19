@@ -2,35 +2,16 @@ package com.java4us.domain;
 
 // Generated Jan 14, 2014 10:36:40 PM by Hibernate Tools 3.6.0
 
-import com.java4us.domain.core.BaseEntity;
 import com.java4us.domain.common.enums.BaseStatus;
 import com.java4us.domain.common.enums.UserType;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-
+import com.java4us.domain.core.BaseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "user", schema = "java4us")

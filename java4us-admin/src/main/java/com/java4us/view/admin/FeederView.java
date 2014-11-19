@@ -1,19 +1,5 @@
 package com.java4us.view.admin;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
-
 import com.java4us.commons.service.feed.FeederService;
 import com.java4us.commons.utils.Clock;
 import com.java4us.commons.utils.criteria.FeederSearchCriteria;
@@ -23,6 +9,18 @@ import com.java4us.domain.common.enums.FeederStatus;
 import com.java4us.jsf.model.LazyDataModel;
 import com.java4us.jsf.model.StatefulLazyDataProdiver;
 import com.java4us.jsf.views.BaseView;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import java.util.ArrayList;
+import java.util.List;
 
 @ManagedBean(name = "feederView")
 @ViewScoped
@@ -43,11 +41,11 @@ public class FeederView extends BaseView implements
 	@PostConstruct
 	public void init() {
 		filter = new FeederSearchCriteria();
-		feederList = new LazyDataModel<Feeder>(this);
+		feederList = new LazyDataModel<>(this);
 		statusList = new ArrayList<>();
-		for (FeederStatus statu : FeederStatus.values()) {
-			statusList.add(new SelectItem(statu));
-		}
+		for (FeederStatus status : FeederStatus.values()) {
+            statusList.add(new SelectItem(status));
+        }
 	}
 
 	@Override

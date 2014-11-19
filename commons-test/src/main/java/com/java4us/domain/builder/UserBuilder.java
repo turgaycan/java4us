@@ -8,10 +8,11 @@ package com.java4us.domain.builder;
 import com.java4us.domain.User;
 import com.java4us.domain.UserRoles;
 import com.java4us.domain.common.enums.BaseStatus;
+import org.apache.commons.lang.RandomStringUtils;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.lang.RandomStringUtils;
 
 
 /**

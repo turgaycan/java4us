@@ -5,18 +5,17 @@
  */
 package com.java4us.batch.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.java4us.batch.component.AsyncJavaWorker;
-
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.StatefulJob;
-import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.quartz.JobDataMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *

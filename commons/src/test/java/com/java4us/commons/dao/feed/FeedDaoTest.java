@@ -5,16 +5,17 @@
  */
 package com.java4us.commons.dao.feed;
 
-import com.java4us.domain.common.enums.BaseStatus;
-import com.java4us.domain.builder.FeedBuilder;
-import com.java4us.domain.builder.FeederBuilder;
-import com.java4us.commons.utils.criteria.FeedSearchCriteria;
 import com.java4us.commons.dao.core.AbstractDataAccessTest;
-import com.java4us.commons.dao.feed.FeedDao;
 import com.java4us.commons.utils.Clock;
+import com.java4us.commons.utils.criteria.FeedSearchCriteria;
 import com.java4us.domain.Feed;
 import com.java4us.domain.Feeder;
+import com.java4us.domain.builder.FeedBuilder;
+import com.java4us.domain.builder.FeederBuilder;
 import com.java4us.domain.builder.utils.TestDateUtils;
+import com.java4us.domain.common.enums.BaseStatus;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -22,9 +23,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -38,7 +36,7 @@ public class FeedDaoTest extends AbstractDataAccessTest {
     private final FeedSearchCriteria filter = new FeedSearchCriteria();
 
     @Test
-    public void shoulFindPartialFeeds() {
+    public void shouldFindPartialFeeds() {
         Clock.freeze();
         Date currTime = TestDateUtils.toDate("10-10-2010");
         Feeder feeder1 = new FeederBuilder().id(new Long(1)).createDate(currTime).persist(getSession());

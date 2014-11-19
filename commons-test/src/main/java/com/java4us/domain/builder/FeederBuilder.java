@@ -8,9 +8,10 @@ package com.java4us.domain.builder;
 import com.java4us.domain.Feed;
 import com.java4us.domain.Feeder;
 import com.java4us.domain.common.enums.FeederStatus;
+import org.apache.commons.lang.RandomStringUtils;
+
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.lang.RandomStringUtils;
 
 /**
  *

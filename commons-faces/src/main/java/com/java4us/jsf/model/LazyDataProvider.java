@@ -10,11 +10,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
  * @author turgay
  */
-public interface LazyDataProvider<T> extends Serializable{
+public interface LazyDataProvider<T> extends Serializable {
     List<T> loadLazyData(int first, int pageSize, String sortField, String sortOrder);
-    
+
     int getRowCount();
 }

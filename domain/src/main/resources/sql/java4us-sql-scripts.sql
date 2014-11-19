@@ -24,7 +24,7 @@ CREATE DATABASE "JAVA4US" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE
 
 ALTER DATABASE "JAVA4US" OWNER TO java4us;
 
-\connect "JAVA4US"
+/**connect "JAVA4US" **/
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -725,3 +725,56 @@ WITH (
 ALTER TABLE java4us.feeder
   OWNER TO java4us;
 GRANT ALL ON TABLE java4us.feeder TO java4us;
+
+--
+-- Create Contact Table
+--
+CREATE TABLE java4us.contact (
+  id bigint NOT NULL,
+  deleted boolean DEFAULT false NOT NULL,
+  email character varying(100) NOT NULL,
+  content character varying(4000) NOT NULL,
+  createdate timestamp without time zone DEFAULT now()
+);
+
+ALTER TABLE java4us.contact ADD CONSTRAINT pk_contact_id PRIMARY KEY (id);
+
+ALTER TABLE java4us.contact
+OWNER TO java4us;
+GRANT ALL ON TABLE java4us.contact TO java4us;
+
+--
+-- TOC entry 174 (class 1259 OID 16419)
+-- Name: contact_id_seq; Type: SEQUENCE; Schema: java4us; Owner: java4us
+--
+
+CREATE SEQUENCE java4us.contact_id_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+ALTER TABLE java4us.contact_id_seq OWNER TO java4us;
+
+--
+-- TOC entry 2101 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: contact_id_seq; Type: SEQUENCE OWNED BY; Schema: java4us; Owner: java4us
+--
+
+ALTER SEQUENCE java4us.contact_id_seq OWNED BY java4us.contact.id;
+
+--
+-- SEQ TRIGGER
+--
+ALTER TABLE ONLY java4us.contact ALTER COLUMN id SET DEFAULT nextval('java4us.contact_id_seq'::regclass);
+
+--
+-- ADD COLUMN
+--
+
+ALTER TABLE java4us.contact  ADD COLUMN type character varying(50) NOT NULL;
+
+

@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Iterator;
 
 /**
- *
  * @author turgay
  */
 public class CustomExceptionHandler extends FullAjaxExceptionHandler {
@@ -43,7 +42,7 @@ public class CustomExceptionHandler extends FullAjaxExceptionHandler {
     @Override
     public void handle() {
         Iterator<ExceptionQueuedEvent> eventIterator = getUnhandledExceptionQueuedEvents().iterator();
-        for (Iterator<ExceptionQueuedEvent> it = eventIterator; it.hasNext();) {
+        for (Iterator<ExceptionQueuedEvent> it = eventIterator; it.hasNext(); ) {
             ExceptionQueuedEvent event = eventIterator.next();
             ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
             Throwable throwable = context.getException();

@@ -5,12 +5,12 @@
  */
 package com.java4us.jsf.exceptions;
 
-import javax.faces.context.ExceptionHandler;
-import javax.faces.context.ExceptionHandlerFactory;
 import org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory;
 
+import javax.faces.context.ExceptionHandler;
+import javax.faces.context.ExceptionHandlerFactory;
+
 /**
- *
  * @author turgay
  */
 public class CustomExceptionHandlerFactory extends FullAjaxExceptionHandlerFactory {

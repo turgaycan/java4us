@@ -5,11 +5,11 @@
  */
 package com.java4us.jsf.util;
 
-import java.util.Locale;
 import org.omnifaces.util.Faces;
 
+import java.util.Locale;
+
 /**
- *
  * @author turgay
  */
 public final class LocaleUtil {

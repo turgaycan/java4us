@@ -1,14 +1,13 @@
 package com.java4us.commons.service.security;
 
+import com.java4us.commons.utils.security.XSSCleaner;
+import com.java4us.domain.FeedMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-
-import com.java4us.commons.utils.security.XSSCleaner;
-import com.java4us.domain.FeedMessage;
 
 @Service
 public class XSSSecurityService {

@@ -5,9 +5,9 @@
  */
 package com.java4us.commons.enums;
 
-import java.util.Date;
-
 import com.java4us.commons.utils.DateUtils;
+
+import java.util.Date;
 
 /**
  *

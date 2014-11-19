@@ -751,7 +751,7 @@
 					<regexp name="DailyMotionURL" />
 					<regexp name="DailyMotionHrefURL" />
 					<regexp name="IzleseneHrefURL" />
-					<regexp name="N11URL" />
+					<regexp name="J4URL" />
 					<regexp name="VikipediURL" />
 				</regexp-list>
 			</attribute>

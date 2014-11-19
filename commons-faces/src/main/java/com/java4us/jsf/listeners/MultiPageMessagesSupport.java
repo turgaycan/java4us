@@ -5,6 +5,8 @@
  */
 package com.java4us.jsf.listeners;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.collections4.CollectionUtils;
 
 /**
  * Enables messages to be rendered on different pages from which they were set.
@@ -37,8 +38,8 @@ import org.apache.commons.collections4.CollectionUtils;
  * @author Jesse Wilson jesse[AT]odel.on.ca
  * @secondaryAuthor Lincoln Baxter III lincoln[AT]ocpsoft.com
  */
+
 /**
- *
  * @author turgay
  */
 public class MultiPageMessagesSupport implements PhaseListener {
@@ -77,7 +78,7 @@ public class MultiPageMessagesSupport implements PhaseListener {
     @SuppressWarnings("unchecked")
     private int saveMessages(final FacesContext facesContext) {
         List<FacesMessage> messages = new ArrayList<FacesMessage>();
-        for (Iterator<FacesMessage> iter = facesContext.getMessages(null); iter.hasNext();) {
+        for (Iterator<FacesMessage> iter = facesContext.getMessages(null); iter.hasNext(); ) {
             messages.add(iter.next());
             iter.remove();
         }

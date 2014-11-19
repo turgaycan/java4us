@@ -1,9 +1,9 @@
 package com.java4us.commons.cache;
 
-import java.lang.reflect.Method;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.interceptor.KeyGenerator;
+
+import java.lang.reflect.Method;
 
 public class CacheKeyGenerator implements KeyGenerator {
 

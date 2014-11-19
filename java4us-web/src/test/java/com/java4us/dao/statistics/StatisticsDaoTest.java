@@ -1,16 +1,8 @@
 package com.java4us.dao.statistics;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Date;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-
-
 import com.java4us.commons.utils.Clock;
 import com.java4us.dao.core.AbstractDataAccessTest;
+import com.java4us.dao.statistic.StatisticsDao;
 import com.java4us.domain.Feed;
 import com.java4us.domain.Feeder;
 import com.java4us.domain.builder.FeedBuilder;
@@ -19,6 +11,12 @@ import com.java4us.domain.builder.FeederBuilder;
 import com.java4us.domain.builder.utils.TestDateUtils;
 import com.java4us.domain.common.enums.FeederStatus;
 import com.java4us.web.model.StatisticModel;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 public class StatisticsDaoTest extends AbstractDataAccessTest{
 

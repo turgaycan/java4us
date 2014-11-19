@@ -6,7 +6,6 @@
 package com.java4us.commons.service.feed;
 
 import com.java4us.commons.dao.feed.FeedDao;
-import com.java4us.commons.service.feed.FeedService;
 import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Feeder;
@@ -14,25 +13,20 @@ import com.java4us.domain.builder.FeedBuilder;
 import com.java4us.domain.builder.FeedMessageBuilder;
 import com.java4us.domain.builder.FeederBuilder;
 import com.java4us.domain.builder.utils.TestDateUtils;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.mockito.Mockito.verify;
-
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 /**
  *

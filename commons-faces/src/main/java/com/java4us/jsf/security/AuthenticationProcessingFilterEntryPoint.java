@@ -17,6 +17,7 @@ import java.io.IOException;
  *
  * @author turgay
  */
+
 /**
  * Extended Spring LoginUrlAuthenticationEntryPoint for playing together with
  * JSF Ajax redirects.

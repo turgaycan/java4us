@@ -1,13 +1,13 @@
 package com.java4us.commons.utils.security;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-
 public class XSSCleanedTextHolder {
 
-	private List<String> errors = new ArrayList<>();
+	private List<String> errors = new ArrayList<String>();
 	private String cleanedText;
 
 	public XSSCleanedTextHolder(List<String> errorList, String cleanedText) {

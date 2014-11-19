@@ -5,16 +5,17 @@
  */
 package com.java4us.commons.dao;
 
-import com.java4us.domain.builder.UserBuilder;
-import com.java4us.domain.User;
 import com.java4us.commons.dao.core.AbstractDataAccessTest;
+import com.java4us.domain.User;
+import com.java4us.domain.builder.UserBuilder;
 import com.java4us.domain.builder.UserRolesBuilder;
-import com.java4us.domain.common.enums.UserType;
 import com.java4us.domain.builder.utils.TestDateUtils;
-import static org.hamcrest.core.IsEqual.equalTo;
+import com.java4us.domain.common.enums.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  *

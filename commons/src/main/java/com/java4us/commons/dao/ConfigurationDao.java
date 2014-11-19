@@ -7,10 +7,9 @@ package com.java4us.commons.dao;
 
 import com.java4us.commons.dao.core.BaseDao;
 import com.java4us.domain.Configuration;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-import org.springframework.stereotype.Repository;
 
 /**
  *

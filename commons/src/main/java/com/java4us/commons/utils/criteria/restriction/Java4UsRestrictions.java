@@ -6,7 +6,7 @@
 package com.java4us.commons.utils.criteria.restriction;
 
 import com.java4us.commons.utils.DateUtils;
-
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.*;
 import org.hibernate.engine.spi.LoadQueryInfluencers;
@@ -22,8 +22,6 @@ import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *

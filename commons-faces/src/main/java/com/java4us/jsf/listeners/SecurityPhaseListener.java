@@ -6,7 +6,7 @@
 package com.java4us.jsf.listeners;
 
 import com.java4us.jsf.security.AuthenticationProcessingFilterEntryPoint;
-import java.io.IOException;
+import org.apache.commons.lang.StringUtils;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -14,10 +14,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import org.apache.commons.lang.StringUtils;
+import java.io.IOException;
 
 /**
- *
  * @author turgay
  */
 public class SecurityPhaseListener implements PhaseListener {

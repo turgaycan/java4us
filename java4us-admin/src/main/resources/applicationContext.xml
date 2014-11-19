@@ -1,266 +1,264 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:task="http://www.springframework.org/schema/task" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd        
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
-        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
-        http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+        http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-		p:location="classpath:java4us.properties" />
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="classpath:java4us.properties"/>
 
-	<context:component-scan base-package="com.java4us" />
+    <context:component-scan base-package="com.java4us"/>
 
-	<context:annotation-config />
+    <context:annotation-config/>
 
-	<context:spring-configured />
+    <context:spring-configured/>
 
-	<aop:config proxy-target-class="true" />
+    <cache:annotation-driven key-generator="cacheKeyGenerator"/>
 
-	<bean
-		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+    <aop:config proxy-target-class="true"/>
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${jdbc.db.driverClassName}" />
-		<property name="url" value="${jdbc.db.url}" />
-		<property name="username" value="${jdbc.db.username}" />
-		<property name="password" value="${jdbc.db.password}" />
-		<property name="maxWait" value="30000" />
-	</bean>
+    <bean
+            class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.java4us.domain" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="org.hibernate.envers.audit_table_suffix"></prop>
-				<prop key="org.hibernate.envers.audit_table_prefix">AUD_</prop>
-			</props>
-		</property>
-	</bean>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${jdbc.db.driverClassName}"/>
+        <property name="url" value="${jdbc.db.url}"/>
+        <property name="username" value="${jdbc.db.username}"/>
+        <property name="password" value="${jdbc.db.password}"/>
+        <property name="maxWait" value="30000"/>
+    </bean>
 
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.java4us.domain"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="org.hibernate.envers.audit_table_suffix"></prop>
+                <prop key="org.hibernate.envers.audit_table_prefix">AUD_</prop>
+            </props>
+        </property>
+    </bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
-	<bean
-		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
-	<!-- Couchbase Cache -->
-	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
-		<property name="caches">
-			<set>
-				<bean class="com.java4us.commons.cache.MemcachedCache">
-					<constructor-arg name="name" value="default" />
-					<constructor-arg name="cacheService" ref="cacheService" />
-					<constructor-arg name="expiry" value="3600" />
-				</bean>
-				<bean class="com.java4us.commons.cache.MemcachedCache">
-					<constructor-arg name="name" value="sixhourcache" />
-					<constructor-arg name="cacheService" ref="cacheService" />
-					<constructor-arg name="expiry" value="21600" />
-				</bean>
-				<bean class="com.java4us.commons.cache.MemcachedCache">
-					<constructor-arg name="name" value="fifteenmincache" />
-					<constructor-arg name="cacheService" ref="cacheService" />
-					<constructor-arg name="expiry" value="900" />
-				</bean>
-				<bean class="com.java4us.commons.cache.MemcachedCache">
-					<constructor-arg name="name" value="onedaycache" />
-					<constructor-arg name="cacheService" ref="cacheService" />
-					<constructor-arg name="expiry" value="86400" />
-				</bean>
-				<bean class="com.java4us.commons.cache.MemcachedCache">
-					<constructor-arg name="name" value="fivemincache" />
-					<constructor-arg name="cacheService" ref="cacheService" />
-					<constructor-arg name="expiry" value="300" />
-				</bean>
-			</set>
-		</property>
-	</bean>
+    <bean id="cacheKeyGenerator" class="com.java4us.commons.cache.CacheKeyGenerator"/>
 
-	<bean id="couchBaseUri" class="java.net.URI">
-		<constructor-arg value="${couchbase.pools}" />
-	</bean>
+    <bean
+            class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
-	<util:list id="couchBaseBucketList">
-		<ref bean="couchBaseUri" />
-	</util:list>
+    <!-- Couchbase Cache -->
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="default"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="3600"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="sixhourcache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="21600"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="fifteenmincache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="900"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="onedaycache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="86400"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="fivemincache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="300"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
 
-	<bean id="couchbaseConnectionFactoryBuilder" class="com.couchbase.client.CouchbaseConnectionFactoryBuilder">
-		<property name="opTimeout" value="${couchbase.optimeout}" />
-		<property name="opQueueMaxBlockTime" value="${couchbase.opqueuemaxblocktime}" />
-	</bean>
+    <bean id="couchBaseUri" class="java.net.URI">
+        <constructor-arg value="${couchbase.pools}"/>
+    </bean>
 
-	<bean id="couchbaseClient" class="com.couchbase.client.CouchbaseClient">
-		<constructor-arg name="cf">
-			<bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
-				<constructor-arg name="baseList" ref="couchBaseBucketList" />
-				<constructor-arg name="bucketName" value="${couchbase.defaultbucket}" />
-				<constructor-arg name="pwd" value="" />
-			</bean>
-		</constructor-arg>
-	</bean>
+    <util:list id="couchBaseBucketList">
+        <ref bean="couchBaseUri"/>
+    </util:list>
 
-	<bean id="java4UsCouchbaseClient" class="com.couchbase.client.CouchbaseClient">
-		<constructor-arg name="cf">
-			<bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
-				<constructor-arg name="baseList" ref="couchBaseBucketList" />
-				<constructor-arg name="bucketName" value="${couchbase.java4usbucket}" />
-				<constructor-arg name="pwd" value="${couchbase.java4us.pass}" />
-			</bean>
-		</constructor-arg>
-	</bean>
+    <bean id="couchbaseConnectionFactoryBuilder" class="com.couchbase.client.CouchbaseConnectionFactoryBuilder">
+        <property name="opTimeout" value="${couchbase.optimeout}"/>
+        <property name="opQueueMaxBlockTime" value="${couchbase.opqueuemaxblocktime}"/>
+    </bean>
 
-	<bean id="cacheService" class="com.java4us.commons.cache.CacheService">
-		<property name="couchbaseClient" ref="couchbaseClient" />
-	</bean>
+    <bean id="couchbaseClient" class="com.couchbase.client.CouchbaseClient">
+        <constructor-arg name="cf">
+            <bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
+                <constructor-arg name="baseList" ref="couchBaseBucketList"/>
+                <constructor-arg name="bucketName" value="${couchbase.defaultbucket}"/>
+                <constructor-arg name="pwd" value=""/>
+            </bean>
+        </constructor-arg>
+    </bean>
 
-	<bean id="java4UsCacheService" class="com.java4us.commons.cache.CacheService">
-		<property name="couchbaseClient" ref="java4UsCouchbaseClient" />
-	</bean>
+    <bean id="java4UsCouchbaseClient" class="com.couchbase.client.CouchbaseClient">
+        <constructor-arg name="cf">
+            <bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
+                <constructor-arg name="baseList" ref="couchBaseBucketList"/>
+                <constructor-arg name="bucketName" value="${couchbase.java4usbucket}"/>
+                <constructor-arg name="pwd" value="${couchbase.java4us.pass}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
 
-	<!-- Spring + QUARTZ -->
-	<bean id="asyncJavaWorkerBean" class="com.java4us.batch.component.AsyncJavaWorker" />
+    <bean id="cacheService" class="com.java4us.commons.cache.CacheService">
+        <property name="couchbaseClient" ref="couchbaseClient"/>
+    </bean>
 
-	<bean id="asyncAndroidWorkerBean" class="com.java4us.batch.component.AsyncAndroidWorker" />
+    <bean id="java4UsCacheService" class="com.java4us.commons.cache.CacheService">
+        <property name="couchbaseClient" ref="java4UsCouchbaseClient"/>
+    </bean>
 
-	<bean name="jobJavaDetailBean"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
-		p:jobClass="com.java4us.batch.service.JavaSchedulerJob">
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="asyncJavaWorker">
-					<ref bean="asyncJavaWorkerBean" />
-				</entry>
-			</map>
-		</property>
-	</bean>
+    <!-- Spring + QUARTZ -->
+    <bean id="asyncJavaWorkerBean" class="com.java4us.batch.component.AsyncJavaWorker"/>
 
-	<bean name="jobAndroidDetailBean"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
-		p:jobClass="com.java4us.batch.service.AndroidSchedulerJob">
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="asyncAndroidWorker">
-					<ref bean="asyncAndroidWorkerBean" />
-				</entry>
-			</map>
-		</property>
-	</bean>
+    <bean id="asyncAndroidWorkerBean" class="com.java4us.batch.component.AsyncAndroidWorker"/>
 
-	<bean id="javaCronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
-		p:jobDetail-ref="jobJavaDetailBean" p:startDelay="10000"
-		p:cronExpression="0 0/10 * 1/1 * ? *" />
+    <bean name="jobJavaDetailBean"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.java4us.batch.service.JavaSchedulerJob">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="asyncJavaWorker">
+                    <ref bean="asyncJavaWorkerBean"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
-	<bean id="androidCronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
-		p:jobDetail-ref="jobAndroidDetailBean" p:startDelay="10000"
-		p:cronExpression="0 0/10 * 1/1 * ? *" />
+    <bean name="jobAndroidDetailBean"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.java4us.batch.service.AndroidSchedulerJob">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="asyncAndroidWorker">
+                    <ref bean="asyncAndroidWorkerBean"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
-		p:waitForJobsToCompleteOnShutdown="true">
-		<property name="triggers">
-			<list>
-				<ref bean="javaCronTrigger" />
-				<ref bean="androidCronTrigger" />
-			</list>
-		</property>
-	</bean>
+    <bean id="javaCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobJavaDetailBean" p:startDelay="1000"
+          p:cronExpression="0 0/1 * 1/1 * ? *"/>
 
-	<!-- Rabbit MQ -->
-	<rabbit:connection-factory id="connectionFactory"
-		host="localhost" virtual-host="java4usVhost" username="java4usadmin"
-		password="q1w2e3r4" channel-cache-size="25" />
+    <bean id="androidCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobAndroidDetailBean" p:startDelay="1000"
+          p:cronExpression="0 0/1 * 1/1 * ? *"/>
 
-	<rabbit:admin connection-factory="connectionFactory" />
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+          p:waitForJobsToCompleteOnShutdown="true">
+        <property name="triggers">
+            <list>
+                <ref bean="javaCronTrigger"/>
+                <ref bean="androidCronTrigger"/>
+            </list>
+        </property>
+    </bean>
 
-	<rabbit:queue name="FeedMessageQueue" />
+    <!-- Rabbit MQ -->
+    <rabbit:connection-factory id="connectionFactory"
+                               host="localhost" virtual-host="java4usVhost" username="java4usadmin"
+                               password="q1w2e3r4" channel-cache-size="25"/>
 
-	<rabbit:topic-exchange name="Java4UsExChange">
-		<rabbit:bindings>
-			<rabbit:binding queue="FeedMessageQueue" pattern="java4us.routingkey.feedMessage">
-			</rabbit:binding>
-		</rabbit:bindings>
-	</rabbit:topic-exchange>
+    <rabbit:admin connection-factory="connectionFactory"/>
 
-	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"
-		exchange="Java4UsExChange" queue="FeedMessageQueue" />
+    <rabbit:queue name="FeedMessageQueue"/>
 
-	<bean id="java4UsMQFeedMessageProducer" class="com.java4us.amqp.Java4UsMQFeedMessageProducer" />
+    <rabbit:topic-exchange name="Java4UsExChange">
+        <rabbit:bindings>
+            <rabbit:binding queue="FeedMessageQueue" pattern="java4us.routingkey.feedMessage">
+            </rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
 
-	<rabbit:listener-container
-		connection-factory="connectionFactory">
-		<rabbit:listener ref="java4UsMQFeedMessageConsumer"
-			method="handleFeedMessage" queue-names="FeedMessageQueue" />
-	</rabbit:listener-container>
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"
+                     exchange="Java4UsExChange" queue="FeedMessageQueue"/>
 
-	<bean id="java4UsMQFeedMessageConsumer" class="com.java4us.amqp.Java4UsMQFeedMessageConsumer" />
+    <bean id="java4UsMQFeedMessageProducer" class="com.java4us.amqp.Java4UsMQFeedMessageProducer"/>
 
-	<!--Apache Shiro Security -->
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login" />
-		<property name="successUrl" value="/pages/main" />
-		<property name="unauthorizedUrl" value="/errorPages/error403" />
-		<!-- The 'filters' property is not necessary since any declared javax.servlet.Filter 
-			bean -->
-		<!-- defined will be automatically acquired and available via its beanName 
-			in chain -->
-		<!-- definitions, but you can perform instance overrides or name aliases 
-			here if you like: -->
-		<!-- <property name="filters"> -->
-		<!-- <util:map> -->
-		<!-- <entry key="java4UsRoleFilter" value-ref="java4UsRoleFilter" /> -->
-		<!-- </util:map> -->
-		<!-- </property> -->
-		<property name="filterChainDefinitions">
-			<value>
-				/login.xhtml = anon
-				/logout = authc
-				/admin/** = authc, roles[ROLE_ADMIN]
-				/pages/** = authc, roles[ROLE_ADMIN]
-			</value>
-		</property>
-	</bean>
+    <rabbit:listener-container
+            connection-factory="connectionFactory">
+        <rabbit:listener ref="java4UsMQFeedMessageConsumer"
+                         method="handleFeedMessage" queue-names="FeedMessageQueue"/>
+    </rabbit:listener-container>
 
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="myIniRealm" />
-		<property name="sessionMode" value="native" />
-	</bean>
+    <bean id="java4UsMQFeedMessageConsumer" class="com.java4us.amqp.Java4UsMQFeedMessageConsumer"/>
 
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+    <!--Apache Shiro Security -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/pages/main"/>
+        <property name="unauthorizedUrl" value="/errorPages/error403"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /login.xhtml = anon
+                /logout = authc
+                /admin/** = authc, roles[ROLE_ADMIN]
+                /pages/** = authc, roles[ROLE_ADMIN]
+            </value>
+        </property>
+    </bean>
 
-	<bean id="myIniRealm" class="org.apache.shiro.realm.text.IniRealm">
-		<constructor-arg value="classpath:/shiro.ini" type="java.lang.String" />
-	</bean>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myIniRealm"/>
+        <property name="sessionMode" value="native"/>
+    </bean>
 
-	<bean id="secureRemoteInvocationExecutor"
-		class="org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor">
-		<property name="securityManager" ref="securityManager" />
-	</bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
-	<bean id="secureRemoteInvocationFactory"
-		class="org.apache.shiro.spring.remoting.SecureRemoteInvocationFactory" />
+    <bean id="myIniRealm" class="org.apache.shiro.realm.text.IniRealm">
+        <constructor-arg value="classpath:/shiro.ini" type="java.lang.String"/>
+    </bean>
 
-	<!-- <bean id="java4UsRoleFilter" class="com.java4us.view.filter.AnyOfRolesAuthorizationFilter" 
-		/> -->
+    <bean id="secureRemoteInvocationExecutor"
+          class="org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="secureRemoteInvocationFactory"
+          class="org.apache.shiro.spring.remoting.SecureRemoteInvocationFactory"/>
+
+    <!-- <bean id="java4UsRoleFilter" class="com.java4us.view.filter.AnyOfRolesAuthorizationFilter"
+        /> -->
+
+    <bean id="cacheRegistry" class="com.java4us.commons.cache.CacheRegistry"
+          scope="request">
+        <aop:scoped-proxy/>
+    </bean>
 
 </beans>

@@ -1,10 +1,10 @@
 package com.java4us.commons.cache;
 
-import java.io.Serializable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
 
 @Service
 public class CacheRegistryProcessor {

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+        >
+
+<ui:composition template="../templates/default/main.xhtml">
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="type" value="question" />
+        </f:metadata>
+        <h:form id="contactMessagesForm">
+            <div style="z-index: inherit;">
+                <p:growl id="msgs" showDetail="true"/>
+            </div>
+            <p:panel id="searchPanel">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Email"/>
+                    <p:inputText value="#{contactView.filter.email}"/>
+                    <p:commandButton value="Temizle"
+                                     actionListener="#{contactView.reset()}"
+                                     process=":contactMessagesForm:searchPanel"
+                                     update=":contactMessagesForm:searchPanel :contactMessagesForm:contactMessagesTable"/>
+                    <p:commandButton value="Ara"
+                                     actionListener="#{contactView.search()}"
+                                     process=":contactMessagesForm:searchPanel"
+                                     update=":contactMessagesForm:contactMessagesTable"/>
+                </h:panelGrid>
+            </p:panel>
+            <p:dataTable id="contactMessagesTable" var="contactMessage"
+                         value="#{contactView.contactList}" rows="20" paginator="true"
+                         lazy="true" editable="true"
+                         styleClass="table table-striped table-bordered" cellspacing="0"
+                         width="100%"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="20, 50">
+
+                <p:ajax event="rowEdit" listener="#{contactView.onSelect}"/>
+
+                <p:column headerText="Id" style="width : 70px;">
+                    <h:commandLink value="#{contactMessage.id}" type="button"
+                                   onclick="PF('contactMessageDlg').show();"/>
+                </p:column>
+
+                <p:column headerText="Email">
+                    <h:outputText value="#{subscriber.email}"/>
+                </p:column>
+
+                <p:column headerText="İçerik">
+                    <h:outputText
+                            value="#{(contactMessage.content != null and contactMessage.content.length() > 50) ?
+                            contactMessage.content.substring(0,50) : contactMessage.content}" escape="true"/>
+                </p:column>
+
+                <p:column headerText="Kayıt Zamanı" style="width : 100px;">
+                    <h:outputText value="#{contactMessage.createDate}">
+                        <f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:dialog header="Effects" widgetVar="contactMessageDlg" showEffect="explode" hideEffect="bounce"
+                      height="%60" width="%60">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="EMail"/>
+                    <p:inputText value="#{contactView.selectedContact.email}"/>
+                    <p:outputLabel value="İçerik"/>
+                    <p:inputTextarea value="#{contactView.selectedContact.content}"/>
+                </h:panelGrid>
+                <p:commandButton value="Kapat" onclick="PF('contactMessageDlg').hide()" />
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>

@@ -6,18 +6,16 @@
 
 package com.java4us.utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.java4us.domain.builder.utils.TestDateUtils;
 import com.java4us.commons.utils.Clock;
 import com.java4us.commons.utils.DateUtils;
+import com.java4us.domain.builder.utils.TestDateUtils;
+import org.junit.Test;
+
+import java.text.ParseException;
+import java.util.Date;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
 
 /**
  *

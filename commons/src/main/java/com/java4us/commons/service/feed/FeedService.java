@@ -9,12 +9,11 @@ package com.java4us.commons.service.feed;
 import com.java4us.commons.dao.feed.FeedDao;
 import com.java4us.commons.utils.criteria.FeedSearchCriteria;
 import com.java4us.domain.Feed;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  *

@@ -7,15 +7,14 @@ package com.java4us.jsf.util;
 
 import com.java4us.domain.common.enums.LabeledEnum;
 import com.java4us.domain.core.LabeledEntity;
-import java.io.IOException;
-import java.io.Serializable;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.myfaces.component.visit.FullVisitContext;
+import org.omnifaces.util.Faces;
+import org.omnifaces.util.Messages;
+import org.primefaces.context.RequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
@@ -40,16 +39,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.myfaces.component.visit.FullVisitContext;
-import org.omnifaces.util.Faces;
-import org.omnifaces.util.Messages;
-import org.primefaces.context.RequestContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
- *
  * @author turgay
  */
 @ManagedBean(name = "facesHelper")
@@ -57,13 +52,13 @@ import org.slf4j.LoggerFactory;
 public class FacesHelper implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 946891407001808075L;
+     *
+     */
+    private static final long serialVersionUID = 946891407001808075L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FacesHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FacesHelper.class);
 
-//    private static final String TYPE_LABEL = "i18n.typeLabel";
+    //    private static final String TYPE_LABEL = "i18n.typeLabel";
     private static final String LABELS = "i18n.labels";
     private static final String MESSAGES = "i18n.messages";
     private static final String COMMONS = "i18n.commons";
@@ -175,7 +170,7 @@ public class FacesHelper implements Serializable {
         return getLabelFromBundle("header." + tag + ".legendHeader");
     }
 
-//    public String getTypeLabelFromBundle(String messageKey, Object... params) {
+    //    public String getTypeLabelFromBundle(String messageKey, Object... params) {
 //        return getStringFromBundle(TYPE_LABEL, messageKey, params);
 //    }
     public String getStringFromBundle(String bundleName, String messageKey, Object... params) {
@@ -282,7 +277,7 @@ public class FacesHelper implements Serializable {
         return clientIp;
     }
 
-//    public static String getTypeLabel() {
+    //    public static String getTypeLabel() {
 //        return TYPE_LABEL;
 //    }
     public Object getAttributeByComponent(String attributeName) {

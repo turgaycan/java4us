@@ -1,17 +1,5 @@
 package com.java4us.view.admin;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
-
 import com.java4us.commons.service.member.SubscriberService;
 import com.java4us.commons.utils.Clock;
 import com.java4us.commons.utils.criteria.StatefulSearchCriteria;
@@ -20,6 +8,16 @@ import com.java4us.domain.Subscriber;
 import com.java4us.jsf.model.LazyDataModel;
 import com.java4us.jsf.model.StatefulLazyDataProdiver;
 import com.java4us.jsf.views.BaseView;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import java.util.List;
 
 @ManagedBean(name = "subscriberView")
 @ViewScoped
@@ -39,7 +37,7 @@ public class SubscriberView extends BaseView implements
 	@PostConstruct
 	public void init() {
 		filter = new SubscriberSearchCriteria();
-		subscriberList = new LazyDataModel<Subscriber>(this);
+		subscriberList = new LazyDataModel<>(this);
 	}
 
 	@Override

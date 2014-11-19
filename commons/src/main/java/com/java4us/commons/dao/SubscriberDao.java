@@ -6,18 +6,17 @@
 
 package com.java4us.commons.dao;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.java4us.commons.dao.core.BaseDao;
 import com.java4us.commons.utils.criteria.SearchCriteriaUtil;
 import com.java4us.commons.utils.criteria.SubscriberSearchCriteria;
 import com.java4us.domain.Subscriber;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  *

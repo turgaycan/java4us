@@ -6,27 +6,16 @@
 package com.java4us.commons.utils;
 
 import com.java4us.commons.enums.TimeIntervalType;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.Days;
-import org.joda.time.Seconds;
-import org.joda.time.Years;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.*;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.stereotype.Component;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+import java.util.*;
 
 /**
  *

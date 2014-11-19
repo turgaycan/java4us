@@ -8,16 +8,18 @@ package com.java4us.commons.service;
 import com.java4us.commons.service.feed.RSSFeedParserService;
 import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
-import java.util.ArrayList;
-import java.util.List;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 
 /**

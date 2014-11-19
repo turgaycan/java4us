@@ -1,15 +1,11 @@
 package com.java4us.commons.utils.security;
 
-import java.io.UnsupportedEncodingException;
-
 import org.apache.commons.lang3.StringUtils;
-import org.owasp.validator.html.AntiSamy;
-import org.owasp.validator.html.CleanResults;
-import org.owasp.validator.html.Policy;
-import org.owasp.validator.html.PolicyException;
-import org.owasp.validator.html.ScanException;
+import org.owasp.validator.html.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
 
 public final class XSSCleaner {
 	private static final Logger LOGGER = LoggerFactory
@@ -19,15 +15,15 @@ public final class XSSCleaner {
 	private static XSSCleaner instance = new XSSCleaner();
 
 	private AntiSamy antiSamyCleaner;
-	private Policy ebayPolicy;
+	private Policy policy;
 
 	private XSSCleaner() {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
 		try {
-			ebayPolicy = Policy.getInstance(loader
+            policy = Policy.getInstance(loader
 					.getResourceAsStream("security/antisamy-1.4.xml"));
-			antiSamyCleaner = new AntiSamy(ebayPolicy);
+			antiSamyCleaner = new AntiSamy(policy);
 		} catch (PolicyException e) {
 			throw new RuntimeException("Cannot create antisamy !!!");
 		}
@@ -63,7 +59,7 @@ public final class XSSCleaner {
 
 	private XSSCleanedTextHolder getXssCleanedTextHolder(String text)
 			throws ScanException, PolicyException {
-		CleanResults cleanResults = antiSamyCleaner.scan(text, ebayPolicy);
+		CleanResults cleanResults = antiSamyCleaner.scan(text, policy);
 		String cleanText = unescapeSpecialCharacters(cleanResults
 				.getCleanHTML());
 		return new XSSCleanedTextHolder(cleanResults.getErrorMessages(),

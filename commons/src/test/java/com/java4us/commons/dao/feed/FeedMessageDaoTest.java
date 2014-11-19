@@ -5,17 +5,18 @@
  */
 package com.java4us.commons.dao.feed;
 
-import com.java4us.domain.builder.FeedBuilder;
-import com.java4us.domain.builder.FeedMessageBuilder;
-import com.java4us.domain.builder.FeederBuilder;
-import com.java4us.commons.utils.criteria.FeedMessageSearchCriteria;
 import com.java4us.commons.dao.core.AbstractDataAccessTest;
-import com.java4us.commons.dao.feed.FeedMessageDao;
+import com.java4us.commons.utils.Clock;
+import com.java4us.commons.utils.criteria.FeedMessageSearchCriteria;
 import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Feeder;
-import com.java4us.commons.utils.Clock;
+import com.java4us.domain.builder.FeedBuilder;
+import com.java4us.domain.builder.FeedMessageBuilder;
+import com.java4us.domain.builder.FeederBuilder;
 import com.java4us.domain.builder.utils.TestDateUtils;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,9 +27,6 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *

@@ -5,9 +5,6 @@
  */
 package com.java4us.batch.component;
 
-import java.io.IOException;
-import java.text.ParseException;
-
 import com.java4us.amqp.Java4UsMQFeedMessageProducer;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.commons.service.feed.FeederService;
@@ -18,62 +15,61 @@ import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Feeder;
 import com.java4us.domain.common.enums.Category;
 import com.sun.syndication.io.FeedException;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.text.ParseException;
+
 /**
- *
  * @author turgay
  */
 public class AsyncJavaWorker implements Worker {
 
-	protected static Logger LOGGER = Logger.getLogger("asyncJavaWorker");
+    protected static Logger LOGGER = Logger.getLogger("asyncJavaWorker");
 
-	@Autowired
-	private FeederService feederService;
+    @Autowired
+    private FeederService feederService;
 
-	@Autowired
-	private FeedMessageService feedMessageService;
+    @Autowired
+    private FeedMessageService feedMessageService;
 
-	@Autowired
-	private Java4usRSSFeedParser java4usRSSFeedParser;
+    @Autowired
+    private Java4usRSSFeedParser java4usRSSFeedParser;
 
-	@Autowired
-	private Java4UsMQFeedMessageProducer feedMessageProducer;
-	
-	@Autowired
-	private XSSSecurityService xSSSecurityService;
+    @Autowired
+    private Java4UsMQFeedMessageProducer feedMessageProducer;
 
-	public void work() {
-		String threadName = Thread.currentThread().getName();
-		LOGGER.info("   " + threadName + " has began working.");
-		for (Feeder feeder : feederService.findAcceptedJavaFeedersFeeds()) {
-			LOGGER.info(feeder.getDomain());
-			for (Feed feed : feeder.getFeeds()) {
-				Feed currentFeed = null;
-				try {
-					currentFeed = java4usRSSFeedParser
-							.readFeed(feed.getLink());					
-				} catch (IllegalArgumentException | IOException | FeedException
-						| ParseException e) {
-					LOGGER.info("Java4us Parser error {}" + e.getMessage());
-				}
-				for (FeedMessage feedMessage : currentFeed.getEntries()) {
-					if (checkFeedMessageExists(feedMessage)) {
-						LOGGER.info(feedMessage.getTitle());
-						feedMessage.setCategory(Category.JAVA);
-						feedMessage.setFeed(feed);
-						xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
-						feedMessageProducer.execute(feedMessage);
-					}
-				}
-			}
-		}
-		LOGGER.debug("   " + threadName + " has completed work.");
-	}
+    @Autowired
+    private XSSSecurityService xSSSecurityService;
 
-	private boolean checkFeedMessageExists(FeedMessage feedMessage) {
-		return feedMessageService.findByLink(feedMessage.getLink()) == null;
-	}
+    public void work() {
+        String threadName = Thread.currentThread().getName();
+        LOGGER.info("   " + threadName + " has began working.");
+        for (Feeder feeder : feederService.findAcceptedJavaFeedersFeeds()) {
+            LOGGER.info(feeder.getDomain());
+            for (Feed feed : feeder.getFeeds()) {
+                Feed currentFeed = null;
+                try {
+                    currentFeed = java4usRSSFeedParser
+                            .readFeed(feed.getLink());
+                } catch (IllegalArgumentException | IOException | FeedException
+                        | ParseException e) {
+                    LOGGER.info("Java4us Parser error {}" + e.getMessage());
+                }
+                currentFeed.getEntries().stream().filter(feedMessage -> checkFeedMessageExists(feedMessage)).forEach(feedMessage -> {
+                    LOGGER.info(feedMessage.getTitle());
+                    feedMessage.setCategory(Category.JAVA);
+                    feedMessage.setFeed(feed);
+                    xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
+                    feedMessageProducer.execute(feedMessage);
+                });
+            }
+        }
+        LOGGER.debug("   " + threadName + " has completed work.");
+    }
+
+    private boolean checkFeedMessageExists(FeedMessage feedMessage) {
+        return feedMessageService.findByLink(feedMessage.getLink()) == null;
+    }
 }

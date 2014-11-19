@@ -5,14 +5,13 @@
  */
 package com.java4us.view;
 
-import java.io.IOException;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.omnifaces.util.Faces;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import java.io.IOException;
 
 /**
  *

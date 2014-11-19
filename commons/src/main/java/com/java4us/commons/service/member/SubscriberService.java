@@ -8,12 +8,11 @@ package com.java4us.commons.service.member;
 import com.java4us.commons.dao.SubscriberDao;
 import com.java4us.commons.utils.criteria.SubscriberSearchCriteria;
 import com.java4us.domain.Subscriber;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  *

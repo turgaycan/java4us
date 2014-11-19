@@ -1,14 +1,5 @@
 package com.java4us.commons.service.feed;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Iterator;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import com.java4us.commons.utils.Clock;
 import com.java4us.commons.utils.DateUtils;
 import com.java4us.domain.Feed;
@@ -20,6 +11,14 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Iterator;
+import java.util.List;
 
 @Component
 public class Java4usRSSFeedParser {

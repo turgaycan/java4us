@@ -1,56 +1,56 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:of="http://omnifaces.org/functions"
-	xmlns:cc="http://java.sun.com/jsf/composite"
-	xmlns:j4="http://www.java4us.net/commons">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+                xmlns:cc="http://java.sun.com/jsf/composite"
+        >
 
-	<cc:interface>
-		<cc:attribute name="searchProcess" />
-		<cc:attribute name="searchUpdate" />
-		<cc:attribute name="resetOnClick" />
-		<cc:attribute name="searchOnClick" />
-		<cc:attribute name="resetAction" method-signature="void action()" />
-		<cc:attribute name="searchAction" method-signature="void action()" />
-		<cc:attribute name="buttonId" default="btnSearch" />
-		<cc:attribute name="scope" required="true" />
-	</cc:interface>
+    <cc:interface>
+        <cc:attribute name="searchProcess"/>
+        <cc:attribute name="searchUpdate"/>
+        <cc:attribute name="resetOnClick"/>
+        <cc:attribute name="searchOnClick"/>
+        <cc:attribute name="resetAction" method-signature="void action()"/>
+        <cc:attribute name="searchAction" method-signature="void action()"/>
+        <cc:attribute name="buttonId" default="btnSearch"/>
+        <cc:attribute name="scope" required="true"/>
+    </cc:interface>
 
-	<cc:implementation>
-		<h:panelGrid columns="2" columnClasses="paddingLeft20 bottomAligned">
-			<p:commandButton style="margin-right:10px;*width: 70px;"
-				value="#{commons['buttons.reset']}"
-				onclick="#{cc.attrs.resetOnClick}" action="#{cc.attrs.resetAction}"
-				process="@this"
-				update="#{cc.attrs.searchProcess} #{cc.attrs.searchUpdate}">
-				<f:setPropertyActionListener target="#{flash.isResetButtonClicked}"
-					value="#{true}" />
-			</p:commandButton>
-			<p:commandButton id="#{cc.attrs.buttonId}_action"
-				value="#{commons['buttons.search']}"
-				onclick="#{cc.attrs.searchOnClick}" styleClass="ui-button-black"
-				action="#{cc.attrs.searchAction}"
-				process="@this #{cc.attrs.searchProcess}"
-				update="#{cc.attrs.searchUpdate}"
-				rendered="#{not empty cc.attrs.searchAction}">
-				<f:setPropertyActionListener target="#{flash.isSearchButtonClicked}"
-					value="#{true}" />
-			</p:commandButton>
-			<p:commandButton id="#{cc.attrs.buttonId}"
-				value="#{commons['buttons.search']}"
-				onclick="#{cc.attrs.searchOnClick}" styleClass="ui-button-black"
-				process="@this #{cc.attrs.searchProcess}"
-				update="#{cc.attrs.searchUpdate}"
-				rendered="#{empty cc.attrs.searchAction}">
-				<f:setPropertyActionListener target="#{flash.isSearchButtonClicked}"
-					value="#{true}" />
-			</p:commandButton>
-		</h:panelGrid>
+    <cc:implementation>
+        <h:panelGrid columns="2" columnClasses="paddingLeft20 bottomAligned">
+            <p:commandButton style="margin-right:10px;*width: 70px;"
+                             value="#{commons['buttons.reset']}"
+                             onclick="#{cc.attrs.resetOnClick}" action="#{cc.attrs.resetAction}"
+                             process="@this"
+                             update="#{cc.attrs.searchProcess} #{cc.attrs.searchUpdate}">
+                <f:setPropertyActionListener target="#{flash.isResetButtonClicked}"
+                                             value="#{true}"/>
+            </p:commandButton>
+            <p:commandButton id="#{cc.attrs.buttonId}_action"
+                             value="#{commons['buttons.search']}"
+                             onclick="#{cc.attrs.searchOnClick}" styleClass="ui-button-black"
+                             action="#{cc.attrs.searchAction}"
+                             process="@this #{cc.attrs.searchProcess}"
+                             update="#{cc.attrs.searchUpdate}"
+                             rendered="#{not empty cc.attrs.searchAction}">
+                <f:setPropertyActionListener target="#{flash.isSearchButtonClicked}"
+                                             value="#{true}"/>
+            </p:commandButton>
+            <p:commandButton id="#{cc.attrs.buttonId}"
+                             value="#{commons['buttons.search']}"
+                             onclick="#{cc.attrs.searchOnClick}" styleClass="ui-button-black"
+                             process="@this #{cc.attrs.searchProcess}"
+                             update="#{cc.attrs.searchUpdate}"
+                             rendered="#{empty cc.attrs.searchAction}">
+                <f:setPropertyActionListener target="#{flash.isSearchButtonClicked}"
+                                             value="#{true}"/>
+            </p:commandButton>
+        </h:panelGrid>
 
-		<p:defaultCommand scope="#{cc.attrs.scope}"
-			target="#{empty cc.attrs.searchAction ? cc.attrs.buttonId : of:concat(cc.attrs.buttonId, '_action')}" />
+        <p:defaultCommand scope="#{cc.attrs.scope}"
+                          target="#{empty cc.attrs.searchAction ? cc.attrs.buttonId : of:concat(cc.attrs.buttonId, '_action')}"/>
 
-	</cc:implementation>
+    </cc:implementation>
 </ui:composition>

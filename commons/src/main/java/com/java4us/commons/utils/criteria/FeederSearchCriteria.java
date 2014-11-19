@@ -1,8 +1,7 @@
 package com.java4us.commons.utils.criteria;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.java4us.domain.common.enums.FeederStatus;
+import org.apache.commons.lang3.StringUtils;
 
 public class FeederSearchCriteria extends CommonSearchCriteria {
 

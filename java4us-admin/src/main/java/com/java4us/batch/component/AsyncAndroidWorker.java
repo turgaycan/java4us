@@ -5,9 +5,6 @@
  */
 package com.java4us.batch.component;
 
-import java.io.IOException;
-import java.text.ParseException;
-
 import com.java4us.amqp.Java4UsMQFeedMessageProducer;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.commons.service.feed.FeederService;
@@ -18,9 +15,11 @@ import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Feeder;
 import com.java4us.domain.common.enums.Category;
 import com.sun.syndication.io.FeedException;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import java.text.ParseException;
 
 /**
  *
@@ -59,15 +58,13 @@ public class AsyncAndroidWorker implements Worker {
 						| ParseException e) {
 					LOGGER.info("Java4us Parser error {}" + e.getMessage());
 				}
-				for (FeedMessage feedMessage : currentFeed.getEntries()) {
-					if (checkFeedMessageExists(feedMessage)) {
-						LOGGER.info(feedMessage.getTitle());
-						feedMessage.setCategory(Category.ANDROID);
-						feedMessage.setFeed(feed);
-						xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
-						feedMessageProducer.execute(feedMessage);
-					}
-				}
+                currentFeed.getEntries().stream().filter(feedMessage -> checkFeedMessageExists(feedMessage)).forEach(feedMessage -> {
+                    LOGGER.info(feedMessage.getTitle());
+                    feedMessage.setCategory(Category.ANDROID);
+                    feedMessage.setFeed(feed);
+                    xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
+                    feedMessageProducer.execute(feedMessage);
+                });
 			}
 		}
 		LOGGER.debug("   " + threadName + " has completed work.");

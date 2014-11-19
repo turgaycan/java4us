@@ -1,19 +1,18 @@
 package com.java4us.commons.service;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.text.ParseException;
-
+import com.java4us.commons.service.feed.Java4usRSSFeedParser;
+import com.java4us.domain.Feed;
+import com.sun.syndication.io.FeedException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.java4us.commons.service.feed.Java4usRSSFeedParser;
-import com.java4us.domain.Feed;
-import com.sun.syndication.io.FeedException;
+import java.io.IOException;
+import java.text.ParseException;
+
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
 public class Java4usRSSFeedParserTest {

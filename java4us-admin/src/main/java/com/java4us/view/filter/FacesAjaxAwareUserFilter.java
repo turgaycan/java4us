@@ -5,13 +5,12 @@
  */
 package com.java4us.view.filter;
 
-import java.io.IOException;
+import org.apache.shiro.web.filter.authc.UserFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.web.filter.authc.UserFilter;
+import java.io.IOException;
 
 /**
  *

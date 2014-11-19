@@ -6,7 +6,8 @@
 package com.java4us.amqp;
 
 import com.java4us.domain.FeedMessage;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,11 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class Java4UsMQFeedMessageProducer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Java4UsMQFeedMessageProducer.class);
+
 	@Autowired
     private AmqpTemplate amqpTemplate;
 
     public void execute(FeedMessage feedMessage) {
-        System.out.println("execute...");
+        LOGGER.info("execute...");
         amqpTemplate.convertAndSend("java4us.routingkey.feedMessage", feedMessage);
     }
 

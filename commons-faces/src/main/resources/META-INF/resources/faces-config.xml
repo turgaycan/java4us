@@ -21,10 +21,10 @@
             <default-locale>tr</default-locale>
             <supported-locale>en</supported-locale>
         </locale-config>
-<!--        <resource-bundle>
-            <base-name>i18n.typeLabel</base-name>
-            <var>typeLabel</var>
-        </resource-bundle>-->
+        <!--        <resource-bundle>
+                    <base-name>i18n.typeLabel</base-name>
+                    <var>typeLabel</var>
+                </resource-bundle>-->
         <resource-bundle>
             <base-name>i18n.labels</base-name>
             <var>lbl</var>

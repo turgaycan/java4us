@@ -5,7 +5,6 @@
  */
 package com.java4us.commons.utils;
 
-import com.java4us.commons.utils.DateUtils;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;

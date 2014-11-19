@@ -6,17 +6,14 @@
 package com.java4us.commons.cache;
 
 import com.couchbase.client.CouchbaseClient;
-
+import net.spy.memcached.internal.CheckedOperationTimeoutException;
+import net.spy.memcached.internal.OperationFuture;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-
-import net.spy.memcached.internal.CheckedOperationTimeoutException;
-import net.spy.memcached.internal.OperationFuture;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 /**
  *

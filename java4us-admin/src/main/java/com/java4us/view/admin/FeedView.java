@@ -1,19 +1,5 @@
 package com.java4us.view.admin;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
-
 import com.java4us.commons.service.feed.FeedService;
 import com.java4us.commons.utils.Clock;
 import com.java4us.commons.utils.criteria.FeedSearchCriteria;
@@ -24,6 +10,18 @@ import com.java4us.domain.common.enums.Category;
 import com.java4us.jsf.model.LazyDataModel;
 import com.java4us.jsf.model.StatefulLazyDataProdiver;
 import com.java4us.jsf.views.BaseView;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import java.util.ArrayList;
+import java.util.List;
 
 @ManagedBean(name = "feedView")
 @ViewScoped

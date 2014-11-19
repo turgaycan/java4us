@@ -5,21 +5,20 @@
  */
 package com.java4us.commons.dao.feed;
 
+import com.java4us.commons.dao.core.BaseDao;
 import com.java4us.commons.utils.criteria.FeederSearchCriteria;
 import com.java4us.commons.utils.criteria.SearchCriteriaUtil;
-import com.java4us.commons.dao.core.BaseDao;
 import com.java4us.domain.Feeder;
 import com.java4us.domain.common.enums.Category;
 import com.java4us.domain.common.enums.FeederStatus;
-
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  *

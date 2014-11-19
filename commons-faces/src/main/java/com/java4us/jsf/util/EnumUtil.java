@@ -7,17 +7,17 @@ package com.java4us.jsf.util;
 
 import com.java4us.commons.service.MessageResourceService;
 import com.java4us.domain.common.enums.LabeledEnum;
-import java.io.Serializable;
-import java.util.Locale;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import java.io.Serializable;
+import java.util.Locale;
+
 /**
- *
  * @author turgay
  */
 @ManagedBean
