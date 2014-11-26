@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${email.host}"/>
+        <property name="port" value="${email.port}"/>
+        <property name="username" value="${email.username}"/>
+        <property name="password" value="${email.password}"/>
+
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${email.mail.smtp.auth}</prop>
+                <prop key="mail.smtp.starttls.enable">${email.mail.smtp.starttls.enable}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="resetEmailTemplate"
+          class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="java4usnet@gmail.com"/>
+        <property name="subject" value="Java4Us.Net Password Reset"/>
+        <property name="text">
+            <value>
+                <![CDATA[
+                Hi %s,
+
+                New password is ; %s
+
+                Regards,
+                Java4Us.Net Team..
+		        ]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="newFeederEmailTemplate"
+          class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="java4usnet@gmail.com"/>
+        <property name="subject" value="Welcome to Java4Us.Net"/>
+        <property name="text">
+            <value>
+                <![CDATA[
+                    Hi %s,
+
+                    Welcome to Java4Us.Net, hope to get more readers from our web-site..
+
+                    Regards,
+                    Java4Us.Net Team..
+		        ]]>
+            </value>
+        </property>
+    </bean>
+
+</beans>

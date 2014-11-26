@@ -30,7 +30,7 @@ public class EmailServiceTest {
     
     @Test
     public void shouldSendMailIfHasParameterWhenUserRegister() {
-        emailService.registerUser("Turgay Can");
-        verify(emailUtility, times(1)).sendMail("Turgay Can");
+        emailService.registerUserWelcomeMail("Turgay Can", "turgay@can.com");
+        verify(emailUtility, times(1)).sendNewFeederWelcomeMail("Turgay Can", "turgay@can.com");
     }
 }

@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.*;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.springframework.stereotype.Component;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -21,8 +20,6 @@ import java.util.*;
  *
  * @author turgay
  */
-@SuppressWarnings("deprecation")
-@Component
 public final class DateUtils {
 
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat
@@ -154,23 +151,23 @@ public final class DateUtils {
 	}
 
 	public static Date addSeconds(Date startDate, int seconds) {
-		return DateUtils.addSeconds(startDate, seconds);
+		return org.apache.commons.lang.time.DateUtils.addSeconds(startDate, seconds);
 	}
 
 	public static Date addMinutes(Date startDate, int minutes) {
-		return DateUtils.addMinutes(startDate, minutes);
+		return org.apache.commons.lang.time.DateUtils.addMinutes(startDate, minutes);
 	}
 
 	public static Date addDays(Date startDate, Integer days) {
-		return DateUtils.addDays(startDate, days);
+		return org.apache.commons.lang.time.DateUtils.addDays(startDate, days);
 	}
 
 	public static Date addMonths(Date startDate, Integer month) {
-		return DateUtils.addMonths(startDate, month);
+		return org.apache.commons.lang.time.DateUtils.addMonths(startDate, month);
 	}
 
 	public static Date addYears(Date startDate, Integer years) {
-		return DateUtils.addYears(startDate, years);
+		return org.apache.commons.lang.time.DateUtils.addYears(startDate, years);
 	}
 
 	public static Date setTimeOfDate(Date date, int hour, int minute,

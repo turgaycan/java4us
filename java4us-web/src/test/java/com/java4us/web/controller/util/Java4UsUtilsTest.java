@@ -8,9 +8,9 @@ import static org.junit.Assert.assertNotNull;
 public class Java4UsUtilsTest {
 
 	@Test
-	public void shouldGenerastePassword() {
-		assertNotNull(Java4UsUtils.randomString(8));
-		assertEquals(Long.valueOf(Java4UsUtils.randomString(8).length()),
+	public void shouldGeneratePassword() {
+		assertNotNull(Java4UsUtils.generateRandomPassword());
+		assertEquals(Long.valueOf(Java4UsUtils.generateRandomPassword().length()),
 				Long.valueOf(8));
 	}
 

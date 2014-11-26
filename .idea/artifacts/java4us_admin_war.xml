@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="java4us-admin:war">
+    <output-path>$PROJECT_DIR$/java4us-admin/target</output-path>
+    <root id="archive" name="java4us-admin.war">
+      <element id="artifact" artifact-name="java4us-admin:war exploded" />
+    </root>
+  </artifact>
+</component>

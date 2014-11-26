@@ -187,6 +187,47 @@ $('#btnContactSend').click(function () {
     });
 });
 
+//--CHANGE PASSWORD FORM -- //
+$('#changePassword').click(function () {
+    var oldPassword = $("#oldPassword").val();
+    if (_.isEmpty(oldPassword)) {
+        $("#passwordResult").html("<div class=\"alert alert-info\"><button class=\"close\" data-dismiss=\"alert\" type=\"button\">×</button><strong>Warning!</strong> Old Password field is not empty!</div>");
+        return;
+    }
+    var newPassword = $("#newPassword").val();
+    if (_.isEmpty(newPassword)) {
+        $("#passwordResult").html("<div class=\"alert alert-info\"><button class=\"close\" data-dismiss=\"alert\" type=\"button\">×</button><strong>Warning!</strong> New Password field is not empty!</div>");
+        return;
+    }
+    var postData = {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword
+    };
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: postData,
+        beforeSend: function (x) {
+            if (x && x.overrideMimeType) {
+                x.overrideMimeType("application/json;charset=UTF-8");
+            }
+        },
+        url: '/feeders/change/password',
+        success: function (data) {
+            if (data.success === true) {
+                $('#passwordResult').html("<div class=\"alert alert-success\"><strong>Your password</strong> is successfully changed!</div>");
+                $("#oldPassword").val("");
+                $("#newPassword").val("");
+                $("#modelContent").hide();
+            } else {
+                $("#oldPassword").val("");
+                $("#newPassword").val("");
+                $('#passwordResult').html("<div class=\"alert\"><strong>Are you sure? All necessary fields is not empty or valid!</strong></div>");
+            }
+        }
+    });
+});
+
 //-- Clear Feeder Registration Form --//
 $('#btnClear').click(function () {
     $('#edit-profile')[0].reset();
