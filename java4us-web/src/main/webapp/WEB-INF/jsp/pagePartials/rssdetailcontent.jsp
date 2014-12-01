@@ -21,7 +21,7 @@
 							</div>
 							<fmt:formatDate value="${feedMessage.pubdate}"
 								var="publishDate" pattern="dd MMMM yyyy HH:mm:ss" />
-							<div style="width: 15%; float: right">${publishDate}</div>
+							<div style="width: 25%; float: right">Publish Date : ${publishDate}</div>
 						</div>
 						<!-- /widget-header -->
 
@@ -35,11 +35,16 @@
 											<fieldset>${feedMessage.description}</fieldset>
 										</form>
 										<div class="form-actions" align="center">
-											<button onclick="goUrl()" class="btn btn-warning">GO
+                                            <button class="btn btn-info" disabled>View Count : ${feedMessage.viewCount}</button>
+
+                                            <button onclick="goUrl()" class="btn btn-warning">GO
 												TO SOURCE LINK</button>
 											<input id="targetUrl" name="targetUrl" type="hidden"
 												value="${feedMessage.link}">
-										</div>
+
+                                            <button class="btn btn-success" disabled>Goto Link Count : ${feedMessage.goToLinkCount}</button>
+
+                                        </div>
 									</div>
 								</div>
 							</div>
@@ -62,7 +67,15 @@
 <!-- /main -->
 <script type="text/javascript">
 	function goUrl() {
-		var targetUrl = $('#targetUrl').val();
+        $.ajax({
+            type: "POST",
+            url: "/rssdetail-r${feedMessage.id}",
+            data: "",
+            success: function() {
+               console.log("successfully counter++");
+            }
+        });
+        var targetUrl = $('#targetUrl').val();
 		window.location.href = targetUrl;
 	}
 </script>

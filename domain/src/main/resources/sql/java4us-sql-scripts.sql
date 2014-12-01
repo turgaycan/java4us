@@ -772,9 +772,18 @@ ALTER SEQUENCE java4us.contact_id_seq OWNED BY java4us.contact.id;
 ALTER TABLE ONLY java4us.contact ALTER COLUMN id SET DEFAULT nextval('java4us.contact_id_seq'::regclass);
 
 --
--- ADD COLUMN
+-- ADD COLUMN CONTACT
 --
 
 ALTER TABLE java4us.contact  ADD COLUMN type character varying(50) NOT NULL;
+
+--
+-- ADD COLUMNS FEEDMESSAGE
+--
+
+ALTER TABLE java4us.feedmessage  ADD COLUMN viewcount integer default 0;
+ALTER TABLE java4us.feedmessage  ADD COLUMN gotolinkcount integer default 0;
+
+
 
 

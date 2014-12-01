@@ -48,6 +48,10 @@ public class FeedMessage extends BaseEntity implements java.io.Serializable {
     private BaseStatus status;
     @Column
     private boolean proceed = true;
+    @Column
+    private int viewCount;
+    @Column
+    private int goToLinkCount;
 
     public FeedMessage() {
     }
@@ -169,4 +173,19 @@ public class FeedMessage extends BaseEntity implements java.io.Serializable {
         this.proceed = proceed;
     }
 
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public int getGoToLinkCount() {
+        return goToLinkCount;
+    }
+
+    public void setGoToLinkCount(int goToLinkCount) {
+        this.goToLinkCount = goToLinkCount;
+    }
 }

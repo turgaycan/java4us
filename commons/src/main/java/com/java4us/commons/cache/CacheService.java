@@ -6,6 +6,8 @@
 package com.java4us.commons.cache;
 
 import com.couchbase.client.CouchbaseClient;
+import com.couchbase.client.protocol.views.View;
+import com.couchbase.client.vbucket.config.Bucket;
 import net.spy.memcached.internal.CheckedOperationTimeoutException;
 import net.spy.memcached.internal.OperationFuture;
 import org.apache.commons.lang3.StringUtils;
@@ -16,15 +18,14 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 
 /**
- *
  * @author turgay
  */
 public class CacheService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheService.class);
-    
+
     private static final int MAXKEYSIZE = 250;
-    
+
     public static final int ONE_MINUTE = 60;
 
     public static final int ONE_HOUR = 60 * 60;
@@ -41,13 +42,17 @@ public class CacheService {
 
     private CouchbaseClient couchbaseClient;
 
+    private Bucket bucket;
+
+    private View java4UsView;
+
     @SuppressWarnings("unchecked")
-	public <T extends Serializable> T get(String key) throws Exception {
+    public <T extends Serializable> T get(String key) throws Exception {
         T t;
         try {
-        	if(StringUtils.isNotBlank(key) && key.length() > MAXKEYSIZE){
-        		return null;
-        	}
+            if (StringUtils.isNotBlank(key) && key.length() > MAXKEYSIZE) {
+                return null;
+            }
             t = (T) couchbaseClient.get(key);
         } catch (Exception e) {
             Throwable rootCause = ExceptionUtils.getRootCause(e);
@@ -112,5 +117,21 @@ public class CacheService {
 
     public void setCouchbaseClient(CouchbaseClient couchbaseClient) {
         this.couchbaseClient = couchbaseClient;
+    }
+
+    public View getJava4UsView() {
+        return java4UsView = getCouchbaseClient().getView("java4us ", "java4us");
+    }
+
+    public void setJava4UsView(View java4UsView) {
+        this.java4UsView = java4UsView;
+    }
+
+    public Bucket getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(Bucket bucket) {
+        this.bucket = bucket;
     }
 }
