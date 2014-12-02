@@ -1,6 +1,7 @@
 package com.java4us.commons.cache;
 
 import com.couchbase.client.protocol.views.Query;
+import com.couchbase.client.protocol.views.View;
 import com.couchbase.client.protocol.views.ViewResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class ScheduledCacheService {
     @Autowired
     private CacheService java4UCacheService;
 
-    @Scheduled(cron = "0 0 0 1/1 * ? *")
+    @Scheduled(cron = "0 0 0 1/1 * ?")
     public void flushCacheEveryDay() {
         LOGGER.info("Starting Clear Cache .." + LocalDateTime.now());
         cacheService.flushCache();
@@ -31,13 +32,18 @@ public class ScheduledCacheService {
     }
 
 
-    @Scheduled(cron = "0 0/10 * 1/1 * ? *")
+    @Scheduled(cron = "0 0/1 * 1/1 * ?")
     public void updateFeedMessagesFromCache() {
         Query query = new Query();
-        query.setRangeStart("feedMessage_");
-        ViewResponse result = java4UCacheService.getCouchbaseClient().query(java4UCacheService.getJava4UsView(), query);
-        while (result.iterator().hasNext()) {
-            result.iterator().remove();
+        query.setKey("feedMessage_94");
+        View java4UsView = java4UCacheService.getJava4UsView();
+        if(java4UsView != null) {
+            ViewResponse result = java4UCacheService.getCouchbaseClient().query(java4UsView, query);
+            if (result != null) {
+                while (result.iterator().hasNext()) {
+                    result.iterator().remove();
+                }
+            }
         }
     }
 }
