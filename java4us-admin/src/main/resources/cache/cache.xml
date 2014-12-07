@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
+               http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <aop:config proxy-target-class="true"/>
+
+    <cache:annotation-driven key-generator="cacheKeyGenerator"/>
+
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="default"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="3600"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="sixhourcache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="21600"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="fifteenmincache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="900"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="onedaycache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="86400"/>
+                </bean>
+                <bean class="com.java4us.commons.cache.MemcachedCache">
+                    <constructor-arg name="name" value="fivemincache"/>
+                    <constructor-arg name="cacheService" ref="cacheService"/>
+                    <constructor-arg name="expiry" value="300"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="couchBaseUri" class="java.net.URI">
+        <constructor-arg value="${couchbase.pools}"/>
+    </bean>
+
+    <util:list id="couchBaseBucketList">
+        <ref bean="couchBaseUri"/>
+    </util:list>
+
+    <bean id="couchbaseConnectionFactoryBuilder" class="com.couchbase.client.CouchbaseConnectionFactoryBuilder">
+        <property name="opTimeout" value="${couchbase.optimeout}"/>
+        <property name="opQueueMaxBlockTime" value="${couchbase.opqueuemaxblocktime}"/>
+    </bean>
+
+    <bean id="couchbaseClient" class="com.couchbase.client.CouchbaseClient">
+        <constructor-arg name="cf">
+            <bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
+                <constructor-arg name="baseList" ref="couchBaseBucketList"/>
+                <constructor-arg name="bucketName" value="${couchbase.defaultbucket}"/>
+                <constructor-arg name="pwd" value=""/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="java4UsCouchbaseClient" class="com.couchbase.client.CouchbaseClient">
+        <constructor-arg name="cf">
+            <bean factory-method="buildCouchbaseConnection" factory-bean="couchbaseConnectionFactoryBuilder">
+                <constructor-arg name="baseList" ref="couchBaseBucketList"/>
+                <constructor-arg name="bucketName" value="${couchbase.java4usbucket}"/>
+                <constructor-arg name="pwd" value="${couchbase.java4us.pass}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="cacheService" class="com.java4us.commons.cache.CacheService">
+        <property name="couchbaseClient" ref="couchbaseClient"/>
+    </bean>
+
+    <bean id="java4UsCacheService" class="com.java4us.commons.cache.CacheService">
+        <property name="couchbaseClient" ref="java4UsCouchbaseClient"/>
+    </bean>
+
+    <bean id="cacheRegistry" class="com.java4us.commons.cache.CacheRegistry"
+          scope="request">
+        <aop:scoped-proxy/>
+    </bean>
+
+    <bean id="cacheKeyGenerator" class="com.java4us.commons.cache.CacheKeyGenerator"/>
+</beans>

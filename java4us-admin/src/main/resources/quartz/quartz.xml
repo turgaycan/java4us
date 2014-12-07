@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <bean id="asyncJavaWorkerBean" class="com.java4us.batch.component.AsyncJavaWorker"/>
+
+    <bean id="asyncAndroidWorkerBean" class="com.java4us.batch.component.AsyncAndroidWorker"/>
+
+    <bean name="jobJavaDetailBean"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.java4us.batch.service.JavaSchedulerJob">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="asyncJavaWorker">
+                    <ref bean="asyncJavaWorkerBean"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="jobAndroidDetailBean"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.java4us.batch.service.AndroidSchedulerJob">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="asyncAndroidWorker">
+                    <ref bean="asyncAndroidWorkerBean"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="javaCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobJavaDetailBean" p:startDelay="10000"
+          p:cronExpression="0 0 0/2 1/1 * ? *"/>
+
+    <bean id="androidCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobAndroidDetailBean" p:startDelay="1000"
+          p:cronExpression="0 0 0/2 1/1 * ? *"/>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+          p:waitForJobsToCompleteOnShutdown="true">
+        <property name="triggers">
+            <list>
+                <ref bean="javaCronTrigger"/>
+                <ref bean="androidCronTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

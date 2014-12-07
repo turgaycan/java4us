@@ -40,7 +40,7 @@ public class ScheduledCacheService {
     }
 
 
-    @Scheduled(cron = "0 0/1 * 1/1 * ?")
+    @Scheduled(cron = "0 0/30 * 1/1 * ?")
     public void updateFeedMessagesFromCache() throws Exception {
         Query query = new Query();
         View java4UsView = java4UCacheService.getJava4UsView();

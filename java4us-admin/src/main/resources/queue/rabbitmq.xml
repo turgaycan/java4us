@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+    <!-- Rabbit MQ -->
+    <rabbit:connection-factory id="connectionFactory"
+                               host="localhost" virtual-host="java4usVhost" username="java4usadmin"
+                               password="q1w2e3r4" channel-cache-size="25"/>
+
+    <rabbit:admin connection-factory="connectionFactory"/>
+
+    <rabbit:queue name="FeedMessageQueue"/>
+
+    <rabbit:topic-exchange name="Java4UsExChange">
+        <rabbit:bindings>
+            <rabbit:binding queue="FeedMessageQueue" pattern="java4us.routingkey.feedMessage">
+            </rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"
+                     exchange="Java4UsExChange" queue="FeedMessageQueue"/>
+
+    <bean id="java4UsMQFeedMessageProducer" class="com.java4us.amqp.Java4UsMQFeedMessageProducer"/>
+
+    <rabbit:listener-container
+            connection-factory="connectionFactory">
+        <rabbit:listener ref="java4UsMQFeedMessageConsumer"
+                         method="handleFeedMessage" queue-names="FeedMessageQueue"/>
+    </rabbit:listener-container>
+
+    <bean id="java4UsMQFeedMessageConsumer" class="com.java4us.amqp.Java4UsMQFeedMessageConsumer"/>
+</beans>

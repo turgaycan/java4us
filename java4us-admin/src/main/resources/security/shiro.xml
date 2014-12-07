@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/pages/main"/>
+        <property name="unauthorizedUrl" value="/errorPages/error403"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /login.xhtml = anon
+                /logout = authc
+                /admin/** = authc, roles[ROLE_ADMIN]
+                /pages/** = authc, roles[ROLE_ADMIN]
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myIniRealm"/>
+        <property name="sessionMode" value="native"/>
+    </bean>
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean id="myIniRealm" class="org.apache.shiro.realm.text.IniRealm">
+        <constructor-arg value="classpath:/shiro.ini" type="java.lang.String"/>
+    </bean>
+
+    <bean id="secureRemoteInvocationExecutor"
+          class="org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="secureRemoteInvocationFactory"
+          class="org.apache.shiro.spring.remoting.SecureRemoteInvocationFactory"/>
+
+    <!-- <bean id="java4UsRoleFilter" class="com.java4us.view.filter.AnyOfRolesAuthorizationFilter"
+        /> -->
+</beans>
