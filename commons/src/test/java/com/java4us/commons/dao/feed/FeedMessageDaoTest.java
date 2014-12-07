@@ -29,7 +29,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
- *
  * @author turgay
  */
 public class FeedMessageDaoTest extends AbstractDataAccessTest {
@@ -49,11 +48,11 @@ public class FeedMessageDaoTest extends AbstractDataAccessTest {
         FeedMessage feedMessage1 = new FeedMessageBuilder().id(new Long(1)).feed(feed).createDate(currTime).proceed(true).pubdate(currTime).persist(getSession());
         FeedMessage feedMessage2 = new FeedMessageBuilder().id(new Long(2)).feed(feed).createDate(currTime).proceed(true).pubdate(currTime).persist(getSession());
         FeedMessage feedMessage3 = new FeedMessageBuilder().id(new Long(3)).feed(feed).createDate(currTime).proceed(true).pubdate(currTime).persist(getSession());
-      
+
         flushAndClear();
-      
+
         List<FeedMessage> list = dao.findPartialByFilter(0, 10, "", "", filter);
-     
+
         assertThat(list.isEmpty(), equalTo(false));
         assertThat(list.size(), equalTo(3));
         assertThat(list, hasItems(feedMessage1, feedMessage2, feedMessage3));
@@ -111,11 +110,11 @@ public class FeedMessageDaoTest extends AbstractDataAccessTest {
         FeedMessage feedMessage4 = new FeedMessageBuilder().id(new Long(4)).title("Beşinci").feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("03-03-2014 02:18:21")).pubdate(TestDateUtils.toDateTimeWithSeconds("03-03-2014 02:18:21")).proceed(true).persist(getSession());
         FeedMessage feedMessage5 = new FeedMessageBuilder().id(new Long(5)).title("Birinci").feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("03-03-2014 02:20:21")).pubdate(TestDateUtils.toDateTimeWithSeconds("03-03-2014 02:20:21")).proceed(false).persist(getSession());
         flushAndClear();
-        List<FeedMessage> list = dao.findPartialByFilter(0, 10, "", "" , filter);
+        List<FeedMessage> list = dao.findPartialByFilter(0, 10, "", "", filter);
         assertThat(list, hasItems(feedMessage1, feedMessage3, feedMessage4));
         Clock.unfreeze();
     }
-    
+
     @Test
     public void shouldFindProceedFeedMessagesLinks() {
         Clock.freeze();

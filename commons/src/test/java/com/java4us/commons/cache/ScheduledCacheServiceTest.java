@@ -39,7 +39,7 @@ public class ScheduledCacheServiceTest {
     }
 
     @Test
-    public void shouldClearFeedMessageFromView() {
+    public void shouldClearFeedMessageFromView() throws Exception {
         when(java4UCacheService.getJava4UsView()).thenReturn(view);
         when(java4UCacheService.getCouchbaseClient()).thenReturn(couchbaseClient);
         service.updateFeedMessagesFromCache();

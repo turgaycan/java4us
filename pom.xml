@@ -11,8 +11,8 @@
 		<module>commons-test</module>
 		<module>commons-faces</module>
 		<module>commons</module>
-		<module>java4us-web</module>
-		<module>java4us-admin</module>
+        <module>java4us-admin</module>
+        <module>java4us-web</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -3,6 +3,9 @@ package com.java4us.commons.cache;
 import com.couchbase.client.protocol.views.Query;
 import com.couchbase.client.protocol.views.View;
 import com.couchbase.client.protocol.views.ViewResponse;
+import com.couchbase.client.protocol.views.ViewRow;
+import com.java4us.commons.service.feed.FeedMessageService;
+import com.java4us.domain.FeedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 
 @Component
 public class ScheduledCacheService {
@@ -24,24 +28,34 @@ public class ScheduledCacheService {
     @Autowired
     private CacheService java4UCacheService;
 
+    @Autowired
+    private FeedMessageService feedMessageService;
+
     @Scheduled(cron = "0 0 0 1/1 * ?")
     public void flushCacheEveryDay() {
         LOGGER.info("Starting Clear Cache .." + LocalDateTime.now());
         cacheService.flushCache();
+        java4UCacheService.flushCache();
         LOGGER.info("Finished Clear Cache .." + LocalDateTime.now());
     }
 
 
     @Scheduled(cron = "0 0/1 * 1/1 * ?")
-    public void updateFeedMessagesFromCache() {
+    public void updateFeedMessagesFromCache() throws Exception {
         Query query = new Query();
-        query.setKey("feedMessage_94");
         View java4UsView = java4UCacheService.getJava4UsView();
-        if(java4UsView != null) {
+        if (java4UsView != null) {
+            query.setReduce(false);
             ViewResponse result = java4UCacheService.getCouchbaseClient().query(java4UsView, query);
-            if (result != null) {
-                while (result.iterator().hasNext()) {
-                    result.iterator().remove();
+            if (result != null && result.getTotalRows() > 0) {
+                Iterator<ViewRow> iterator = result.iterator();
+                while (iterator.hasNext()) {
+                    ViewRow row = iterator.next();
+                    String feedMessageId = row.getId();
+                    if (feedMessageId.startsWith("feedMessage_")) {
+                        FeedMessage feedMessage = java4UCacheService.get(feedMessageId);
+                        feedMessageService.update(feedMessage);
+                    }
                 }
             }
         }

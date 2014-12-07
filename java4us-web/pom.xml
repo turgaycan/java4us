@@ -24,13 +24,6 @@
         <!-- Depended Projects -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>commons-test</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>domain</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -38,6 +31,13 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>commons</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>commons-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+            <type>jar</type>
         </dependency>
         <!-- Hibernate -->
         <dependency>
@@ -303,8 +303,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.2</version>
                 <configuration>
+                    <excludes>
+                        <exclude>**/**Test*</exclude>
+                    </excludes>
+                    <compilerArguments>
+                        <endorseddirs>${project.build.directory}/endorsed</endorseddirs>
+                    </compilerArguments>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                     <encoding>UTF-8</encoding>

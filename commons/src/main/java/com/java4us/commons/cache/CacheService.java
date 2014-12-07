@@ -120,7 +120,7 @@ public class CacheService {
     }
 
     public View getJava4UsView() {
-        return java4UsView = getCouchbaseClient().getView("java4us ", "java4us");
+        return java4UsView = getCouchbaseClient().getView("java4us", "java4us");
     }
 
     public void setJava4UsView(View java4UsView) {
