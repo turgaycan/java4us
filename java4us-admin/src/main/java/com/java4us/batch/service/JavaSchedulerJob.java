@@ -21,7 +21,6 @@ import java.util.Date;
  *
  * @author turgay
  */
-@SuppressWarnings("deprecation")
 public class JavaSchedulerJob extends QuartzJobBean implements StatefulJob {
 
     private static Logger LOGGER = LoggerFactory.getLogger("JavaSchedulerJob");

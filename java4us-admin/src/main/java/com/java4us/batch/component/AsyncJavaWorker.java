@@ -6,6 +6,7 @@
 package com.java4us.batch.component;
 
 import com.java4us.amqp.Java4UsMQFeedMessageProducer;
+import com.java4us.commons.cache.CacheService;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.commons.service.feed.FeederService;
 import com.java4us.commons.service.feed.Java4usRSSFeedParser;
@@ -17,6 +18,7 @@ import com.java4us.domain.common.enums.Category;
 import com.sun.syndication.io.FeedException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -43,6 +45,13 @@ public class AsyncJavaWorker implements Worker {
     @Autowired
     private XSSSecurityService xSSSecurityService;
 
+    @Autowired
+    private CacheService cacheService;
+
+    @Qualifier("java4UsCacheService")
+    @Autowired
+    private CacheService java4UsCacheService;
+
     public void work() {
         String threadName = Thread.currentThread().getName();
         LOGGER.info("   " + threadName + " has began working.");
@@ -57,16 +66,25 @@ public class AsyncJavaWorker implements Worker {
                         | ParseException e) {
                     LOGGER.info("Java4us Parser error {}" + e.getMessage());
                 }
-                currentFeed.getEntries().stream().filter(feedMessage -> checkFeedMessageExists(feedMessage)).forEach(feedMessage -> {
-                    LOGGER.info(feedMessage.getTitle());
-                    feedMessage.setCategory(Category.JAVA);
-                    feedMessage.setFeed(feed);
-                    xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
-                    feedMessageProducer.execute(feedMessage);
-                });
+                if (currentFeed != null) {
+                    for (FeedMessage feedMessage : currentFeed.getEntries()) {
+                        if (checkFeedMessageExists(feedMessage)) {
+                            LOGGER.info(feedMessage.getTitle());
+                            feedMessage.setCategory(Category.JAVA);
+                            feedMessage.setFeed(feed);
+                            feedMessageProducer.execute(feedMessage);
+                        }
+                    }
+                }
             }
         }
         LOGGER.debug("   " + threadName + " has completed work.");
+        clearCache();
+    }
+
+    private void clearCache() {
+        cacheService.flushCache();
+        java4UsCacheService.flushCache();
     }
 
     private boolean checkFeedMessageExists(FeedMessage feedMessage) {

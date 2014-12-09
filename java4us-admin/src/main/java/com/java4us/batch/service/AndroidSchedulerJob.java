@@ -18,10 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
  * @author turgay
  */
-@SuppressWarnings("deprecation")
 public class AndroidSchedulerJob extends QuartzJobBean implements StatefulJob {
 
     private static Logger LOGGER = LoggerFactory.getLogger("AndroidSchedulerJob");

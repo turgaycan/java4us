@@ -16,6 +16,16 @@
 
     <context:spring-configured/>
 
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="customView">
+                    <bean class="com.java4us.view.util.CustomViewScope"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
     <bean
             class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 

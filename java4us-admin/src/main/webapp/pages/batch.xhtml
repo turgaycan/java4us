@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://java.sun.com/jsf/html"
         >
 
 <ui:composition template="../templates/default/main.xhtml">
-	<ui:define name="content">
-		<h1 class="page-header ">
-			<i class="fa fa-tachometer"></i>
-			<h:outputLabel value="Batch Page" />
-		</h1>
-	</ui:define>
+    <ui:define name="content">
+        <h:form id="batchForm">
+            <h1 class="page-header ">
+                <i class="fa fa-tachometer"></i>
+                <h:outputLabel styleClass="h2 small" value="Batch Kontrol Sayfası"/>
+            </h1>
+
+            <h:panelGrid styleClass="panel-danger" columns="3">
+                <p:outputLabel styleClass="has-warning control-label" value="Java Rss Batch"/>
+                <p:outputLabel/>
+                <p:commandButton styleClass="btn-danger" value="Ateşle" actionListener="#{batchView.runJavaWorker}"/>
+                <p:outputLabel styleClass="has-warning control-label" value="Android Rss Batch"/>
+                <p:outputLabel/>
+                <p:commandButton styleClass="btn-danger" value="Ateşle" actionListener="#{batchView.runAndroidWorker}"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
 </ui:composition>
 
 </html>

@@ -35,7 +35,7 @@
     <bean id="javaCronTrigger"
           class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
           p:jobDetail-ref="jobJavaDetailBean" p:startDelay="10000"
-          p:cronExpression="0 0 0/2 1/1 * ? *"/>
+          p:cronExpression="0 0/1 * 1/1 * ?"/>
 
     <bean id="androidCronTrigger"
           class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
