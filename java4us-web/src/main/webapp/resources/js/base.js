@@ -1,16 +1,1 @@
-$(function () {
-	
-	
-	$('.subnavbar').find ('li').each (function (i) {
-	
-		var mod = i % 3;
-		
-		if (mod === 2) {
-			$(this).addClass ('subnavbar-open-right');
-		}
-		
-	});
-	
-	
-	
-});
+$(function(){$(".subnavbar").find("li").each(function(a){2===a%3&&$(this).addClass("subnavbar-open-right")})});

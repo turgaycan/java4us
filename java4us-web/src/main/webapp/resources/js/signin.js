@@ -1,13 +1,1 @@
-$(function () {
-	
-	jQuery.support.placeholder = false;
-	test = document.createElement('input');
-	if('placeholder' in test) jQuery.support.placeholder = true;
-	
-	if (!$.support.placeholder) {
-		
-		$('.field').find ('label').show ();
-		
-	}
-	
-});
+$(function(){jQuery.support.placeholder=!1;test=document.createElement("input");"placeholder"in test&&(jQuery.support.placeholder=!0);$.support.placeholder||$(".field").find("label").show()});
