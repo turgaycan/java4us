@@ -220,7 +220,7 @@ CREATE TABLE feedmessage (
     id bigint NOT NULL,
     deleted boolean DEFAULT false NOT NULL,
     title character varying(500) NOT NULL,
-    description character varying(1000),
+    description character varying(4000),
     link character varying(500) NOT NULL,
     author character varying(100),
     guid character varying(100),
