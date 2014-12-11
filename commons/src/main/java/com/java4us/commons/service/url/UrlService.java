@@ -5,10 +5,12 @@
  */
 package com.java4us.commons.service.url;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
 /**
- *
  * @author turgay
  */
 @Service
@@ -19,6 +21,10 @@ public class UrlService {
     private static final String ANDROIDROOTCATEGORY = "/android";
     private static final String SEARCH = "/ara?q=";
     private static final String SEPARATORCHAR = "/";
+    private static final String REGISTER = "/register";
+    private static final String RSSDETAIL = "-r";
+    private static final String BLANK = " ";
+    private static final String URL_FILTER = "[^A-Za-z0-9\\-]*";
 
     public String getRootUrl() {
         return ROOT;
@@ -41,6 +47,25 @@ public class UrlService {
     }
 
     public String getPaginationUrl(String category, int pageNumber) {
-        return category + SEPARATORCHAR + pageNumber;
+        return getRootUrl() + SEPARATORCHAR + category + SEPARATORCHAR + pageNumber;
     }
+
+    public String getRegisterUrl() {
+        return getRootUrl() + REGISTER;
+    }
+
+    public String getRssDetailPageUrl(String title, Long id) {
+        return getRootUrl() + SEPARATORCHAR + buildTitleUrl(generateFilter(title)) + RSSDETAIL + id;
+    }
+
+    public static String generateFilter(String text) {
+        text = text.toLowerCase(Locale.ENGLISH).replaceAll("\\s+", " ").replaceAll(" ", "-").replaceAll(URL_FILTER, "").replaceAll("(\\-)+", "-");
+        text = StringUtils.strip(text, "-");
+        return text;
+    }
+
+    private static String buildTitleUrl(String title) {
+        return title.contains(BLANK) ? title.replaceAll(BLANK, "-") : title;
+    }
+
 }

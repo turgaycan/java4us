@@ -6,3 +6,4 @@
 <sec:authorize access="isAuthenticated()">
     <c:set var="userLoggedIn" value="true"/>
 </sec:authorize>
+<jsp:useBean id="_urlService" class="com.java4us.commons.service.url.UrlService" scope="application"/>

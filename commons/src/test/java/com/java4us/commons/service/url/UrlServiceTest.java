@@ -27,6 +27,24 @@ public class UrlServiceTest {
     @Test
     public void shouldReturnPaginationUrl(){
        String pageUrl =  service.getPaginationUrl("java", 1);
-       assertThat(pageUrl, equalTo("java/1"));
+       assertThat(pageUrl, equalTo("http://www.java4us.net/java/1"));
+    }
+
+    @Test
+    public void shouldReturnRssDetailUrl(){
+        String pageUrl =  service.getRssDetailPageUrl("java", 1L);
+        assertThat(pageUrl, equalTo("http://www.java4us.net/java-r1"));
+    }
+
+    @Test
+    public void shouldReturnRssDetailUrlIfTitleHasBlank(){
+        String pageUrl =  service.getRssDetailPageUrl("java  go", 1L);
+        assertThat(pageUrl, equalTo("http://www.java4us.net/java-go-r1"));
+    }
+
+    @Test
+    public void shouldReturnRssDetailUrlIfTitleHasBlankAndIllegalChar(){
+        String pageUrl =  service.getRssDetailPageUrl("java  syncronized -keyword", 1L);
+        assertThat(pageUrl, equalTo("http://www.java4us.net/java-syncronized-keyword-r1"));
     }
 }

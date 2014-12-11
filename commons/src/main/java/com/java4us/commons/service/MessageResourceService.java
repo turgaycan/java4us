@@ -32,8 +32,8 @@ import java.util.Map;
 @Service
 public class MessageResourceService implements ClearCacheListener {
 
-    private static final String TR = "TR";
     private static final String EN = "EN";
+    private static final String TR = "TR";
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -98,7 +98,7 @@ public class MessageResourceService implements ClearCacheListener {
     }
 
     public String getString(String category, String key) {
-        return getString(category, key, TR);
+        return getString(category, key, EN);
     }
 
     public String getEnumLabel(String key) {

@@ -8,7 +8,9 @@ package com.java4us.web.controller;
 
 import com.java4us.commons.service.feed.FeederService;
 import com.java4us.service.json.JsonWriterService;
+import com.java4us.service.seo.SeoMetaDataService;
 import com.java4us.service.user.J4UserService;
+import com.java4us.web.model.SeoMetaData;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,11 +21,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
@@ -49,6 +53,9 @@ public class FeederControllerTest {
 	@Mock
 	private J4UserService userService;
 
+    @Mock
+    private SeoMetaDataService seoMetaDataService;
+
 	@Captor
 	private ArgumentCaptor<Map<String, Object>> captor;
 
@@ -66,7 +73,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldNotaddNewFeederIfEmailIsEmpty() {
+	public void shouldNotAddNewFeederIfEmailIsEmpty() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "");
 		controller.addNewFeeder(request, response);
@@ -77,7 +84,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldNotaddNewFeederIfEmailFormatIsNotProper() {
+	public void shouldNotAddNewFeederIfEmailFormatIsNotProper() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info");
 		controller.addNewFeeder(request, response);
@@ -88,7 +95,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldNotaddNewFeederIfRssUrlsIsEmpty() {
+	public void shouldNotAddNewFeederIfRssUrlsIsEmpty() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "");
@@ -102,7 +109,7 @@ public class FeederControllerTest {
 
 	@Ignore
 	@Test
-	public void shouldNotaddNewFeederIfJavaRssUrlIsNotEmptyButNotWellFormattedAndAdroidUrlIsEmpty() {
+	public void shouldNotAddNewFeederIfJavaRssUrlIsNotEmptyButNotWellFormattedAndAdroidUrlIsEmpty() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "http://www.java4us/");
@@ -116,7 +123,7 @@ public class FeederControllerTest {
 
 	@Ignore
 	@Test
-	public void shouldNotaddNewFeederIfAndroidRssUrlIsNotEmptyButNotWellFormattedAndJavaUrlIsEmpty() {
+	public void shouldNotAddNewFeederIfAndroidRssUrlIsNotEmptyButNotWellFormattedAndJavaUrlIsEmpty() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "");
@@ -129,7 +136,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldNotaddNewFeederIfDomainFormatIsNotProper() {
+	public void shouldNotAddNewFeederIfDomainFormatIsNotProper() {
 		request.setParameter("domain", "http://www.java4us");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "");
@@ -142,7 +149,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldNotaddNewFeederIfDomainIsRegistered() {
+	public void shouldNotAddNewFeederIfDomainIsRegistered() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "");
@@ -157,7 +164,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldaddNewFeederIfJavaRssUrlIsWellFormatted() {
+	public void shouldAddNewFeederIfJavaRssUrlIsWellFormatted() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "http://www.java4us/java.rss");
@@ -172,7 +179,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldaddNewFeederIfAndroidRssUrlIsWellFormatted() {
+	public void shouldAddNewFeederIfAndroidRssUrlIsWellFormatted() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "");
@@ -187,7 +194,7 @@ public class FeederControllerTest {
 	}
 
 	@Test
-	public void shouldaddNewFeederIfRssUrlsAreWellFormatted() {
+	public void shouldAddNewFeederIfRssUrlsAreWellFormatted() {
 		request.setParameter("domain", "http://www.java4us.net");
 		request.setParameter("email", "info@java4us.net");
 		request.setParameter("javaRssUrl", "http://www.java4us/java.rss");
@@ -200,5 +207,16 @@ public class FeederControllerTest {
 		Map<String, Object> value = captor.getValue();
 		assertThat((Boolean) value.get("success"), equalTo(true));
 	}
+
+    @Test
+    public void shouldGetRegisterPage(){
+        when(seoMetaDataService.prepareRegisterPage()).thenReturn(SeoMetaData.getInstance());
+
+        ModelAndView modelAndView = controller.register(request);
+
+        assertNotNull(modelAndView.getModel().get("currentYear"));
+        assertNotNull(modelAndView.getModel().get("seoMetaData"));
+
+    }
 
 }
