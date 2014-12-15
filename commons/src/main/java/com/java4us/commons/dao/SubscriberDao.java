@@ -99,7 +99,7 @@ public class SubscriberDao extends BaseDao<Subscriber>{
 	}
 
 	private void appendSubscriberNameToCriteria(Criteria criteria, String name) {		
-		criteria.add(Restrictions.eq("namel", name));
+		criteria.add(Restrictions.eq("name", name));
 	}
 
 	private void appendSubscriberSurnameToCriteria(Criteria criteria, String surname) {
@@ -109,5 +109,9 @@ public class SubscriberDao extends BaseDao<Subscriber>{
 	private void appendSubscriberEmailToCriteria(Criteria criteria, String email) {
 		criteria.add(Restrictions.eq("domain", email));
 	}
+
+    public List<Subscriber> findAllowSubscriberList(){
+        return getCriteria().add(Restrictions.eq("allowtomail", false)).list();
+    }
 
 }

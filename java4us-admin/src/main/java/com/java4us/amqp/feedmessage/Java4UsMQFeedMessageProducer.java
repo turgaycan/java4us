@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.java4us.amqp;
+package com.java4us.amqp.feedmessage;
 
 import com.java4us.domain.FeedMessage;
 import org.slf4j.Logger;

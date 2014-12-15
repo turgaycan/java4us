@@ -69,7 +69,7 @@
 	function goUrl() {
         $.ajax({
             type: "POST",
-            url: "/rssdetail-r${feedMessage.id}",
+            url: "${_urlService.getRssDetailPageUrlWithOutRootPath(feedJavaMessage.title, feedJavaMessage.id)}",
             data: "",
             success: function() {
                console.log("successfully counter++");

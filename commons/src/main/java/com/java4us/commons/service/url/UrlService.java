@@ -54,8 +54,16 @@ public class UrlService {
         return getRootUrl() + REGISTER;
     }
 
+    public String getFromUnSubscribeUrl(String url, Long id) {
+        return getRootUrl() + SEPARATORCHAR + url + "-" + id;
+    }
+
     public String getRssDetailPageUrl(String title, Long id) {
         return getRootUrl() + SEPARATORCHAR + buildTitleUrl(generateFilter(title)) + RSSDETAIL + id;
+    }
+
+    public String getRssDetailPageUrlWithOutRootPath(String title, Long id) {
+        return SEPARATORCHAR + buildTitleUrl(generateFilter(title)) + RSSDETAIL + id;
     }
 
     public static String generateFilter(String text) {

@@ -6,12 +6,15 @@
 package com.java4us.commons.service.feed;
 
 import com.java4us.commons.dao.feed.FeedMessageDao;
+import com.java4us.commons.utils.Clock;
+import com.java4us.commons.utils.DateUtils;
 import com.java4us.commons.utils.criteria.FeedMessageSearchCriteria;
 import com.java4us.domain.FeedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +23,8 @@ import java.util.List;
  */
 @Service
 public class FeedMessageService {
+
+    private static final int WEEKLFEEDMESSAGESIZE = 10;
 
 	@Autowired
 	private FeedMessageDao feedMessageDao;
@@ -71,4 +76,18 @@ public class FeedMessageService {
 		return feedMessageDao.findAllJavaProceedMessagesLinks();
 	}
 
+    @Transactional(readOnly = true)
+    public List<FeedMessage> findWeeklyFeedMessages() {
+        Date now = Clock.getTime();
+        Date week = DateUtils.addDays(now, -7);
+        List<FeedMessage> weeklyFeedMessages = feedMessageDao.findWeeklyFeedMessages(now, week);
+        if(weeklyFeedMessages.size() > getWeeklfeedmessagesize()){
+            return weeklyFeedMessages.subList(0, getWeeklfeedmessagesize());
+        }
+        return weeklyFeedMessages;
+    }
+
+    public static int getWeeklfeedmessagesize() {
+        return WEEKLFEEDMESSAGESIZE;
+    }
 }

@@ -6,6 +6,7 @@
 package com.java4us.commons.dao.feed;
 
 import com.java4us.commons.dao.core.BaseDao;
+import com.java4us.commons.utils.DateRange;
 import com.java4us.commons.utils.criteria.FeedMessageSearchCriteria;
 import com.java4us.commons.utils.criteria.SearchCriteriaUtil;
 import com.java4us.domain.Feed;
@@ -14,7 +15,6 @@ import com.java4us.domain.common.enums.BaseStatus;
 import com.java4us.domain.common.enums.Category;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -68,10 +68,18 @@ public class FeedMessageDao extends BaseDao<FeedMessage> {
     public List<FeedMessage> findByFeed(Feed feed, Date now, Date oneMonth) {
         return getStatusActiveCriteria().add(Restrictions.eq("feed", feed))
                 .add(Restrictions.eq("proceed", true))
-                        .addOrder(Order.desc("createDate"))
+                .addOrder(Order.desc("createDate"))
 //                .add(Restrictions.between("createDate", now, oneMonth))
                 .list();
 
+    }
+
+    public List<FeedMessage> findWeeklyFeedMessages(Date now, Date week) {
+        Criteria criteria = getStatusActiveCriteria().add(Restrictions.eq("proceed", true));
+        DateRange dateRange = new DateRange(week, now);
+        SearchCriteriaUtil.dateTypeForBetween(criteria, "createDate", dateRange);
+        criteria.addOrder(Order.desc("viewCount"));
+        return criteria == null ? Collections.EMPTY_LIST : criteria.list();
     }
 
     @SuppressWarnings("unchecked")
@@ -174,5 +182,4 @@ public class FeedMessageDao extends BaseDao<FeedMessage> {
     private String getSortOrder(String sortOrder) {
         return StringUtils.isNotBlank(sortOrder) ? sortOrder : "desc";
     }
-
 }

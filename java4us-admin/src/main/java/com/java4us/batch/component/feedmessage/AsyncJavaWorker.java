@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.java4us.batch.component;
+package com.java4us.batch.component.feedmessage;
 
-import com.java4us.amqp.Java4UsMQFeedMessageProducer;
+import com.java4us.amqp.feedmessage.Java4UsMQFeedMessageProducer;
+import com.java4us.batch.component.Worker;
 import com.java4us.commons.cache.CacheService;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.commons.service.feed.FeederService;

@@ -6,6 +6,7 @@ import com.java4us.domain.common.enums.Category;
 import com.java4us.domain.core.BaseEntity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "feedmessage", schema = "java4us")
 @SequenceGenerator(name = "feedmessage_id_seq", sequenceName = "feedmessage_id_seq", allocationSize = 1)
-public class FeedMessage extends BaseEntity implements java.io.Serializable {
+public class FeedMessage extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 3619193884463419855L;
 

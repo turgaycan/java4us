@@ -44,8 +44,16 @@ public class SeoMetaDataService {
         return seoMetaData;
     }
 
+    public SeoMetaData prepareUnSubscriber(Long subcriberId) {
+        SeoMetaData seoMetaData = SeoMetaData.getInstance();
+        seoMetaData.setTitle(getString("subscriber.unsubscribe.title", null));
+        seoMetaData.setDescription(getString("subscriber.unsubscribe.desc", null));
+        seoMetaData.setCanonical(urlService.getFromUnSubscribeUrl("unsubscriber", subcriberId));
+        return seoMetaData;
+    }
 
     public String getString(String key, Object... params) {
         return messageResourceService.getString(SEO, key, params);
     }
+
 }

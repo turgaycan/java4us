@@ -28,6 +28,11 @@ public class SubscriberService {
 		return subscriberDao.findAll();
 	}
 
+    @Transactional(readOnly = true)
+    public Subscriber findById(Long id){
+        return subscriberDao.findBy(id);
+    }
+
 	@Transactional(readOnly = true)
 	public boolean isProperEmail(String email) {
 		return subscriberDao.findByUnique("email", email) == null;
@@ -54,4 +59,9 @@ public class SubscriberService {
 	public int getRowCount(SubscriberSearchCriteria filter) {
 		return subscriberDao.getRowCountSubscriberList(filter);
 	}
+
+    @Transactional
+    public List<Subscriber> findAllowSubscriberList(){
+        return subscriberDao.findAllowSubscriberList();
+    }
 }

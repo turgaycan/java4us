@@ -7,6 +7,7 @@ package com.java4us.commons.dao.feed;
 
 import com.java4us.commons.dao.core.AbstractDataAccessTest;
 import com.java4us.commons.utils.Clock;
+import com.java4us.commons.utils.DateUtils;
 import com.java4us.commons.utils.criteria.FeedMessageSearchCriteria;
 import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
@@ -15,6 +16,7 @@ import com.java4us.domain.builder.FeedBuilder;
 import com.java4us.domain.builder.FeedMessageBuilder;
 import com.java4us.domain.builder.FeederBuilder;
 import com.java4us.domain.builder.utils.TestDateUtils;
+import com.java4us.domain.common.enums.BaseStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -129,6 +131,32 @@ public class FeedMessageDaoTest extends AbstractDataAccessTest {
         flushAndClear();
         List<String> list = dao.findAllProceedMessagesLinks();
         assertThat(list.size(), equalTo(3));
+        Clock.unfreeze();
+    }
+
+    @Test
+    public void shouldFindProceedWeeklyFeedMessages() {
+        Clock.freeze();
+        Date currTime = TestDateUtils.toDate("10-03-2014");
+        Feeder feeder1 = new FeederBuilder().id(new Long(1)).createDate(currTime).persist(getSession());
+        Feed feed = new FeedBuilder().id(new Long(1)).feeder(feeder1).pubDate(TestDateUtils.toDate("01-10-2010")).persist(getSession());
+
+        FeedMessage feedMessage1 = new FeedMessageBuilder().id(new Long(1)).viewCount(10).title("1").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("01-03-2014 02:19:26")).proceed(true).persist(getSession());
+        FeedMessage feedMessage2 = new FeedMessageBuilder().id(new Long(2)).viewCount(46).title("2").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("04-03-2014 02:19:27")).proceed(false).persist(getSession());
+        FeedMessage feedMessage3 = new FeedMessageBuilder().id(new Long(3)).viewCount(55).title("3").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("03-03-2014 02:19:21")).proceed(true).persist(getSession());
+        FeedMessage feedMessage4 = new FeedMessageBuilder().id(new Long(4)).viewCount(23).title("4").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("08-03-2014 02:18:21")).proceed(true).persist(getSession());
+        FeedMessage feedMessage5 = new FeedMessageBuilder().id(new Long(5)).viewCount(10).title("5").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("05-03-2014 02:20:21")).proceed(true).persist(getSession());
+        FeedMessage feedMessage6 = new FeedMessageBuilder().id(new Long(6)).viewCount(33).title("6").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("03-03-2014 02:19:26")).proceed(true).persist(getSession());
+        FeedMessage feedMessage7 = new FeedMessageBuilder().id(new Long(7)).viewCount(34).title("7").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("06-03-2014 02:19:27")).proceed(true).persist(getSession());
+        FeedMessage feedMessage8 = new FeedMessageBuilder().id(new Long(8)).viewCount(1).title("8").status(BaseStatus.Deactive).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("07-03-2014 02:19:21")).proceed(true).persist(getSession());
+        FeedMessage feedMessage9 = new FeedMessageBuilder().id(new Long(9)).viewCount(49).title("9").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("11-03-2014 02:18:21")).proceed(true).persist(getSession());
+        FeedMessage feedMessage10 = new FeedMessageBuilder().id(new Long(10)).viewCount(90).title("10").status(BaseStatus.Active).feed(feed).createDate(TestDateUtils.toDateTimeWithSeconds("08-03-2014 02:20:21")).proceed(false).persist(getSession());
+
+        flushAndClear();
+
+        List<FeedMessage> feedMessages = dao.findWeeklyFeedMessages(currTime, DateUtils.addDays(currTime, -7));
+        assertThat(feedMessages.size(), equalTo(5));
+        assertThat(feedMessages, hasItems(feedMessage4, feedMessage5, feedMessage6, feedMessage7, feedMessage3));
         Clock.unfreeze();
     }
 

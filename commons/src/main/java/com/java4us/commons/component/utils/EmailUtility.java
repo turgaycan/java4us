@@ -5,6 +5,9 @@
  */
 package com.java4us.commons.component.utils;
 
+import com.java4us.common.model.SubscriberMailDTO;
+import com.java4us.domain.Subscriber;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +27,16 @@ public class EmailUtility {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtility.class);
 
+    private static final String ENCODING = "UTF-8";
+
     @Autowired
     private SimpleMailMessage resetEmailTemplate;
 
     @Autowired
     private SimpleMailMessage newFeederEmailTemplate;
+
+    @Autowired
+    private SimpleMailMessage subscriberEmailTemplate;
 
     @Autowired
     private JavaMailSenderImpl javaMailSender;
@@ -55,20 +63,32 @@ public class EmailUtility {
 
     }
 
+    public void sendSubscriberMail(SubscriberMailDTO subscriberMailDTO) {
+
+        String fromEmail = subscriberEmailTemplate.getFrom();
+        String emailSubject = subscriberEmailTemplate.getSubject();
+        Subscriber subscriber = subscriberMailDTO.getSubscriber();
+        byte[]   bytesEncoded = Base64.encodeBase64(String.valueOf(subscriber.getId()).getBytes());
+        String encodedId = new String(bytesEncoded);
+        String content = "";
+        String emailBody = String
+                .format(subscriberEmailTemplate.getText(), subscriber.fullName(), content, encodedId);
+
+        sendMail(subscriber.getEmail(), fromEmail, emailSubject, emailBody);
+
+    }
+
     private void sendMail(String toEmail, String fromEmail, String emailSubject, String emailBody) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, ENCODING);
 
             helper.setFrom(fromEmail);
             helper.setTo(toEmail);
             helper.setSubject(emailSubject);
             helper.setText(emailBody);
-            /*
-              uncomment the following lines for attachment FileSystemResource
-			  file = new FileSystemResource("attachment.jpg");
-			  helper.addAttachment(file.getFilename(), file);
-			 */
+//            LocalDate localDate = LocalDateTime.now().toLocalDate();
+//            helper.setSentDate(localDate);
             javaMailSender.send(mimeMessage);
             LOGGER.info("Mail sent successfully.");
         } catch (MessagingException e) {
@@ -82,6 +102,10 @@ public class EmailUtility {
 
     public void setNewFeederEmailTemplate(SimpleMailMessage newFeederEmailTemplate) {
         this.newFeederEmailTemplate = newFeederEmailTemplate;
+    }
+
+    public void setSubscriberEmailTemplate(SimpleMailMessage subscriberEmailTemplate) {
+        this.subscriberEmailTemplate = subscriberEmailTemplate;
     }
 
     public void setJavaMailSender(JavaMailSenderImpl javaMailSender) {

@@ -6,8 +6,8 @@
 
 package com.java4us.view;
 
-import com.java4us.batch.component.AsyncAndroidWorker;
-import com.java4us.batch.component.AsyncJavaWorker;
+import com.java4us.batch.component.feedmessage.AsyncAndroidWorker;
+import com.java4us.batch.component.feedmessage.AsyncJavaWorker;
 import com.java4us.jsf.views.BaseView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

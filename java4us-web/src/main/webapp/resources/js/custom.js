@@ -228,6 +228,37 @@ $('#changePassword').click(function () {
     });
 });
 
+//-- UPDATESUBSCRIBER FORM -- //
+$('#changePassword').click(function () {
+
+    var id = $("#id").val();
+    if (_.isEmpty(id)) {
+        $("#subscriberResult").html("<div class=\"alert alert-info\"><button class=\"close\" data-dismiss=\"alert\" type=\"button\">×</button><strong>Warning!</strong> You are not subscriber!</div>");
+        return;
+    }
+    var postData = {
+        'subscriberId': id
+    };
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: postData,
+        beforeSend: function (x) {
+            if (x && x.overrideMimeType) {
+                x.overrideMimeType("application/json;charset=UTF-8");
+            }
+        },
+        url: '/feeders/change/password',
+        success: function (data) {
+            if (data.success === true) {
+                $('#subscriberResult').html("<div class=\"alert alert-success\"><strong>Subscribe</strong> is successfully done!</div>");
+            } else {
+                $('#passwordResult').html("<div class=\"alert\"><strong>Unexpected Error!</strong></div>");
+            }
+        }
+    });
+});
+
 //-- Clear Feeder Registration Form --//
 $('#btnClear').click(function () {
     $('#edit-profile')[0].reset();

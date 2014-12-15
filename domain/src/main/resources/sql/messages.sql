@@ -13,3 +13,11 @@ INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalu
 INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
 (nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | Register RSS Feeds to list feed messages', 'feeder.registration.desc',
 'Java4Us.Net | RSS beslemelerinin kaydı ile  rss mesalarinin listelenmesi',false);
+
+
+INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
+(nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | Unsubscribe from weekly newsletter list', 'subscriber.unsubscribe.title',
+'Java4Us.Net | Haftalık yayın bülteninden ayrılma',false);
+INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
+(nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | Unsubscribe from weekly newsletter feed message list', 'subscriber.unsubscribe.desc',
+'Java4Us.Net | Haftalık besleme listesi bülteninden ayrilmak',false);

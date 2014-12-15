@@ -5,6 +5,7 @@
  */
 package com.java4us.commons.service;
 
+import com.java4us.common.model.SubscriberMailDTO;
 import com.java4us.commons.component.utils.EmailUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,11 @@ public class EmailService {
     public void resetPasswordMail(String fullname, String newPassword, String email) {
         LOGGER.info("User reset password for   {}" + fullname + " complete");
         emailUtility.sendResetPasswordMail(fullname, newPassword, email);
+    }
+
+    public void sendMailToSubscriber(SubscriberMailDTO subscriberMailDTO){
+        emailUtility.sendSubscriberMail(subscriberMailDTO);
+        LOGGER.info("Sent mail to subscriber   {}" + subscriberMailDTO.getSubscriber().getEmail() + " successfully");
     }
 
 }

@@ -783,7 +783,7 @@ ALTER TABLE java4us.contact  ADD COLUMN type character varying(50) NOT NULL;
 
 ALTER TABLE java4us.feedmessage  ADD COLUMN viewcount integer default 0;
 ALTER TABLE java4us.feedmessage  ADD COLUMN gotolinkcount integer default 0;
-
+ALTER TABLE java4us.subscriber  ADD COLUMN allowtomail boolean DEFAULT false;
 
 
 

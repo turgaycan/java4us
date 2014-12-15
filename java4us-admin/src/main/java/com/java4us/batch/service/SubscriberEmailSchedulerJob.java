@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.java4us.batch.service;
 
-import com.java4us.batch.component.feedmessage.AsyncJavaWorker;
+import com.java4us.batch.component.mail.SubscriberEmailWorker;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -18,21 +13,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
- * @author turgay
+ * Created by turgaycan on 12/12/14.
  */
-public class JavaSchedulerJob extends QuartzJobBean implements StatefulJob {
+public class SubscriberEmailSchedulerJob extends QuartzJobBean implements StatefulJob {
 
     private static Logger LOGGER = LoggerFactory.getLogger("JavaSchedulerJob");
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-    private AsyncJavaWorker asyncJavaWorker;
+    private SubscriberEmailWorker subscriberEmailWorker;
 
-    @SuppressWarnings("unused")
-	@Override
+    @Override
     protected void executeInternal(JobExecutionContext ctx)
             throws JobExecutionException {
 
-        // The job data map is available through the JobExecutionContext 
+        // The job data map is available through the JobExecutionContext
         // (passed to you at execution time)
         JobDataMap jobDataMap = ctx.getJobDetail().getJobDataMap();
 
@@ -57,7 +50,7 @@ public class JavaSchedulerJob extends QuartzJobBean implements StatefulJob {
 
             // Do the actual work
             LOGGER.debug("Delegating work to worker");
-            asyncJavaWorker.work();
+            subscriberEmailWorker.work();
 
             // Retrieve the next date when the job will be run
             String nextDateRun = sdf.format(ctx.getNextFireTime());
@@ -71,10 +64,7 @@ public class JavaSchedulerJob extends QuartzJobBean implements StatefulJob {
     }
 
 
-    public void setAsyncJavaWorker(AsyncJavaWorker asyncJavaWorker) {
-        this.asyncJavaWorker = asyncJavaWorker;
+    public void setSubscriberEmailWorker(SubscriberEmailWorker subscriberEmailWorker) {
+        this.subscriberEmailWorker = subscriberEmailWorker;
     }
-    
-    
-
 }

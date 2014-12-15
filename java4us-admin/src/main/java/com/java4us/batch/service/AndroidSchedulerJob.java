@@ -5,7 +5,7 @@
  */
 package com.java4us.batch.service;
 
-import com.java4us.batch.component.AsyncAndroidWorker;
+import com.java4us.batch.component.feedmessage.AsyncAndroidWorker;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

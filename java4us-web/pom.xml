@@ -306,7 +306,7 @@
                 <version>3.2</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/**Test*</exclude>
+                        <exclude>**/CaptchaController*</exclude>
                     </excludes>
                     <compilerArguments>
                         <endorseddirs>${project.build.directory}/endorsed</endorseddirs>

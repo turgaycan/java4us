@@ -32,6 +32,7 @@ public class FeedMessageBuilder extends BaseBuilder<FeedMessage, FeedMessageBuil
     private boolean proceed = false;
     private BaseStatus status = BaseStatus.Active;
     private Category category = Category.JAVA;
+    private int viewCount;
 
     @Override
     protected FeedMessage doBuild() {
@@ -48,6 +49,7 @@ public class FeedMessageBuilder extends BaseBuilder<FeedMessage, FeedMessageBuil
         feedMessage.setProceed(proceed);
         feedMessage.setStatus(status);
         feedMessage.setCategory(category);
+        feedMessage.setViewCount(viewCount);
         return feedMessage;
     }
 
@@ -109,6 +111,11 @@ public class FeedMessageBuilder extends BaseBuilder<FeedMessage, FeedMessageBuil
 
     public FeedMessageBuilder category(Category category) {
         this.category = category;
+        return this;
+    }
+
+    public FeedMessageBuilder viewCount(int viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 

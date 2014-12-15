@@ -199,4 +199,22 @@
         </property>
     </bean>
 
+    <bean id="subscriberEmailTemplate"
+          class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="info@java4us.net"/>
+        <property name="subject" value="Weekly Newsletter : Recommended Feed Messages.."/>
+        <property name="text">
+            <value>
+                <![CDATA[
+                    Hi %s,
+
+                    Welcome to Java4Us.Net, hope to get more readers from our web-site..
+
+                    Regards,
+                    Java4Us.Net Team..
+		        ]]>
+            </value>
+        </property>
+    </bean>
+
 </beans>

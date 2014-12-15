@@ -18,6 +18,7 @@ public class SubscriberBuilder extends BaseBuilder<Subscriber, SubscriberBuilder
     private String name = RandomStringUtils.random(10);
     private String surname = RandomStringUtils.random(10);
     private String email = RandomStringUtils.random(10);
+    private boolean allowtomail = false;
 
     @Override
     protected Subscriber doBuild() {
@@ -26,6 +27,7 @@ public class SubscriberBuilder extends BaseBuilder<Subscriber, SubscriberBuilder
         subscriber.setName(name);
         subscriber.setSurname(surname);
         subscriber.setEmail(email);
+        subscriber.setAllowtomail(allowtomail);
         return subscriber;
     }
 
@@ -47,6 +49,11 @@ public class SubscriberBuilder extends BaseBuilder<Subscriber, SubscriberBuilder
 
     public SubscriberBuilder email(String email) {
         this.email = email;
+        return this;
+    }
+
+    public SubscriberBuilder allowtomail(boolean allowtomail) {
+        this.allowtomail = allowtomail;
         return this;
     }
 

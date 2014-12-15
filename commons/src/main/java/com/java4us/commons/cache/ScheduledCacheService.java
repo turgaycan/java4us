@@ -54,6 +54,9 @@ public class ScheduledCacheService {
                     String feedMessageId = row.getId();
                     if (feedMessageId.startsWith("feedMessage_")) {
                         FeedMessage feedMessage = java4UCacheService.get(feedMessageId);
+                        if(feedMessage == null){
+                            continue;
+                        }
                         feedMessageService.update(feedMessage);
                     }
                 }

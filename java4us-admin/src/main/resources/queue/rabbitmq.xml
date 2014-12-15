@@ -14,24 +14,35 @@
     <rabbit:admin connection-factory="connectionFactory"/>
 
     <rabbit:queue name="FeedMessageQueue"/>
+    <rabbit:queue name="SubscriberEMailQueue"/>
 
     <rabbit:topic-exchange name="Java4UsExChange">
         <rabbit:bindings>
-            <rabbit:binding queue="FeedMessageQueue" pattern="java4us.routingkey.feedMessage">
-            </rabbit:binding>
+            <rabbit:binding queue="FeedMessageQueue" pattern="java4us.routingkey.feedMessage" />
+            <rabbit:binding queue="SubscriberEMailQueue" pattern="java4us.routingkey.subscriber.mail" />
         </rabbit:bindings>
     </rabbit:topic-exchange>
 
     <rabbit:template id="amqpTemplate" connection-factory="connectionFactory"
-                     exchange="Java4UsExChange" queue="FeedMessageQueue"/>
+                     exchange="Java4UsExChange"/>
 
-    <bean id="java4UsMQFeedMessageProducer" class="com.java4us.amqp.Java4UsMQFeedMessageProducer"/>
+
+    <bean id="java4UsMQFeedMessageProducer" class="com.java4us.amqp.feedmessage.Java4UsMQFeedMessageProducer"/>
+    <bean id="subscriberMQMailProducer" class="com.java4us.amqp.mail.SubscriberMQMailProducer"/>
 
     <rabbit:listener-container
             connection-factory="connectionFactory">
         <rabbit:listener ref="java4UsMQFeedMessageConsumer"
-                         method="handleFeedMessage" queue-names="FeedMessageQueue"/>
+                         method="handleFeedMessage" queue-names="FeedMessageQueue, SubscriberEMailQueue"/>
     </rabbit:listener-container>
 
-    <bean id="java4UsMQFeedMessageConsumer" class="com.java4us.amqp.Java4UsMQFeedMessageConsumer"/>
+    <bean id="java4UsMQFeedMessageConsumer" class="com.java4us.amqp.feedmessage.Java4UsMQFeedMessageConsumer"/>
+
+    <rabbit:listener-container
+            connection-factory="connectionFactory">
+        <rabbit:listener ref="subscriberMQMailConsumer"
+                         method="handleSubscriber" queue-names="SubscriberEMailQueue"/>
+    </rabbit:listener-container>
+
+    <bean id="subscriberMQMailConsumer" class="com.java4us.amqp.mail.SubscriberMQMailConsumer"/>
 </beans>
