@@ -25,13 +25,10 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import java.io.StringWriter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,40 +98,41 @@ public class EmailUtility {
         }
     }
 
-    public void sendSubscriberMail(SubscriberMailDTO subscriberMailDTO) throws Throwable {
+    public void sendSubscriberMail(SubscriberMailDTO subscriberMailDTO) {
         Subscriber subscriber = subscriberMailDTO.getSubscriber();
         byte[] bytesEncoded = Base64.encodeBase64(String.valueOf(subscriber.getId()).getBytes());
         String encodedId = new String(bytesEncoded);
         String rootUrl = urlService.getRootUrl();
         Map<String, Object> params = new HashMap<>();
-        params.put("subscriber", subscriber);
+        params.put("fullName", subscriber.fullName());
         params.put("rootUrl", rootUrl);
         params.put("encodedId", encodedId);
         params.put("weeklyFeedMessages", subscriberMailDTO.getFeedMessageList());
-        LocalDate localDate = LocalDateTime.now().toLocalDate();
+        String localDate = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE);
         params.put("currentDate", localDate);
-        sendEmailMessage(subscriberEmailTemplate.getFrom(), new String[]{(subscriber.getEmail())}, subscriberEmailTemplate.getSubject(),  subscriberEmailTemplate.getText(), params);
+        sendEmailMessage(subscriberEmailTemplate.getFrom(), new String[]{(subscriber.getEmail())}, subscriberEmailTemplate.getSubject(), subscriberEmailTemplate.getText(), params);
 
     }
 
-    public void sendEmailMessage(String from, String[] to, String subject, String htmlBody, Map<String, Object> params) throws Throwable {
+    public void sendEmailMessage(String from, String[] to, String subject, String htmlBody, Map<String, Object> params) {
 
         MimeMessage msg = javaMailSender.createMimeMessage();
+        try {
+            msg.setFrom(new InternetAddress(from));
+            msg.setSubject(subject);
+            InternetAddress[] addresses = getInternetAddresses(to);
+            msg.setRecipients(Message.RecipientType.TO, addresses);
 
-        msg.setFrom(new InternetAddress(from));
-        msg.setSubject(subject);
-        msg.setRecipients(Message.RecipientType.TO, getInternetAddresses(to));
+            MimeMultipart content = new MimeMultipart();
 
-        MimeMultipart content = new MimeMultipart("alternative");
-
-        if (!StringUtils.isEmpty(htmlBody)) {
-            MimeBodyPart html = new MimeBodyPart();
-            html.setContent(mergeTemplate(htmlBody, params), "text/html");
-            content.addBodyPart(html);
+            if (!StringUtils.isEmpty(htmlBody)) {
+                prepareMailContent(htmlBody, params, content);
+            }
+            msg.setContent(content);
+            msg.saveChanges();
+        } catch (MessagingException e) {
+            LOGGER.debug("Messaging Exception {}", e);
         }
-
-        msg.setContent(content);
-        msg.saveChanges();
 
         try {
             javaMailSender.send(msg);
@@ -143,7 +141,17 @@ public class EmailUtility {
         }
     }
 
-    public String mergeTemplate(String template, Map<String, Object> macros) throws Throwable {
+    private void prepareMailContent(String htmlBody, Map<String, Object> params, MimeMultipart content) throws MessagingException {
+        MimeBodyPart html = new MimeBodyPart();
+        html.setHeader("Content-Type", "text/html");
+        String htmlContent = mergeTemplate(htmlBody, params);
+        MimeBodyPart messagePart = new MimeBodyPart();
+        messagePart.setText(htmlBody);
+        html.setContent(htmlContent, "text/html");
+        content.addBodyPart(html);
+    }
+
+    public String mergeTemplate(String template, Map<String, Object> macros) {
 
         if (StringUtils.isEmpty(template)) {
             return StringUtils.EMPTY;
@@ -169,10 +177,16 @@ public class EmailUtility {
         return answer;
     }
 
-    private InternetAddress[] getInternetAddresses(String... emails) throws Throwable {
+    private InternetAddress[] getInternetAddresses(String... emails) {
         List<InternetAddress> addresses = new ArrayList<>();
         for (String email : emails) {
-            addresses.add(new InternetAddress(email));
+            InternetAddress address = null;
+            try {
+                address = new InternetAddress(email);
+            } catch (AddressException e) {
+                LOGGER.debug("Email {}, Address exception {}", email, e);
+            }
+            addresses.add(address);
         }
         return addresses.toArray(new InternetAddress[0]);
     }
