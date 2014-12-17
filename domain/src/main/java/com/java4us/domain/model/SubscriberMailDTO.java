@@ -1,6 +1,5 @@
-package com.java4us.common.model;
+package com.java4us.domain.model;
 
-import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Subscriber;
 
 import java.io.Serializable;
@@ -13,12 +12,12 @@ public class SubscriberMailDTO implements Serializable {
 
     private static final long serialVersionUID = 3533750194456036314L;
     private Subscriber subscriber;
-    private LinkedList<FeedMessage> feedMessageList;
+    private LinkedList<FeedMessageDTO> feedMessageList;
 
     public SubscriberMailDTO() {
     }
 
-    public static SubscriberMailDTO buildSubscriberMailDTO(Subscriber subscriber, LinkedList<FeedMessage> feedMessageList) {
+    public static SubscriberMailDTO buildSubscriberMailDTO(Subscriber subscriber, LinkedList<FeedMessageDTO> feedMessageList) {
         SubscriberMailDTO subscriberMailDTO = new SubscriberMailDTO();
         subscriberMailDTO.setSubscriber(subscriber);
         subscriberMailDTO.setFeedMessageList(feedMessageList);
@@ -33,11 +32,11 @@ public class SubscriberMailDTO implements Serializable {
         this.subscriber = subscriber;
     }
 
-    public LinkedList<FeedMessage> getFeedMessageList() {
+    public LinkedList<FeedMessageDTO> getFeedMessageList() {
         return feedMessageList;
     }
 
-    public void setFeedMessageList(LinkedList<FeedMessage> feedMessageList) {
+    public void setFeedMessageList(LinkedList<FeedMessageDTO> feedMessageList) {
         this.feedMessageList = feedMessageList;
     }
 }

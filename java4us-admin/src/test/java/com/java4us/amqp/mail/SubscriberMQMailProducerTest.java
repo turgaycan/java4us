@@ -1,6 +1,6 @@
 package com.java4us.amqp.mail;
 
-import com.java4us.common.model.SubscriberMailDTO;
+import com.java4us.domain.model.SubscriberMailDTO;
 import com.java4us.domain.Subscriber;
 import org.junit.Test;
 import org.junit.runner.RunWith;

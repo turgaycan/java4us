@@ -1,4 +1,4 @@
-package com.java4us.common.model;
+package com.java4us.domain.model;
 
 import com.java4us.domain.common.enums.BaseStatus;
 import com.java4us.domain.common.enums.Category;

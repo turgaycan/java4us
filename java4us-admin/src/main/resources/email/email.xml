@@ -1499,7 +1499,7 @@
                                                         style="padding: 0;vertical-align: top;padding-left: 32px;padding-right: 32px">
 
                                                         <p style="Margin-top: 0;color: #565656;font-family: Georgia,serif;font-size: 21px;line-height: 32px;Margin-bottom: 32px;text-align: left">
-                                                            <strong style="font-weight: bold"><a href="#">${feedMessage}</a></strong>
+                                                            <strong style="font-weight: bold"><a href="${feedMessage}">${feedMessage}</a></strong>
                                                         </p>
 
                                                     </td>
