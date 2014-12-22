@@ -28,13 +28,15 @@ public class CacheService {
 
     public static final int ONE_MINUTE = 60;
 
-    public static final int ONE_HOUR = 60 * 60;
+    public static final int ONE_HOUR = ONE_MINUTE * 60;
 
     public static final int SIX_HOURS = ONE_HOUR * 6;
 
     public static final int TWELVEHOURS = ONE_HOUR * 12;
 
     public static final int ONE_DAY = 24 * 60 * 60;
+
+    public static final int SIX_DAYS = ONE_DAY * 6;
 
     public static final int ONE_WEEK = ONE_DAY * 7;
 

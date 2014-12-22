@@ -11,6 +11,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -42,7 +43,7 @@ public class FeedMessageServiceTest {
         List<FeedMessage> feedMessageList = Arrays.asList(feedMessage1, feedMessage2, feedMessage3, feedMessage4, feedMessage5);
         when(feedMessageDao.findWeeklyFeedMessages(any(), any())).thenReturn(feedMessageList);
 
-        List<FeedMessage> weeklyFeedMessages = service.findWeeklyFeedMessages();
+        LinkedList<FeedMessage> weeklyFeedMessages = service.findWeeklyFeedMessages();
 
         assertThat(weeklyFeedMessages.size(), equalTo(3));
         assertThat(weeklyFeedMessages, hasItems(feedMessage1, feedMessage2, feedMessage3));

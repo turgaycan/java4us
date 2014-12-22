@@ -5,6 +5,7 @@ import com.java4us.commons.utils.Clock;
 import com.java4us.domain.Subscriber;
 import com.java4us.service.json.JsonWriterService;
 import com.java4us.service.seo.SeoMetaDataService;
+import com.java4us.web.controller.BaseController;
 import com.java4us.web.controller.util.Java4UsUtils;
 import com.java4us.web.controller.util.RegexUtil;
 import org.apache.commons.codec.binary.Base64;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class SubscriberController {
+public class SubscriberController extends BaseController {
 
     @Autowired
     private JsonWriterService jsonWriterService;
@@ -82,9 +83,8 @@ public class SubscriberController {
         }
         subscriber.setAllowtomail(false);
         subscriberService.update(subscriber);
-        ModelAndView mav = new ModelAndView("unsubscriber");
+        ModelAndView mav = super.handleRequestInternal("unsubscriber", seoMetaDataService.prepareUnSubscriber(id));
         mav.addObject("subscriberId", subscriberId);
-        mav.addObject("seoMetaData", seoMetaDataService.prepareUnSubscriber(id));
         return mav;
     }
 

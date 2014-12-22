@@ -108,8 +108,7 @@ public class EmailUtility {
         params.put("rootUrl", rootUrl);
         params.put("encodedId", encodedId);
         params.put("weeklyFeedMessages", subscriberMailDTO.getFeedMessageList());
-        String localDate = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE);
-        params.put("currentDate", localDate);
+        params.put("currentDate", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
         sendEmailMessage(subscriberEmailTemplate.getFrom(), new String[]{(subscriber.getEmail())}, subscriberEmailTemplate.getSubject(), subscriberEmailTemplate.getText(), params);
 
     }
@@ -160,9 +159,6 @@ public class EmailUtility {
         String answer = null;
 
         VelocityContext context = new VelocityContext();
-
-        context.put("dateTool", new DateTool());
-
         for (String key : macros.keySet()) {
             context.put(key, macros.get(key));
         }

@@ -6,6 +6,8 @@ public class FeedMessageSearchCriteria extends CommonSearchCriteria {
 	private String link;
 	private String title;
 	private String feedLink;
+    private boolean viewCount;
+    private boolean gotoLink;
 	private boolean proceed = false;
 
 	public String getLink() {
@@ -32,7 +34,23 @@ public class FeedMessageSearchCriteria extends CommonSearchCriteria {
 		this.feedLink = feedLink;
 	}
 
-	public boolean isProceed() {
+    public boolean isViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(boolean viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public boolean isGotoLink() {
+        return gotoLink;
+    }
+
+    public void setGotoLink(boolean gotoLink) {
+        this.gotoLink = gotoLink;
+    }
+
+    public boolean isProceed() {
 		return proceed;
 	}
 

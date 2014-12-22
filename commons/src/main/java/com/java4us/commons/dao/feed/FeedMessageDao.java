@@ -105,6 +105,13 @@ public class FeedMessageDao extends BaseDao<FeedMessage> {
         prepareFeedMessageCriteria(criteria, filter);
         setupSortCriteria(criteria, getSortField(sortField),
                 getSortOrder(sortOrder));
+        if(filter.isGotoLink()){
+            setupSortCriteria(criteria, "goToLinkCount", "desc");
+        }
+
+        if(filter.isViewCount()){
+            setupSortCriteria(criteria, "viewCount", "desc");
+        }
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria;
     }

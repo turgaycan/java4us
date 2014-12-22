@@ -40,7 +40,6 @@ public class SubscriberEmailWorker implements Worker {
         for (SubscriberMailDTO subscriberMailDTO : subscriberMailDTOs) {
             subscriberMQMailProducer.execute(subscriberMailDTO);
         }
-
     }
 
     private LinkedList<SubscriberMailDTO> prepareSubsrcibersMails() {

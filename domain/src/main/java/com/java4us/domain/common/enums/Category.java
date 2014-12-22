@@ -6,7 +6,6 @@
 package com.java4us.domain.common.enums;
 
 /**
- *
  * @author turgay
  */
 public enum Category {

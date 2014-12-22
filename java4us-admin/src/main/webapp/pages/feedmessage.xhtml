@@ -29,6 +29,10 @@
 						<f:selectItem itemValue="" itemLabel="Seçiniz" />
 						<f:selectItems value="#{feedMessageView.statusList}" />
 					</p:selectOneMenu>
+                    <h:outputText value="Görüntüleme" />
+                    <p:selectBooleanCheckbox value="#{feedMessageView.filter.viewCount}" />
+                    <h:outputText value="Yönlenme" />
+                    <p:selectBooleanCheckbox value="#{feedMessageView.filter.gotoLink}" />
 					<h:outputText value="Yayında" />
 					<p:selectBooleanCheckbox value="#{feedMessageView.filter.proceed}" />
 					<p:commandButton value="Temizle"
@@ -131,6 +135,14 @@
 						</f:facet>
 					</p:cellEditor>
 				</p:column>
+
+                <p:column headerText="Görüntüleme" style="width : 100px;">
+                    <h:outputText value="#{feedMessage.viewCount}" />
+                </p:column>
+
+                <p:column headerText="Yönlenme" style="width : 100px;">
+                    <h:outputText value="#{feedMessage.goToLinkCount}" />
+                </p:column>
 
 				<p:column headerText="Kayıt Zamanı" style="width : 100px;">
 					<h:outputText value="#{feedMessage.createDate}">
