@@ -20,6 +20,9 @@
                 </div>
             </div>
         </div>
+        <!-- search box-->
+        <%@include file="searchbox.jsp"%>
+        <!-- search box-->
         <div class="container">
 
             <div class="row">

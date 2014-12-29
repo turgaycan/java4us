@@ -5,7 +5,7 @@
  */
 package com.java4us.commons.service.member;
 
-import com.java4us.common.model.DeniedUsersModel;
+import com.java4us.commons.model.DeniedUsersModel;
 import com.java4us.commons.cache.CacheService;
 import com.java4us.commons.dao.UserDao;
 import com.java4us.commons.utils.criteria.UserSearchCriteria;

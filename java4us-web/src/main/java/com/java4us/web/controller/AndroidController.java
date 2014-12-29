@@ -12,26 +12,25 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping("/java")
+@RequestMapping("/android")
 @Controller
-public class JavaController extends CategoryController {
+public class AndroidController extends CategoryController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JavaController.class);
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView findJavaFeedMessages() {
-        return prepareJavaModelAndView(JAVAVIEWNAME, DEFAULTPAGENUM);
+    public ModelAndView findAndroidFeedMessages() {
+        return prepareJavaModelAndView(ANDROIDVIEWNAME, DEFAULTPAGENUM);
     }
 
     @RequestMapping(value = {"/P/{pageNum:\\d+$}", "/p/{pageNum:\\d+$}"}, method = RequestMethod.GET)
-    public ModelAndView findJavaFeedMessagesByPaging(@PathVariable("pageNum") String pageNum,
-                                                     HttpServletRequest request) {
+    public ModelAndView findAndroidFeedMessagesByPaging(@PathVariable("pageNum") String pageNum,
+                                                        HttpServletRequest request) {
         if (!NumberUtils.isNumber(pageNum)) {
             LOGGER.error("Page Number format exception {}", pageNum);
             return Java4UsUtils.toModelAndView("/error/301");
         }
         int pageNumber = Integer.parseInt(pageNum);
-        return prepareJavaModelAndView(JAVAVIEWNAME, pageNumber);
+        return prepareJavaModelAndView(ANDROIDVIEWNAME, pageNumber);
     }
-
 }

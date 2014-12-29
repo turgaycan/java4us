@@ -7,3 +7,4 @@
     <c:set var="userLoggedIn" value="true"/>
 </sec:authorize>
 <jsp:useBean id="_urlService" class="com.java4us.commons.service.url.UrlService" scope="application"/>
+<c:set var="datastatics" value="alldata" scope="application"/>

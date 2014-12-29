@@ -12,6 +12,9 @@
     <properties>
         <spring.version>4.1.0.RELEASE</spring.version>
         <hibernate.version>4.2.8.Final</hibernate.version>
+        <elasticsearch>1.4.2</elasticsearch>
+        <springdata.commons>1.9.0.RELEASE</springdata.commons>
+        <spring.data.elasticsearch>1.1.0.RELEASE</spring.data.elasticsearch>
         <jdk.version>1.8</jdk.version>
     </properties>
     <dependencies>
@@ -112,8 +115,6 @@
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <version>1.0.1.Final</version>
         </dependency>
-        <!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib</artifactId>
-            <version>3.1</version> </dependency> -->
         <!-- Jackson -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -129,22 +130,11 @@
         <!-- Depended Projects -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>commons-test</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Couchbase -->
         <!-- UPGRADE IT !!!!-->
-        <!--<dependency>-->
-            <!--<groupId>com.couchbase.client</groupId>-->
-            <!--<artifactId>java-client</artifactId>-->
-            <!--<version>2.0.1</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.couchbase.client</groupId>
             <artifactId>couchbase-client</artifactId>
@@ -240,6 +230,22 @@
             <artifactId>mail</artifactId>
             <version>1.4.3</version>
         </dependency>
+        <!-- Elastic Search-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>${springdata.commons}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <version>${spring.data.elasticsearch}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch}</version>
+        </dependency>
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
@@ -277,7 +283,12 @@
             <version>1.5.6</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>commons-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito</artifactId>
@@ -313,7 +324,9 @@
             <id>couchbase</id>
             <name>couchbase repo</name>
             <url>http://files.couchbase.com/maven2</url>
-            <snapshots><enabled>false</enabled></snapshots>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 </project>

@@ -52,6 +52,22 @@ public class SeoMetaDataService {
         return seoMetaData;
     }
 
+    public SeoMetaData prepareJavaPage() {
+        SeoMetaData seoMetaData = SeoMetaData.getInstance();
+        seoMetaData.setTitle(getString("java4us.java.title", null));
+        seoMetaData.setDescription(getString("java4us.java.desc", null));
+        seoMetaData.setCanonical(urlService.getJavaRootUrl());
+        return seoMetaData;
+    }
+
+    public SeoMetaData prepareAndroidPage() {
+        SeoMetaData seoMetaData = SeoMetaData.getInstance();
+        seoMetaData.setTitle(getString("java4us.android.title", null));
+        seoMetaData.setDescription(getString("java4us.android.desc", null));
+        seoMetaData.setCanonical(urlService.getAndroidRootUrl());
+        return seoMetaData;
+    }
+
     public String getString(String key, Object... params) {
         return messageResourceService.getString(SEO, key, params);
     }

@@ -8,9 +8,11 @@ package com.java4us.batch.component.feedmessage;
 import com.java4us.amqp.feedmessage.Java4UsMQFeedMessageProducer;
 import com.java4us.batch.component.Worker;
 import com.java4us.commons.cache.CacheService;
+import com.java4us.commons.component.utils.FeedMessageSearchConverter;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.commons.service.feed.FeederService;
 import com.java4us.commons.service.feed.Java4usRSSFeedParser;
+import com.java4us.commons.service.search.SearchService;
 import com.java4us.commons.service.security.XSSSecurityService;
 import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
@@ -23,6 +25,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author turgay
@@ -53,9 +57,16 @@ public class AsyncAndroidWorker implements Worker {
     @Autowired
     private CacheService java4UsCacheService;
 
+    @Autowired
+    private SearchService searchService;
+
+    @Autowired
+    private FeedMessageSearchConverter feedMessageSearchConverter;
+
     public void work() {
         String threadName = Thread.currentThread().getName();
         LOGGER.info("   " + threadName + " has began working.");
+        List<FeedMessage> feedMessageList = new ArrayList<>();
         for (Feeder feeder : feederService.findAcceptedAndroidFeedersFeeds()) {
             LOGGER.info(feeder.getDomain());
             for (Feed feed : feeder.getFeeds()) {
@@ -75,6 +86,7 @@ public class AsyncAndroidWorker implements Worker {
                             feedMessage.setFeed(feed);
                             xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
                             feedMessageProducer.execute(feedMessage);
+                            feedMessageList.add(feedMessage);
                         }
                     }
                 }
@@ -82,6 +94,9 @@ public class AsyncAndroidWorker implements Worker {
         }
         LOGGER.debug("   " + threadName + " has completed work.");
         clearCache();
+        if (!feedMessageList.isEmpty()) {
+            searchService.bulkIndexFeedMessages(feedMessageSearchConverter.convertAll(feedMessageList));
+        }
     }
 
     private void clearCache() {

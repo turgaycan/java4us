@@ -21,3 +21,18 @@ INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalu
 INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
 (nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | Unsubscribe from weekly newsletter feed message list', 'subscriber.unsubscribe.desc',
 'Java4Us.Net | Haftalık besleme listesi bülteninden ayrilmak',false);
+
+INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
+(nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | All Java RSS Feed Messages', 'java4us.java.title',
+'Java4Us.Net | Tüm Java RSS besleme mesajları',false);
+INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
+(nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | All Java RSS Feed Messages, search, explore and paging all java articles, tutorials', 'java4us.java.desc',
+'Java4Us.Net | Java RSS Besleme mesajları ara ve sayfalarca gez makaleleri, haberler ve örnek kodları',false);
+
+
+INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
+(nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | All Android RSS Feed Messages', 'java4us.android.title',
+'Java4Us.Net | Tüm Android RSS besleme mesajları',false);
+INSERT INTO java4us.message_resource("id", "category", "envalue", "key", "trvalue","deleted") VALUES
+(nextval('java4us.message_resource_id_seq'), 'Seo', 'Java4Us.Net | All Android RSS Feed Messages, search, explore and paging all java articles, tutorials', 'java4us.android.desc',
+'Java4Us.Net | Android RSS Besleme mesajları ara ve sayfalarca gez makaleleri ve örnek kodları',false);

@@ -4,6 +4,8 @@ import com.couchbase.client.protocol.views.Query;
 import com.couchbase.client.protocol.views.View;
 import com.couchbase.client.protocol.views.ViewResponse;
 import com.couchbase.client.protocol.views.ViewRow;
+import com.java4us.commons.component.utils.FeedMessageSearchConverter;
+import com.java4us.commons.dao.search.repositories.FeedMessageSearchRepository;
 import com.java4us.commons.service.feed.FeedMessageService;
 import com.java4us.domain.FeedMessage;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
@@ -30,6 +33,12 @@ public class ScheduledCacheService {
 
     @Autowired
     private FeedMessageService feedMessageService;
+
+    @Autowired
+    private FeedMessageSearchRepository feedMessageSearchRepository;
+
+    @Autowired
+    private FeedMessageSearchConverter feedMessageSearchConverter;
 
     @Scheduled(cron = "0 0 0 1/1 * ?")
     public void flushCacheEveryDay() {
@@ -58,6 +67,9 @@ public class ScheduledCacheService {
                             continue;
                         }
                         feedMessageService.update(feedMessage);
+                        LOGGER.debug("Started index..");
+                        feedMessageSearchRepository.index(feedMessageSearchConverter.convert(feedMessage));
+                        LOGGER.debug("Finished index..");
                     }
                 }
             }

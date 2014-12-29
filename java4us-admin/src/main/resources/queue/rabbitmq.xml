@@ -8,8 +8,8 @@
 
     <!-- Rabbit MQ -->
     <rabbit:connection-factory id="connectionFactory"
-                               host="localhost" virtual-host="java4usVhost" username="java4usadmin"
-                               password="q1w2e3r4" channel-cache-size="25"/>
+                               host="${rabbitmq.host}" virtual-host="${rabbitmq.virtual-host}" username="${rabbitmq.username}"
+                               password="${rabbitmq.password}" channel-cache-size="${rabbitmq.channel-cache-size}"/>
 
     <rabbit:admin connection-factory="connectionFactory"/>
 

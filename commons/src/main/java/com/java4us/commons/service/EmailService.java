@@ -5,8 +5,8 @@
  */
 package com.java4us.commons.service;
 
-import com.java4us.domain.model.SubscriberMailDTO;
 import com.java4us.commons.component.utils.EmailUtility;
+import com.java4us.domain.model.SubscriberMailDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

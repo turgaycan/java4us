@@ -1,5 +1,6 @@
 package com.java4us.commons.service.feed;
 
+import com.java4us.commons.cache.CacheService;
 import com.java4us.commons.dao.feed.FeedMessageDao;
 import com.java4us.domain.FeedMessage;
 import com.java4us.domain.builder.FeedMessageBuilder;
@@ -30,6 +31,9 @@ public class FeedMessageServiceTest {
 
     @Mock
     private FeedMessageDao feedMessageDao;
+
+    @Mock
+    private CacheService cacheService;
 
     @Test
     public void shouldReturnFindWeeklyFeedMessages(){
