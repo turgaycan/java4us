@@ -32,8 +32,12 @@
 
                         <div class="widget-header">
                             <i class="icon-user"></i>
-
-                            <h3>Java RSS Feed Messages..</h3>
+                            <c:if test="${datastatics eq 'JAVA'}">
+                                <h3>Java RSS Feed Messages..</h3>
+                            </c:if>
+                            <c:if test="${datastatics eq 'ANDROID'}">
+                                <h3>Android RSS Feed Messages..</h3>
+                            </c:if>
                         </div>
                         <!-- /widget-header -->
 
@@ -41,18 +45,19 @@
 
                             <!-- /widget -->
                             <div class="widget widget-nopad">
+                                <%@include file="pagination.jsp"%>
                                 <!-- /widget-header -->
                                 <div class="widget-content">
                                     <ul class="news-items">
                                         <c:forEach var="feedJavaMessage" items="${pagingMessages}">
                                             <li>
                                                 <div class="news-item-date">
-							<span class="news-item-day"><fmt:formatDate
-                                    value="${feedJavaMessage.pubdate}" type="both" pattern="dd"/></span>
-							<span class="news-item-month"><fmt:formatDate
-                                    value="${feedJavaMessage.pubdate}" type="both" pattern="MMMM"/></span>
-							<span class="news-item-month"><fmt:formatDate
-                                    value="${feedJavaMessage.pubdate}" type="both" pattern="yyyy"/></span>
+                                                <span class="news-item-day"><fmt:formatDate
+                                                        value="${feedJavaMessage.pubdate}" type="both" pattern="dd"/></span>
+                                                <span class="news-item-month"><fmt:formatDate
+                                                        value="${feedJavaMessage.pubdate}" type="both" pattern="MMMM"/></span>
+                                                <span class="news-item-month"><fmt:formatDate
+                                                        value="${feedJavaMessage.pubdate}" type="both" pattern="yyyy"/></span>
                                                 </div>
                                                 <div class="news-item-detail">
                                                     <a href="${_urlService.getRssDetailPageUrl(feedJavaMessage.title, feedJavaMessage.id)}"
@@ -63,6 +68,7 @@
                                         </c:forEach>
                                     </ul>
                                 </div>
+                                <%@include file="pagination.jsp"%>
                                 <!-- /widget-content -->
                             </div>
                             <!-- /widget -->

@@ -31,6 +31,9 @@ public class AndroidController extends CategoryController {
             return Java4UsUtils.toModelAndView("/error/301");
         }
         int pageNumber = Integer.parseInt(pageNum);
+        if(pageNumber <= 0){
+            pageNumber = DEFAULTPAGENUM;
+        }
         return prepareJavaModelAndView(ANDROIDVIEWNAME, pageNumber);
     }
 }

@@ -31,7 +31,7 @@ public class ScheduledCacheServiceTest {
     private CouchbaseClient couchbaseClient;
 
     @Test
-    public void shouldClearAllCache() {
+    public void shouldClearAllCache() throws Exception {
         service.flushCacheEveryDay();
         verify(cacheService, times(1)).flushCache();
     }

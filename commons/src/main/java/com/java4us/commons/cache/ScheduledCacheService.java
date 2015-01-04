@@ -40,8 +40,9 @@ public class ScheduledCacheService {
     private FeedMessageSearchConverter feedMessageSearchConverter;
 
     @Scheduled(cron = "0 0 0 1/1 * ?")
-    public void flushCacheEveryDay() {
+    public void flushCacheEveryDay() throws Exception {
         LOGGER.info("Starting Clear Cache .." + LocalDateTime.now());
+        updateFeedMessagesFromCache();
         cacheService.flushCache();
         java4UCacheService.flushCache();
         LOGGER.info("Finished Clear Cache .." + LocalDateTime.now());

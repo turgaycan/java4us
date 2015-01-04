@@ -38,7 +38,7 @@ public class SearchService {
     public Page<FeedMessageSearch> search(SearchCriteria criteria) {
         SortBuilder sortBuilder = new FieldSortBuilder(criteria.getSortField()).order(SortOrder.DESC);
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withPageable(new PageRequest(criteria.getPageSize(), criteria.getPageNumber()))
+                .withPageable(new PageRequest(criteria.getPaginationModel().getPageSize(), criteria.getPaginationModel().getCurrentPage()))
                 .withSort(sortBuilder)
                 .withQuery(matchAllQuery())
                 .withFilter(termFilter("title", criteria.getQuery()))

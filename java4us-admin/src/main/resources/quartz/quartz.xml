@@ -59,7 +59,7 @@
     <bean id="subscriberCronTrigger"
           class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
           p:jobDetail-ref="jobSubscriberEmailWorkerBean"
-          p:cronExpression="0 0/5 * 1/1 * ? *"/>
+          p:cronExpression="0 0 12 ? * SUN *"/>
 
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
           p:waitForJobsToCompleteOnShutdown="true">

@@ -5,6 +5,7 @@
 <html lang="en">
 <!-- head -->
 <%@include file="pagePartials/kayit/kayithead.jsp" %>
+<link href="<c:url value="/resources/css/pagination.css"/>" rel="stylesheet" type="text/css">
 <!-- head -->
 <body>
 <!-- staticnavmenu -->
