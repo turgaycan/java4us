@@ -5,8 +5,8 @@ import com.couchbase.client.protocol.views.View;
 import com.couchbase.client.protocol.views.ViewResponse;
 import com.couchbase.client.protocol.views.ViewRow;
 import com.java4us.commons.component.utils.FeedMessageSearchConverter;
-import com.java4us.commons.dao.search.repositories.FeedMessageSearchRepository;
 import com.java4us.commons.service.feed.FeedMessageService;
+import com.java4us.commons.service.search.SearchService;
 import com.java4us.domain.FeedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
@@ -35,7 +34,7 @@ public class ScheduledCacheService {
     private FeedMessageService feedMessageService;
 
     @Autowired
-    private FeedMessageSearchRepository feedMessageSearchRepository;
+    private SearchService searchService;
 
     @Autowired
     private FeedMessageSearchConverter feedMessageSearchConverter;
@@ -48,8 +47,7 @@ public class ScheduledCacheService {
         LOGGER.info("Finished Clear Cache .." + LocalDateTime.now());
     }
 
-
-    @Scheduled(cron = "0 0/30 * 1/1 * ?")
+    @Scheduled(cron = "0 0/5 * 1/1 * ?")
     public void updateFeedMessagesFromCache() throws Exception {
         Query query = new Query();
         View java4UsView = java4UCacheService.getJava4UsView();
@@ -68,7 +66,7 @@ public class ScheduledCacheService {
                         }
                         feedMessageService.update(feedMessage);
                         LOGGER.debug("Started index..");
-                        feedMessageSearchRepository.index(feedMessageSearchConverter.convert(feedMessage));
+                        searchService.index(feedMessageSearchConverter.convert(feedMessage));
                         LOGGER.debug("Finished index..");
                     }
                 }

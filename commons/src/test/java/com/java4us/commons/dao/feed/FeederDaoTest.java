@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
@@ -118,5 +119,23 @@ public class FeederDaoTest extends AbstractDataAccessTest {
         int rowCountFeederList = dao.getRowCountFeederList(filter);
         
         assertEquals(rowCountFeederList, 2);
+    }
+
+    @Test
+    public void shouldReturnFeederWithFeeds(){
+        Date currTime = TestDateUtils.toDate("10-10-2010");
+
+        Feeder feeder = new FeederBuilder().id(new Long(1)).email("abc@g.com").domain("ab.com").createDate(currTime).status(FeederStatus.ACCEPTED).persist(getSession());
+        Feed feed1 = new FeedBuilder().id(new Long(1)).feeder(feeder).pubDate(currTime).persist(getSession());
+        Feed feed2 = new FeedBuilder().id(new Long(2)).feeder(feeder).pubDate(currTime).persist(getSession());
+
+        flushAndClear();
+
+        Feeder actualFeeder = dao.findByEmail("abc@g.com");
+
+        assertThat(actualFeeder, equalTo(feeder));
+        assertThat(actualFeeder.getFeeds().size(), is(2));
+        assertThat(actualFeeder.getFeeds(), hasItems(feed1, feed2));
+
     }
 }

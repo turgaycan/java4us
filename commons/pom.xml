@@ -14,7 +14,7 @@
         <hibernate.version>4.2.8.Final</hibernate.version>
         <elasticsearch>1.4.2</elasticsearch>
         <springdata.commons>1.9.0.RELEASE</springdata.commons>
-        <spring.data.elasticsearch>1.1.0.RELEASE</spring.data.elasticsearch>
+        <spring.data.elasticsearch>1.1.1.RELEASE</spring.data.elasticsearch>
         <jdk.version>1.8</jdk.version>
     </properties>
     <dependencies>
