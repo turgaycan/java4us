@@ -320,9 +320,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <excludes>
-                        <exclude>**/CaptchaController*</exclude>
-                    </excludes>
+                    <!--<excludes>-->
+                        <!--<exclude>**/CaptchaController*</exclude>-->
+                    <!--</excludes>-->
                     <compilerArguments>
                         <endorseddirs>${project.build.directory}/endorsed</endorseddirs>
                     </compilerArguments>

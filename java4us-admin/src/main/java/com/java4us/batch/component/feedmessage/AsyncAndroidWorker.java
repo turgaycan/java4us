@@ -19,7 +19,8 @@ import com.java4us.domain.FeedMessage;
 import com.java4us.domain.Feeder;
 import com.java4us.domain.common.enums.Category;
 import com.sun.syndication.io.FeedException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -33,7 +34,7 @@ import java.util.List;
  */
 public class AsyncAndroidWorker implements Worker {
 
-    protected static Logger LOGGER = Logger.getLogger("asyncAndroidWorker");
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncAndroidWorker.class);
 
     @Autowired
     private FeederService feederService;
@@ -79,16 +80,16 @@ public class AsyncAndroidWorker implements Worker {
                     LOGGER.info("Java4us Parser error {}" + e.getMessage());
                 }
                 if (currentFeed != null) {
-                    for (FeedMessage feedMessage : currentFeed.getEntries()) {
-                        if (checkFeedMessageExists(feedMessage)) {
-                            LOGGER.info(feedMessage.getTitle());
-                            feedMessage.setCategory(Category.ANDROID);
-                            feedMessage.setFeed(feed);
-                            xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
-                            feedMessageProducer.execute(feedMessage);
-                            feedMessageList.add(feedMessage);
-                        }
-                    }
+                    currentFeed.getEntries().stream().filter(feedMessage -> checkFeedMessageExists(feedMessage)).forEach(feedMessage -> {
+                        LOGGER.info(feedMessage.getTitle());
+                        feedMessage.setCategory(Category.ANDROID);
+                        feedMessage.setFeed(feed);
+                        xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
+                        String description = feedMessage.getDescription();
+                        feedMessage.setDescription(description.length() > 4000 ? description.substring(0, 3999) : description);
+                        feedMessageProducer.execute(feedMessage);
+                        feedMessageList.add(feedMessage);
+                    });
                 }
             }
         }
@@ -104,7 +105,7 @@ public class AsyncAndroidWorker implements Worker {
         java4UsCacheService.flushCache();
     }
 
-    private boolean checkFeedMessageExists(FeedMessage feedMessage) {
-        return feedMessageService.findByLink(feedMessage.getLink()) == null;
+    private synchronized boolean checkFeedMessageExists(FeedMessage feedMessage) {
+        return feedMessageService.findByLink(feedMessage.getLink().trim()) == null;
     }
 }

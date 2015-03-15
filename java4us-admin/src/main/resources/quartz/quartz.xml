@@ -10,6 +10,8 @@
 
     <bean id="subscriberEmailWorkerBean" class="com.java4us.batch.component.mail.SubscriberEmailWorker"/>
 
+    <bean id="siteMapGeneratorWorkerBean" class="com.java4us.batch.component.sitemap.SiteMapGeneratorWorker"/>
+
     <bean name="jobJavaDetailBean"
           class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
           p:jobClass="com.java4us.batch.service.JavaSchedulerJob">
@@ -46,6 +48,18 @@
         </property>
     </bean>
 
+    <bean name="jobSiteMapWorkerBean"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.java4us.batch.service.SiteMapGeneratorJob">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="siteMapWorker">
+                    <ref bean="siteMapGeneratorWorkerBean"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
     <bean id="javaCronTrigger"
           class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
           p:jobDetail-ref="jobJavaDetailBean" p:startDelay="10000"
@@ -61,6 +75,11 @@
           p:jobDetail-ref="jobSubscriberEmailWorkerBean"
           p:cronExpression="0 0 12 ? * SUN *"/>
 
+    <bean id="siteMapCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobSiteMapWorkerBean"
+          p:cronExpression="0 0 0 1/1 * ? *"/>
+
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
           p:waitForJobsToCompleteOnShutdown="true">
         <property name="triggers">
@@ -68,6 +87,7 @@
                 <ref bean="javaCronTrigger"/>
                 <ref bean="androidCronTrigger"/>
                 <ref bean="subscriberCronTrigger"/>
+                <ref bean="siteMapCronTrigger"/>
             </list>
         </property>
     </bean>

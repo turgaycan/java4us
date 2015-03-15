@@ -77,17 +77,17 @@ public class FeedMessageService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> getFindAllProceedMessagesLinks() {
+    public List<String> findAllProceedMessagesLinks() {
         return feedMessageDao.findAllProceedMessagesLinks();
     }
 
     @Transactional(readOnly = true)
-    public List<String> getFindAllAndroidProceedMessagesLinks() {
+    public List<String> findAllAndroidProceedMessagesLinks() {
         return feedMessageDao.findAllAndroidProceedMessagesLinks();
     }
 
     @Transactional(readOnly = true)
-    public List<String> getFindAllJavaProceedMessagesLinks() {
+    public List<String> findAllJavaProceedMessagesLinks() {
         return feedMessageDao.findAllJavaProceedMessagesLinks();
     }
 
