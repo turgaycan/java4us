@@ -46,7 +46,7 @@ public class FeedMessageService {
 
     @Transactional
     public void save(FeedMessage feedMessage) {
-        feedMessageDao.persist(feedMessage);
+        feedMessageDao.saveEntity(feedMessage);
     }
 
     @Transactional
