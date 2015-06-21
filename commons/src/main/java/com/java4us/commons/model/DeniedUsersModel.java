@@ -15,7 +15,15 @@ import java.util.List;
 public class DeniedUsersModel implements Serializable {
 
 	private static final long serialVersionUID = 3354587395733827332L;
-	private List<String> deniedUserList;
+
+    public DeniedUsersModel() {
+    }
+
+    public DeniedUsersModel(List<String> deniedUserList) {
+        this.deniedUserList = deniedUserList;
+    }
+
+    private List<String> deniedUserList;
 
     public List<String> getDeniedUserList() {
         return deniedUserList;

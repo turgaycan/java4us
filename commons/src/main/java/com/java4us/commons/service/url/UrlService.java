@@ -47,15 +47,15 @@ public class UrlService {
     }
 
     public String getPaginationUrl(String category, int pageNumber) {
-        return getRootUrl() + SEPARATORCHAR + category + SEPARATORCHAR + pageNumber;
+        return getRootUrl().concat(SEPARATORCHAR).concat(category).concat(SEPARATORCHAR).concat(String.valueOf(pageNumber));
     }
 
     public String getRegisterUrl() {
-        return getRootUrl() + REGISTER;
+        return getRootUrl().concat(REGISTER);
     }
 
     public String getFromUnSubscribeUrl(String url, Long id) {
-        return getRootUrl() + SEPARATORCHAR + url + "-" + id;
+        return getRootUrl().concat(SEPARATORCHAR).concat(url).concat("-").concat(String.valueOf(id));
     }
 
     public String getRssDetailPageUrl(String title, Long id) {

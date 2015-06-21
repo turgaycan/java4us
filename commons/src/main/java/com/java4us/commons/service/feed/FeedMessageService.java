@@ -6,10 +6,12 @@
 package com.java4us.commons.service.feed;
 
 import com.java4us.commons.cache.CacheService;
+import com.java4us.commons.cache.template.CacheTemplate;
 import com.java4us.commons.dao.feed.FeedMessageDao;
 import com.java4us.commons.utils.Clock;
 import com.java4us.commons.utils.DateUtils;
 import com.java4us.commons.utils.criteria.FeedMessageSearchCriteria;
+import com.java4us.domain.Feed;
 import com.java4us.domain.FeedMessage;
 import com.java4us.domain.common.enums.Category;
 import org.slf4j.Logger;
@@ -93,20 +95,28 @@ public class FeedMessageService {
 
     @Transactional(readOnly = true)
     public LinkedList<FeedMessage> findWeeklyFeedMessages() {
-        LinkedList<FeedMessage> feedMessages = null;
-        String cacheKey = getCacheKey();
-        try {
-            feedMessages = cacheService.get(cacheKey);
-        } catch (Exception e) {
-            LOGGER.debug("Weekly Feed Messages {} ", e);
-        }
-        if (feedMessages == null) {
-            feedMessages = new LinkedList<>(getFeedWeeklyMessages());
-            addDTOsToCache(cacheKey, feedMessages, CacheService.SIX_DAYS);
-            return feedMessages;
-        } else {
-            return feedMessages;
-        }
+        return (LinkedList<FeedMessage>) new CacheTemplate(cacheService, CacheService.SIX_DAYS) {
+            @Override
+            protected Object query(Object queryParam) {
+                return getFeedWeeklyMessages();
+            }
+        }.findByIdWithDirectCacheKey(getCacheKey());
+
+
+//        LinkedList<FeedMessage> feedMessages = null;
+//        String cacheKey = getCacheKey();
+//        try {
+//            feedMessages = cacheService.get(cacheKey);
+//        } catch (Exception e) {
+//            LOGGER.debug("Weekly Feed Messages {} ", e);
+//        }
+//        if (feedMessages == null) {
+//            feedMessages = new LinkedList<>(getFeedWeeklyMessages());
+//            addDTOsToCache(cacheKey, feedMessages, CacheService.SIX_DAYS);
+//            return feedMessages;
+//        } else {
+//            return feedMessages;
+//        }
     }
 
     private List<FeedMessage> getFeedWeeklyMessages() {
@@ -114,14 +124,17 @@ public class FeedMessageService {
         Date week = DateUtils.addDays(now, -7);
         List<FeedMessage> weeklyFeedMessages = feedMessageDao.findWeeklyFeedMessages(now, week);
         if (weeklyFeedMessages.size() > getWeeklfeedmessagesize()) {
-            List<FeedMessage> feedMessages = weeklyFeedMessages.subList(0, getWeeklfeedmessagesize());
-            return feedMessages;
+            return weeklyFeedMessages.subList(0, getWeeklfeedmessagesize());
         }
         return weeklyFeedMessages;
     }
 
     private String getCacheKey() {
-        return WEEKLY_MESSAGES + LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        return WEEKLY_MESSAGES.concat(getFormatNow());
+    }
+
+    private String getFormatNow() {
+        return LocalDate.now().format(DateTimeFormatter.ISO_DATE);
     }
 
     private void addDTOsToCache(String cacheKey, List<FeedMessage> feedMessages, int TTL) {
@@ -134,6 +147,8 @@ public class FeedMessageService {
 
     @Transactional(readOnly = true)
     public LinkedList<FeedMessage> findPagingFeedMessages(Category category, int pageNumber) {
+
+
         LinkedList<FeedMessage> feedMessages = null;
         String pagingCacheKey = getPagingCacheKey(category, pageNumber);
         try {
@@ -169,4 +184,10 @@ public class FeedMessageService {
     public static int getPagesize() {
         return PAGESIZE;
     }
+
+    @Transactional(readOnly = true)
+    public List<FeedMessage> findByFeed(Feed feed, Date now, Date oneMonth) {
+        return feedMessageDao.findByFeed(feed, now, oneMonth);
+    }
+
 }

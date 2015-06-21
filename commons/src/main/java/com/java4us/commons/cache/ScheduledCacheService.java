@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 
 @Component
 public class ScheduledCacheService {
@@ -56,13 +55,11 @@ public class ScheduledCacheService {
             query.setReduce(false);
             ViewResponse result = java4UCacheService.getCouchbaseClient().query(java4UsView, query);
             if (result != null && result.getTotalRows() > 0) {
-                Iterator<ViewRow> iterator = result.iterator();
-                while (iterator.hasNext()) {
-                    ViewRow row = iterator.next();
+                for (ViewRow row : result) {
                     String feedMessageId = row.getId();
                     if (feedMessageId.startsWith("feedMessage_")) {
                         FeedMessage feedMessage = java4UCacheService.get(feedMessageId);
-                        if(feedMessage == null){
+                        if (feedMessage == null) {
                             continue;
                         }
                         feedMessageService.update(feedMessage);

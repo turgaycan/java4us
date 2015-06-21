@@ -24,6 +24,11 @@ public final class Clock {
         isFrozen = true;
     }
 
+    public static void freeze(Date date) {
+        freeze();
+        setTime(date);
+    }
+
     public static void unfreeze() {
         isFrozen = false;
         timeSet = null;

@@ -42,6 +42,10 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 	public User() {
 	}
 
+	public User(String email) {
+		this.email = email;
+	}
+
 	public User(Long id, String email, String login, String password,
 			BaseStatus status) {
 		super();

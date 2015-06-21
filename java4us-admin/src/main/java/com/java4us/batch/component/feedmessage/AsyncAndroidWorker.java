@@ -80,16 +80,22 @@ public class AsyncAndroidWorker implements Worker {
                     LOGGER.info("Java4us Parser error {}" + e.getMessage());
                 }
                 if (currentFeed != null) {
-                    currentFeed.getEntries().stream().filter(feedMessage -> checkFeedMessageExists(feedMessage)).forEach(feedMessage -> {
-                        LOGGER.info(feedMessage.getTitle());
-                        feedMessage.setCategory(Category.ANDROID);
-                        feedMessage.setFeed(feed);
-                        xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
-                        String description = feedMessage.getDescription();
-                        feedMessage.setDescription(description.length() > 4000 ? description.substring(0, 3999) : description);
-                        feedMessageProducer.execute(feedMessage);
-                        feedMessageList.add(feedMessage);
-                    });
+
+                    try {
+                        currentFeed.getEntries().stream().filter(feedMessage -> checkFeedMessageExists(feedMessage)).forEach(feedMessage -> {
+                            LOGGER.info(feedMessage.getTitle());
+                            feedMessage.setCategory(Category.ANDROID);
+                            feedMessage.setFeed(feed);
+                            xSSSecurityService.cleanFeedMessageForXSS(feedMessage);
+                            String description = feedMessage.getDescription();
+                            feedMessage.setDescription(description.length() > 4000 ? description.substring(0, 3999) : description);
+                            feedMessageProducer.execute(feedMessage);
+                            feedMessageList.add(feedMessage);
+                        });
+                    } catch (Exception e) {
+                        LOGGER.error("Exception {}", e.getMessage());
+                        continue;
+                    }
                 }
             }
         }

@@ -49,22 +49,47 @@ public class CacheService {
     private View java4UsView;
 
     @SuppressWarnings("unchecked")
-    public <T extends Serializable> T get(String key) throws Exception {
+    public <T extends Serializable> T get(String key) {
         T t;
         try {
             if (StringUtils.isNotBlank(key) && key.length() > MAXKEYSIZE) {
+                LOGGER.error("key value length longer than 250 character {} ", key);
                 return null;
             }
+            LOGGER.info("accessing cache for " + key);
             t = (T) couchbaseClient.get(key);
         } catch (Exception e) {
             Throwable rootCause = ExceptionUtils.getRootCause(e);
             if (rootCause instanceof CheckedOperationTimeoutException) {
                 t = (T) couchbaseClient.get(key);
             } else {
-                throw new Exception(e);
+                return retryIfNecessaryOrThrewException(key, false, e);
             }
         }
         return t;
+    }
+
+    private <T extends Serializable> T retryIfNecessaryOrThrewException(String key, boolean errorSafe, Exception e) {
+        T t;
+        Throwable rootCause = org.apache.commons.lang.exception.ExceptionUtils.getRootCause(e);
+        if (rootCause instanceof CheckedOperationTimeoutException) {
+            try {
+                t = (T) couchbaseClient.get(key);
+            } catch (Exception exc) {
+                return returnErrorSafe(errorSafe, e);
+            }
+        } else {
+            return returnErrorSafe(errorSafe, e);
+        }
+        return t;
+    }
+
+    private <T extends Serializable> T returnErrorSafe(boolean errorSafe, Exception e) {
+        if (errorSafe) {
+            return null;
+        } else {
+            throw new RuntimeException(e);
+        }
     }
 
     public <T extends Serializable> T getNullIfException(String key) {

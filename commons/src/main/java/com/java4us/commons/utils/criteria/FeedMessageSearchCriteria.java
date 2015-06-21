@@ -1,5 +1,7 @@
 package com.java4us.commons.utils.criteria;
 
+import com.java4us.domain.common.enums.BaseStatus;
+
 public class FeedMessageSearchCriteria extends CommonSearchCriteria {
 
 	private static final long serialVersionUID = -166312976212661447L;
@@ -9,6 +11,14 @@ public class FeedMessageSearchCriteria extends CommonSearchCriteria {
     private boolean viewCount;
     private boolean gotoLink;
 	private boolean proceed = false;
+
+	public FeedMessageSearchCriteria() {
+	}
+
+	public FeedMessageSearchCriteria(boolean proceed) {
+		this.proceed = proceed;
+		super.setStatus(BaseStatus.Active);
+	}
 
 	public String getLink() {
 		return link;

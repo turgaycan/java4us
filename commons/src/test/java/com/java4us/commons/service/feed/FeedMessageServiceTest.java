@@ -36,7 +36,26 @@ public class FeedMessageServiceTest {
     private CacheService cacheService;
 
     @Test
-    public void shouldReturnFindWeeklyFeedMessages(){
+    public void shouldReturnFindWeeklyFeedMessagesFromCache(){
+//        Clock.freeze(LocalDate.now().format(DateTimeFormatter.ISO_DATE));
+        mockStatic(FeedMessageService.class);
+        when(FeedMessageService.getWeeklfeedmessagesize()).thenReturn(3);
+        FeedMessage feedMessage1 = new FeedMessageBuilder().buildWithId();
+        FeedMessage feedMessage2 = new FeedMessageBuilder().buildWithId();
+        FeedMessage feedMessage3 = new FeedMessageBuilder().buildWithId();
+        FeedMessage feedMessage4 = new FeedMessageBuilder().buildWithId();
+        FeedMessage feedMessage5 = new FeedMessageBuilder().buildWithId();
+        List<FeedMessage> feedMessageList = Arrays.asList(feedMessage1, feedMessage2, feedMessage3, feedMessage4, feedMessage5);
+        when(cacheService.get("weeklyFeedMessages_")).thenReturn(feedMessageList);
+
+        LinkedList<FeedMessage> weeklyFeedMessages = service.findWeeklyFeedMessages();
+
+        assertThat(weeklyFeedMessages.size(), equalTo(3));
+        assertThat(weeklyFeedMessages, hasItems(feedMessage1, feedMessage2, feedMessage3));
+    }
+
+    @Test
+    public void shouldReturnFindWeeklyFeedMessagesFromDB(){
         mockStatic(FeedMessageService.class);
         when(FeedMessageService.getWeeklfeedmessagesize()).thenReturn(3);
         FeedMessage feedMessage1 = new FeedMessageBuilder().buildWithId();
