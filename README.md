@@ -3,11 +3,11 @@ simple web rss crawler and management
 
 Collect rss feeds, feed grouping(java, android in app two groups), management panel
 
----
-Java 8
-Spring 4.1.0
-Spring-Data
-Hibernate 4.2.8
+Tech Stack!
+
+Java 8  
+Spring 4.1.0 
+Hibernate 4.2.8 
 
 Spring MVC
 JSP
@@ -21,6 +21,7 @@ Joda-Time
 Jsoup
 Antisamy
 Guava
+Spring-data
 
 Junit
 Mockito
