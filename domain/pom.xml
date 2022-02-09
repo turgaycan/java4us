@@ -10,7 +10,7 @@
     <artifactId>domain</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <hibernate.version>4.2.8.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <spring.data.elasticsearch>1.1.1.RELEASE</spring.data.elasticsearch>
         <jdk.version>1.8</jdk.version>
     </properties>
