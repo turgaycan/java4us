@@ -1,30 +1,48 @@
-# java4us
+ # java4us project
 simple web rss crawler and management
 
 Collect rss feeds, feed grouping(java, android in app two groups), management panel
 
-# Tech Stack!
+# motivation
+
+it is just self learning/improvement project 
+
+# Tech Stack!
 
 Java 8  
 Spring 4.1.0 
 Hibernate 4.2.8 
 
 Spring MVC
+
 JSP
+
 JSF 2
+
 Primefaces
+
 Omnifaces
+
 Apache Shiro
+
 Quartz
+
 Velocity
+
 Joda-Time
+
 Jsoup
+
 Antisamy
+
 Guava
+
 Spring-data
 
 Junit
+
 Mockito
+
 Powermock
 
 Maven
