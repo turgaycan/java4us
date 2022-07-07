@@ -10,7 +10,7 @@
     <artifactId>commons</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <spring.version>4.1.0.RELEASE</spring.version>
+        <spring.version>5.2.21.RELEASE</spring.version>
         <hibernate.version>4.2.8.Final</hibernate.version>
         <elasticsearch>1.4.2</elasticsearch>
         <springdata.commons>1.9.0.RELEASE</springdata.commons>
